@@ -3,7 +3,6 @@
 
 TARGET_EXEC ?= a.out
 
-
 TEST_DIRS ?= ./test
 BUILD_DIR ?= ./build~
 SRC_DIRS ?= ./src

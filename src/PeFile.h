@@ -86,7 +86,7 @@ public:
     PeFile(const PeFile &pe) = delete;
     PeFile& operator=(const PeFile &pe) = delete;
 
-    PeFile(const std::string &path);
+    PeFile(std::string path);
 
     // member functions
     const void* getHeaderPtr(int index) const;

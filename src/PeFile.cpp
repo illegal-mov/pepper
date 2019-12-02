@@ -3,7 +3,7 @@
 
 using namespace Pepper;
 
-PeFile::PeFile(const std::string &path)
+PeFile::PeFile(std::string path)
 : m_fname (path)
 , m_Bytes (path)
 , m_Dos   (m_Bytes)
