@@ -1,0 +1,10 @@
+*~
+_*
+bin
+obj
+pepper.cbp
+pepper.depend
+pepper.layout
+scan.sh
+tags
+test
