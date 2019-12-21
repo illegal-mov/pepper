@@ -7,8 +7,7 @@
 using namespace Pepper;
 
 int DelayImportDir::s_diskToMemDiff = 0;
-template<>
-int *GenericImportDescriptor<IMAGE_DELAY_IMPORT_DESCRIPTOR>::s_pDiskToMemDiff = &DelayImportDir::s_diskToMemDiff;
+template<> int *DelayImportDescriptor::s_pDiskToMemDiff = &DelayImportDir::s_diskToMemDiff;
 
 DelayImportDir::DelayImportDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde)
 : IDirectory(pe, fbytes, dde)

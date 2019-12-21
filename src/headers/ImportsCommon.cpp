@@ -3,6 +3,47 @@
 
 using namespace Pepper;
 
+/* Load up the vector with data from the ImportAddressTable
+ */
+template <typename T> // for the class
+template <typename U> // for the function
+void GenericImportDescriptor<T>::readAddresses(int raw)
+{
+    U *addr = (U*)&mem()[raw];
+    int i=0;
+    while (addr[i] != 0) {
+        m_addresses32.push_back(addr[i]);
+        i++;
+    }
+}
+
+/* Load up the vector with data from the ImportLookupTable
+ */
+template <typename T> // for the class
+template <typename U> // for the function
+void GenericImportDescriptor<T>::readThunks(const FileBytes &fbytes, int raw)
+{
+    U *thunk = (U*)&mem()[raw];
+    // count number of IMAGE_IMPORT_DESCRIPTORS up until the null descriptor
+    int i=0;
+    while (thunk[i].HintNameTableRVA != 0) {
+        if (thunk[i].OrdinalFlag) {
+            // make ordinal string
+            std::stringstream ss;
+            ss << std::hex << "[Ordinal: 0x";
+            ss.fill('0');
+            ss.width(sizeof(U)<<1); // 2 hex digits per byte
+            ss << thunk[i].OrdinalNumber << ']';
+
+            m_thunks32.emplace_back(fbytes, raw + (i * (int)sizeof(U)), ss.str());
+        } else {
+            m_thunks32.emplace_back(fbytes, raw + (i * (int)sizeof(U)));
+        }
+
+        i++;
+    }
+}
+
 template <typename T>
 template <int ILT, int IAT, int TIMESTAMP>
 void GenericImportDescriptor<T>::makeDescriptor(const PeFile &pe, const FileBytes &fbytes)
@@ -33,6 +74,10 @@ void GenericImportDescriptor<T>::makeDescriptor(const PeFile &pe, const FileByte
     }
 }
 
+/* Template specialized constructors.
+ * These constructors call a separate function since
+ * the implementations are practically the same.
+ */
 template<>
 GenericImportDescriptor<IMAGE_IMPORT_DESCRIPTOR>::GenericImportDescriptor(const PeFile &pe, const FileBytes &fbytes, int raw)
 : IHeader(fbytes, raw)
@@ -45,47 +90,6 @@ GenericImportDescriptor<IMAGE_DELAY_IMPORT_DESCRIPTOR>::GenericImportDescriptor(
 : IHeader(fbytes, raw)
 {
     makeDescriptor<DELAY_IMPORT_NAME_TABLE_RVA, DELAY_IMPORT_ADDRESS_TABLE_RVA, TIMESTAMP>(pe, fbytes);
-}
-
-/* load up the vector with data from the ImportLookupTable
- */
-template <typename T> // for the class
-template <typename U> // for the function
-void GenericImportDescriptor<T>::readThunks(const FileBytes &fbytes, int raw)
-{
-    U *thunk = (U*)&mem()[raw];
-    // count number of IMAGE_IMPORT_DESCRIPTORS up until the null descriptor
-    int i=0;
-    while (thunk[i].HintNameTableRVA != 0) {
-        if (thunk[i].OrdinalFlag) {
-            // make ordinal string
-            std::stringstream ss;
-            ss << std::hex << "[Ordinal: 0x";
-            ss.fill('0');
-            ss.width(sizeof(U)<<1); // 2 hex digits per byte
-            ss << thunk[i].OrdinalNumber << ']';
-
-            m_thunks32.emplace_back(fbytes, raw + (i * (int)sizeof(U)), ss.str());
-        } else {
-            m_thunks32.emplace_back(fbytes, raw + (i * (int)sizeof(U)));
-        }
-
-        i++;
-    }
-}
-
-/* load up the vector with data from the ImportAddressTable
- */
-template <typename T> // for the class
-template <typename U> // for the function
-void GenericImportDescriptor<T>::readAddresses(int raw)
-{
-    U *addr = (U*)&mem()[raw];
-    int i=0;
-    while (addr[i] != 0) {
-        m_addresses32.push_back(addr[i]);
-        i++;
-    }
 }
 
 const char* ImportName::getFieldName(int index)
@@ -106,7 +110,7 @@ const void* ImportName::getFieldPtr(int index) const
     }
 }
 
-template <typename T>
+template <typename T> // requires variant declaration in header to link
 const char* ImportThunk<T>::getFieldName(int index)
 {
     switch (index) {
@@ -115,7 +119,7 @@ const char* ImportThunk<T>::getFieldName(int index)
     }
 }
 
-template <typename T>
+template <typename T> // requires variant declaration in header to link
 const void* ImportThunk<T>::getFieldPtr(int index) const
 {
     switch (index) {

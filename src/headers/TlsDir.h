@@ -118,6 +118,11 @@ public:
     // static functions
     static const char* getFieldName(int index);
 };
+
+// variant declarations
+template class CallbacksTable<int32_t>;
+template class CallbacksTable<int64_t>;
+
 } // namespace Pepper
 
 #endif

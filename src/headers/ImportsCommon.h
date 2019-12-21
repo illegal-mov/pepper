@@ -126,12 +126,16 @@ public:
 
 /* Has members that point to a variable-length array of ImportThunks
  * and another variable-length array of ImportAddresses.
- * length is equal to number of functions imported from the module.
+ * Length is equal to number of functions imported from the module.
  */
 template <typename T>
 class GenericImportDescriptor final : public IHeader {
 private:
     // for data at ImportLookupTableRVA
+    /* The variant declaractions at the end of the file are still
+     * needed even though ImportThunk objects are declared with
+     * concrete types right here.
+     */
     union {
         std::vector<ImportThunk32> m_thunks32{};
         std::vector<ImportThunk64> m_thunks64;
@@ -145,6 +149,7 @@ private:
 
     static int *s_pDiskToMemDiff;
 
+    // a helper function to construct a {regular,delay} descriptor
     template <int ILT, int IAT, int TIMESTAMP>
     void makeDescriptor(const PeFile &pe, const FileBytes &fbytes);
 
@@ -188,14 +193,13 @@ public:
 
     const std::vector<int32_t>& addresses32() const { return m_addresses32; }
     const std::vector<int64_t>& addresses64() const { return m_addresses64; }
-    int addressesLength() const { return (int)m_thunks32.size(); }
+    int addressesLength() const { return (int)m_addresses32.size(); }
 
     // static functions
     static const char* getFieldName(int index);
 };
 
-// variant declarations
-template <>
+template<>
 enum GenericImportDescriptor<IMAGE_IMPORT_DESCRIPTOR>::Fields : int {
     IMPORT_LOOKUP_TABLE_RVA,
     TIMESTAMP,
@@ -205,7 +209,7 @@ enum GenericImportDescriptor<IMAGE_IMPORT_DESCRIPTOR>::Fields : int {
     _NUM_FIELDS,
 };
 
-template <>
+template<>
 enum GenericImportDescriptor<IMAGE_DELAY_IMPORT_DESCRIPTOR>::Fields : int {
     ATTRIBUTES,
     NAME_RVA,
@@ -217,6 +221,11 @@ enum GenericImportDescriptor<IMAGE_DELAY_IMPORT_DESCRIPTOR>::Fields : int {
     TIMESTAMP,
     _NUM_FIELDS,
 };
+
+// variant declarations
+template class ImportThunk<IMAGE_THUNK_DATA32>;
+template class ImportThunk<IMAGE_THUNK_DATA64>;
+
 } // namespace Pepper
 
 #endif

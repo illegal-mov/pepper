@@ -4,22 +4,22 @@
 
 using namespace Pepper;
 
-int  ResourceDir::s_diskToMemDiff = 0;
-int *ResourceData::s_pDiskToMemDiff  = &ResourceDir::s_diskToMemDiff;
+int  ResourceDir::s_diskToMemDiff   = 0;
+int *ResourceData::s_pDiskToMemDiff = &ResourceDir::s_diskToMemDiff;
 
 int  ResourceDir::s_rsrcBase    = 0;
 int *ResourceNode::s_pRsrcBase  = &ResourceDir::s_rsrcBase;
 int *ResourceEntry::s_pRsrcBase = &ResourceDir::s_rsrcBase;
 int *ResourceData::s_pRsrcBase  = &ResourceDir::s_rsrcBase;
 
-template <>
-GenericResourceString<char>::GenericResourceString(const FileBytes &fbytes, int raw)
+template<>
+ResourceString::GenericResourceString(const FileBytes &fbytes, int raw)
 : IHeader(fbytes, raw)
 , m_name((char*)getFieldPtr(NAME_STRING), length())
 {}
 
-template <>
-GenericResourceString<uint16_t>::GenericResourceString(const FileBytes &fbytes, int raw)
+template<>
+ResourceStringU::GenericResourceString(const FileBytes &fbytes, int raw)
 : IHeader(fbytes, raw)
 {
     uint16_t *strBytes = (uint16_t*)getFieldPtr(NAME_STRING);
@@ -98,7 +98,7 @@ ResourceDir::ResourceDir(const PeFile &pe, const FileBytes &fbytes, const DataDi
     }
 }
 
-template <typename T>
+template <typename T> // requires variant declaration in header to link
 const char* GenericResourceString<T>::getFieldName(int index)
 {
     switch (index) {
@@ -108,7 +108,7 @@ const char* GenericResourceString<T>::getFieldName(int index)
     }
 }
 
-template <typename T>
+template <typename T> // requires variant declaration in header to link
 const void* GenericResourceString<T>::getFieldPtr(int index) const
 {
     switch (index) {

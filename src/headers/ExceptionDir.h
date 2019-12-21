@@ -131,8 +131,7 @@ public:
     friend class FunctionTableEntry<IMAGE_EXCEPTION_ENTRY_ARM>;
 };
 
-// variant declarations
-template <>
+template<>
 enum FunctionTableEntry32::Fields : int {
     BEGIN_ADDRESS,
     END_ADDRESS,
@@ -142,7 +141,7 @@ enum FunctionTableEntry32::Fields : int {
     _NUM_FIELDS,
 };
 
-template <>
+template<>
 enum FunctionTableEntry64::Fields : int {
     BEGIN_ADDRESS,
     END_ADDRESS,
@@ -150,7 +149,7 @@ enum FunctionTableEntry64::Fields : int {
     _NUM_FIELDS,
 };
 
-template <>
+template<>
 enum FunctionTableEntryArm::Fields : int {
     BEGIN_ADDRESS,
     INFO,

@@ -6,9 +6,9 @@
 using namespace Pepper;
 
 int ExceptionDir::s_codeDiff = 0; // RVAs in .pdata point to .text
-template<> int *FunctionTableEntry<IMAGE_EXCEPTION_ENTRY32>::s_pCodeDiff   = &ExceptionDir::s_codeDiff;
-template<> int *FunctionTableEntry<IMAGE_EXCEPTION_ENTRY64>::s_pCodeDiff   = &ExceptionDir::s_codeDiff;
-template<> int *FunctionTableEntry<IMAGE_EXCEPTION_ENTRY_ARM>::s_pCodeDiff = &ExceptionDir::s_codeDiff;
+template<> int *FunctionTableEntry32::s_pCodeDiff  = &ExceptionDir::s_codeDiff;
+template<> int *FunctionTableEntry64::s_pCodeDiff  = &ExceptionDir::s_codeDiff;
+template<> int *FunctionTableEntryArm::s_pCodeDiff = &ExceptionDir::s_codeDiff;
 
 // Append elements to the vector. Works for any type of FunctionTable because
 // entrySize is chosen by the caller when it knows the architecture.
@@ -39,7 +39,7 @@ ExceptionDir::ExceptionDir(const PeFile &pe, const FileBytes &fbytes, const Data
 }
 
 template<>
-const void* FunctionTableEntry<IMAGE_EXCEPTION_ENTRY32>::getFieldPtr(int index) const
+const void* FunctionTableEntry32::getFieldPtr(int index) const
 {
     switch (index) {
         case BEGIN_ADDRESS     : return &entry()->BeginAddress;
@@ -52,7 +52,7 @@ const void* FunctionTableEntry<IMAGE_EXCEPTION_ENTRY32>::getFieldPtr(int index) 
 }
 
 template<>
-const char* FunctionTableEntry<IMAGE_EXCEPTION_ENTRY32>::getFieldName(int index)
+const char* FunctionTableEntry32::getFieldName(int index)
 {
     switch (index) {
         case BEGIN_ADDRESS     : return "Pointer to Function Start";
@@ -65,7 +65,7 @@ const char* FunctionTableEntry<IMAGE_EXCEPTION_ENTRY32>::getFieldName(int index)
 }
 
 template<>
-const void* FunctionTableEntry<IMAGE_EXCEPTION_ENTRY64>::getFieldPtr(int index) const
+const void* FunctionTableEntry64::getFieldPtr(int index) const
 {
     switch (index) {
         case BEGIN_ADDRESS     : return &entry()->BeginAddress;
@@ -76,7 +76,7 @@ const void* FunctionTableEntry<IMAGE_EXCEPTION_ENTRY64>::getFieldPtr(int index) 
 }
 
 template<>
-const char* FunctionTableEntry<IMAGE_EXCEPTION_ENTRY64>::getFieldName(int index)
+const char* FunctionTableEntry64::getFieldName(int index)
 {
     switch (index) {
         case BEGIN_ADDRESS     : return "Pointer to Function Start";
@@ -87,7 +87,7 @@ const char* FunctionTableEntry<IMAGE_EXCEPTION_ENTRY64>::getFieldName(int index)
 }
 
 template<>
-const void* FunctionTableEntry<IMAGE_EXCEPTION_ENTRY_ARM>::getFieldPtr(int index) const
+const void* FunctionTableEntryArm::getFieldPtr(int index) const
 {
     switch (index) {
         case BEGIN_ADDRESS: return   &entry()->BeginAddress;
@@ -97,7 +97,7 @@ const void* FunctionTableEntry<IMAGE_EXCEPTION_ENTRY_ARM>::getFieldPtr(int index
 }
 
 template<>
-const char* FunctionTableEntry<IMAGE_EXCEPTION_ENTRY_ARM>::getFieldName(int index)
+const char* FunctionTableEntryArm::getFieldName(int index)
 {
     switch (index) {
         case BEGIN_ADDRESS: return "Pointer to Function Start";
@@ -120,14 +120,14 @@ const char* ExceptionDir::getFieldName(int index)
     }
 }
 
-template <>
-int32_t FunctionTableEntry<IMAGE_EXCEPTION_ENTRY_ARM>::endRaw() const
+template<>
+int32_t FunctionTableEntryArm::endRaw() const
 {
     return entry()->BeginAddress + entry()->FunctionLength - *s_pCodeDiff;
 }
 
-template <>
-int32_t FunctionTableEntry<IMAGE_EXCEPTION_ENTRY_ARM>::codeLen() const
+template<>
+int32_t FunctionTableEntryArm::codeLen() const
 {
     return entry()->FunctionLength;
 }

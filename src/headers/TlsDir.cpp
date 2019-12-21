@@ -45,7 +45,7 @@ TlsDir::TlsDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEnt
     }
 }
 
-template <typename T>
+template <typename T> // requires variant declaration in header to link
 const char* CallbacksTable<T>::getFieldName(int index)
 {
     switch (index) {
@@ -53,7 +53,7 @@ const char* CallbacksTable<T>::getFieldName(int index)
     }
 }
 
-template <typename T>
+template <typename T> // requires variant declaration in header to link
 const void* CallbacksTable<T>::getFieldPtr(int index) const
 {
     return (0 <= index && index < length())

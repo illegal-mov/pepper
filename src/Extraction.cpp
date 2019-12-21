@@ -20,12 +20,12 @@ struct is_dumpable {
     static constexpr bool value = false;
 };
 
-template <>
+template<>
 struct is_dumpable<ResourceData> {
     static constexpr bool value = true;
 };
 
-template <>
+template<>
 struct is_dumpable<CertificateEntry> {
     static constexpr bool value = true;
 };

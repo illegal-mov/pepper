@@ -42,7 +42,7 @@ IatDir::IatDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEnt
     }
 }
 
-template <typename T>
+template <typename T> // requires variant declaration in header to link
 const char* AddressList<T>::getFieldName(int index)
 {
     switch (index) {
@@ -50,7 +50,7 @@ const char* AddressList<T>::getFieldName(int index)
     }
 }
 
-template <typename T>
+template <typename T> // requires variant declaration in header to link
 const void* AddressList<T>::getFieldPtr(int index) const
 {
     return (0 <= index && index < length())

@@ -8,12 +8,9 @@ using namespace Pepper;
 
 // each class related to regular imports must see the same `diskToMemDiff` value
 int ImportDir::s_diskToMemDiff = 0;
-template<>
-int *GenericImportDescriptor<IMAGE_IMPORT_DESCRIPTOR>::s_pDiskToMemDiff = &ImportDir::s_diskToMemDiff;
-template<>
-int *ImportThunk<IMAGE_THUNK_DATA32>::s_pDiskToMemDiff = &ImportDir::s_diskToMemDiff;
-template<>
-int *ImportThunk<IMAGE_THUNK_DATA64>::s_pDiskToMemDiff = &ImportDir::s_diskToMemDiff;
+template<> int *ImportDescriptor::s_pDiskToMemDiff = &ImportDir::s_diskToMemDiff;
+template<> int *ImportThunk32::s_pDiskToMemDiff    = &ImportDir::s_diskToMemDiff;
+template<> int *ImportThunk64::s_pDiskToMemDiff    = &ImportDir::s_diskToMemDiff;
 
 ImportDir::ImportDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde)
 : IDirectory(pe, fbytes, dde)
