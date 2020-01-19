@@ -1,28 +1,19 @@
-# Job Vranish (2016)
-.SILENT:
+# Based on a Makefile from Job Vranish (2016)
+TARGET_EXEC := a.out
 
-TARGET_EXEC ?= a.out
+TEST_DIR := ./test
+BUILD_DIR := ./build~
+SRC_DIR := ./src
 
-TEST_DIRS ?= ./test
-BUILD_DIR ?= ./build~
-SRC_DIRS ?= ./src
-
-MKDIR_P ?= mkdir -p
-
-SRCS := $(shell find $(SRC_DIRS) -name '*.cpp' -or -name '*.c' -or -name '*.s')
-TEST := $(shell find $(TEST_DIRS) -name '*.cpp' -or -name '*.c' -or -name '*.s')
-OBJS := $(SRCS:%=$(BUILD_DIR)/%.o)
-OBJS_TEST := $(TEST:%=$(BUILD_DIR)/%.o)
-OBJS_TEST += $(OBJS)
-
-INC_DIRS := $(shell find $(SRC_DIRS) -type d)
-INC_FLAGS := $(addprefix -I,$(INC_DIRS))
+MKDIR_P := mkdir -p
 
 CFLAGS := -D _DEFAULT_SOURCE -std=c11 -Wall -Wextra -Werror -O0
-CPPFLAGS ?= $(INC_FLAGS) -MMD -MP -std=c++14 -Wall -Weffc++ -Wextra -Wsign-conversion -Werror
+CPPFLAGS := -MMD -MP -std=c++17 -Wall -Weffc++ -Wextra -Wsign-conversion -Werror
 
-$(BUILD_DIR)/$(TARGET_EXEC): $(OBJS)
-	$(CXX) $(OBJS) -o $@ $(LDFLAGS)
+MAIN := $(shell find $(SRC_DIR) -name '*.cpp' -or -name '*.c' -or -name '*.s')
+TEST := $(shell find $(TEST_DIR) -name '*.cpp' -or -name '*.c' -or -name '*.s')
+OBJS_MAIN := $(MAIN:%=$(BUILD_DIR)/%.o)
+OBJS_TEST := $(TEST:%=$(BUILD_DIR)/%.o)
 
 # assembly
 $(BUILD_DIR)/%.s.o: %.s
@@ -39,11 +30,22 @@ $(BUILD_DIR)/%.cpp.o: %.cpp
 	$(MKDIR_P) $(dir $@)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
+.PHONY: release
+release: $(OBJS_MAIN) $(OBJS_TEST)
+	$(MKDIR_P) $(dir $@)
+	$(CXX) -O2 $? -o $(BUILD_DIR)/$@/$(TARGET_EXEC)
+
+.PHONY: debug
+debug: $(OBJS_MAIN) $(OBJS_TEST)
+	$(MKDIR_P) $(dir $@)
+	$(CXX) -g $? -o $(BUILD_DIR)/$@/$(TARGET_EXEC)
+
+.PHONY: test
+test: $(OBJS_MAIN) $(OBJS_TEST)
+	$(MKDIR_P) $(dir $@)
+	$(CXX) $? -o $(BUILD_DIR)/$@/$(TARGET_EXEC)
+
 .PHONY: clean
 clean:
 	$(RM) -r $(BUILD_DIR)
 
-.PHONY: test
-test: $(OBJS_TEST)
-	$(MKDIR_P) $(dir $@)
-	$(CXX) $(OBJS_TEST) -o $(BUILD_DIR)/$@/$(TARGET_EXEC) $(LDFLAGS)
