@@ -82,8 +82,8 @@ const char* PeFile::getHeaderName(int index)
     }
 }
 
-void PeFile::readBytes(int pos, char *buf, int bufLen) const
+void PeFile::readBytes(size_t pos, char *buf, size_t bufLen) const
 {
-    m_Bytes.readBytes((size_t)pos, buf, (size_t)bufLen);
+    m_Bytes.readBytes(pos, buf, bufLen);
 }
 

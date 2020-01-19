@@ -4,22 +4,22 @@
 
 using namespace Pepper;
 
-RelocationBlock::RelocationBlock(const FileBytes &fbytes, int raw)
+RelocationBlock::RelocationBlock(const FileBytes &fbytes, size_t raw)
 : IHeader(fbytes, raw)
 , m_relocBase(fbytes, raw)
 , m_relocTable()
 {
-    int size = m_relocBase.base()->BlockSize;
+    uint32_t size = m_relocBase.base()->BlockSize;
     m_relocTable = RelocationTable(fbytes,
-        raw + (int)sizeof(IMAGE_BASE_RELOCATION),
-        (size - (int)sizeof(IMAGE_BASE_RELOCATION)) / (int)sizeof(IMAGE_BASE_RELOCATION_ENTRY));
+        raw + sizeof(IMAGE_BASE_RELOCATION),
+        (size - sizeof(IMAGE_BASE_RELOCATION)) / sizeof(IMAGE_BASE_RELOCATION_ENTRY));
 }
 
 RelocationDir::RelocationDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde)
 : IDirectory(pe, fbytes, dde)
 {
     if (Ident::dirExists(*this)) {
-        int32_t bytesRead = 0;
+        uint32_t bytesRead = 0;
         while (bytesRead < dde.size()) {
             m_elements.emplace_back(fbytes, dirOffset() + bytesRead);
             PIMAGE_BASE_RELOCATION tmp = (PIMAGE_BASE_RELOCATION)&dir()[bytesRead];
@@ -29,8 +29,8 @@ RelocationDir::RelocationDir(const PeFile &pe, const FileBytes &fbytes, const Da
              * Add min(sizeof(IMAGE_BASE_RELOCATION), BlockSize)
              * to avoid an infinite loop.
              */
-            bytesRead += (tmp->BlockSize < (int)sizeof(IMAGE_BASE_RELOCATION))
-                ? (int)sizeof(IMAGE_BASE_RELOCATION)
+            bytesRead += (tmp->BlockSize < sizeof(IMAGE_BASE_RELOCATION))
+                ? sizeof(IMAGE_BASE_RELOCATION)
                 : tmp->BlockSize;
         }
     }

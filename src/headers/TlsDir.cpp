@@ -7,10 +7,10 @@
 using namespace Pepper;
 
 template <typename T>
-int CallbacksTable<T>::s_codeDiff = 0;
+size_t CallbacksTable<T>::s_codeDiff = 0;
 
 template <typename T>
-CallbacksTable<T>::CallbacksTable(const PeFile &pe, const FileBytes &fbytes, int raw)
+CallbacksTable<T>::CallbacksTable(const PeFile &pe, const FileBytes &fbytes, size_t raw)
 : IHeader(fbytes, raw)
 {
     const T *cbArray = callbacks();
@@ -33,15 +33,15 @@ TlsDir::TlsDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEnt
 {
     if (Ident::dirExists(*this)) {
         // get AVA to array of callback function pointers
-        int64_t callbacksPtr = (Ident::is32bit(pe))
+        uint64_t callbacksPtr = (Ident::is32bit(pe))
                               ? tls32()->AddressOfCallbacks
                               : tls64()->AddressOfCallbacks;
         // convert AVA to RAW, use RAW to construct table
         callbacksPtr = Convert::convertAddr(pe, callbacksPtr, Convert::AVA, Convert::RAW);
         if (Ident::is32bit(pe))
-            m_callbacks32 = CallbacksTable<int32_t>(pe, fbytes, callbacksPtr);
+            m_callbacks32 = CallbacksTable<uint32_t>(pe, fbytes, callbacksPtr);
         else
-            m_callbacks64 = CallbacksTable<int64_t>(pe, fbytes, callbacksPtr);
+            m_callbacks64 = CallbacksTable<uint64_t>(pe, fbytes, callbacksPtr);
     }
 }
 
@@ -56,8 +56,9 @@ const char* CallbacksTable<T>::getFieldName(int index)
 template <typename T> // requires variant declaration in header to link
 const void* CallbacksTable<T>::getFieldPtr(int index) const
 {
-    return (0 <= index && index < length())
-        ? &callbacks()[index]
+    size_t uindex = static_cast<size_t>(index);
+    return (uindex < length())
+        ? &callbacks()[uindex]
         : nullptr;
 }
 

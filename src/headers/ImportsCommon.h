@@ -62,7 +62,7 @@ public:
     : IHeader()
     {}
 
-    ImportName(const FileBytes &fbytes, int raw)
+    ImportName(const FileBytes &fbytes, size_t raw)
     : IHeader(fbytes, raw)
     {}
 
@@ -86,7 +86,7 @@ private:
     ImportName m_hintname;
     std::string m_ordstr{};
 
-    static int *s_pDiskToMemDiff;
+    static size_t *s_pDiskToMemDiff;
 public:
     enum Fields {
         HINTNAMERVA,
@@ -94,14 +94,14 @@ public:
     };
 
     // constructor for import by ordinal (when OrdinalFlag is set)
-    ImportThunk(const FileBytes &fbytes, int raw, std::string ordstr)
+    ImportThunk(const FileBytes &fbytes, size_t raw, std::string ordstr)
     : IHeader(fbytes, raw)
     , m_hintname()
     , m_ordstr(ordstr)
     {}
 
     // constructor for regular import
-    ImportThunk(const FileBytes &fbytes, int raw)
+    ImportThunk(const FileBytes &fbytes, size_t raw)
     : IHeader(fbytes, raw)
     , m_hintname(fbytes, thunk()->HintNameTableRVA - *s_pDiskToMemDiff)
     {}
@@ -143,26 +143,26 @@ private:
 
     // for data at ImportAddressTableRVA
     union {
-        std::vector<int32_t> m_addresses32{};
-        std::vector<int64_t> m_addresses64;
+        std::vector<uint32_t> m_addresses32{};
+        std::vector<uint64_t> m_addresses64;
     };
 
-    static int *s_pDiskToMemDiff;
+    static size_t *s_pDiskToMemDiff;
 
     // a helper function to construct a {regular,delay} descriptor
     template <int ILT, int IAT, int TIMESTAMP>
     void makeDescriptor(const PeFile &pe, const FileBytes &fbytes);
 
     template <typename U>
-    void readThunks(const FileBytes &fbytes, int raw);
+    void readThunks(const FileBytes &fbytes, size_t raw);
 
     template <typename U>
-    void readAddresses(int raw);
+    void readAddresses(size_t raw);
 public:
     // this enum is defined in template specializations
     enum Fields : int {};
 
-    GenericImportDescriptor(const PeFile &pe, const FileBytes &fbytes, int raw);
+    GenericImportDescriptor(const PeFile &pe, const FileBytes &fbytes, size_t raw);
 
     GenericImportDescriptor(const GenericImportDescriptor &id)
     : IHeader(id)
@@ -189,11 +189,11 @@ public:
 
     const std::vector<ImportThunk32>& thunks32() const { return m_thunks32; }
     const std::vector<ImportThunk64>& thunks64() const { return m_thunks64; }
-    int thunksLength() const { return (int)m_thunks32.size(); }
+    size_t thunksLength() const { return m_thunks32.size(); }
 
-    const std::vector<int32_t>& addresses32() const { return m_addresses32; }
-    const std::vector<int64_t>& addresses64() const { return m_addresses64; }
-    int addressesLength() const { return (int)m_addresses32.size(); }
+    const std::vector<uint32_t>& addresses32() const { return m_addresses32; }
+    const std::vector<uint64_t>& addresses64() const { return m_addresses64; }
+    size_t addressesLength() const { return m_addresses32.size(); }
 
     // static functions
     static const char* getFieldName(int index);

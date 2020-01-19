@@ -91,7 +91,7 @@ public:
     : IHeader()
     {}
 
-    GenericResourceString(const FileBytes &fbytes, int raw);
+    GenericResourceString(const FileBytes &fbytes, size_t raw);
 
     // member functions
     const void* getFieldPtr(int index) const override;
@@ -108,8 +108,8 @@ public:
  */
 class ResourceData : public IHeader {
 private:
-    static int *s_pDiskToMemDiff; // RVAs in .edata point to .text
-    static int *s_pRsrcBase;
+    static size_t *s_pDiskToMemDiff; // RVAs in .edata point to .text
+    static size_t *s_pRsrcBase;
     const ResourceNode *m_parent{};
 public:
     enum Fields {
@@ -124,7 +124,7 @@ public:
     : IHeader()
     {}
 
-    ResourceData(const FileBytes &fbytes, int raw, const ResourceNode *parent);
+    ResourceData(const FileBytes &fbytes, size_t raw, const ResourceNode *parent);
 
     ResourceData(const ResourceData &rd)
     : IHeader(rd)
@@ -142,7 +142,7 @@ public:
     const void* getFieldPtr(int index) const override;
     const IMAGE_RESOURCE_DATA* data() const { return (PIMAGE_RESOURCE_DATA)hdr(); }
     const char* bytes() const { return &mem()[data()->OffsetToData - *s_pDiskToMemDiff]; }
-    int32_t size() const { return data()->Size; }
+    uint32_t size() const { return data()->Size; }
 
     // static functions
     static const char* getFieldName(int index);
@@ -154,7 +154,7 @@ public:
  */
 class ResourceEntry : public IHeader {
 private:
-    static int *s_pRsrcBase;
+    static size_t *s_pRsrcBase;
     ResourceStringU *m_rsrcName{};
     union {
         ResourceNode *m_node{};
@@ -171,7 +171,7 @@ public:
     : IHeader()
     {}
 
-    ResourceEntry(const FileBytes &fbytes, int raw, const ResourceNode *parent, std::map<int32_t, ResourceData*> &dataMap);
+    ResourceEntry(const FileBytes &fbytes, size_t raw, const ResourceNode *parent, std::map<uint32_t, ResourceData*> &dataMap);
 
     ResourceEntry(const ResourceEntry &re)
     : IHeader(re)
@@ -204,7 +204,7 @@ public:
  */
 class ResourceNode : public IHeader {
 private:
-    static int *s_pRsrcBase;
+    static size_t *s_pRsrcBase;
     const ResourceNode *m_parent{};
     std::vector<ResourceEntry> m_entries{};
 public:
@@ -222,7 +222,7 @@ public:
     : IHeader()
     {}
 
-    ResourceNode(const FileBytes &fbytes, int raw, const ResourceNode *parent, std::map<int32_t, ResourceData*> &dataMap);
+    ResourceNode(const FileBytes &fbytes, size_t raw, const ResourceNode *parent, std::map<uint32_t, ResourceData*> &dataMap);
 
     ResourceNode(const ResourceNode &rn)
     : IHeader(rn)
@@ -252,10 +252,10 @@ public:
  */
 class ResourceDir final : public IDirectory {
 private:
-    static int s_diskToMemDiff;
-    static int s_rsrcBase;
+    static size_t s_diskToMemDiff;
+    static size_t s_rsrcBase;
     std::unique_ptr<ResourceNode> m_root{};
-    std::map<int32_t, ResourceData*> m_dataMap{};
+    std::map<uint32_t, ResourceData*> m_dataMap{};
 public:
     enum Fields {
         _NUM_FIELDS,
@@ -273,7 +273,7 @@ public:
     // member functions
     const void* getFieldPtr(int index) const override;
     const ResourceNode* resources() const { return m_root.get(); }
-    const std::map<int32_t, ResourceData*> map() const { return m_dataMap; }
+    const std::map<uint32_t, ResourceData*> map() const { return m_dataMap; }
 
     // static functions
     static const char* getFieldName(int index);

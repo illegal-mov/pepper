@@ -32,9 +32,9 @@ class DataDirectoryEntry;
  */
 class ExportAddressTable final : public IHeader {
 private:
-    int m_length{};
-    static int s_diskToMemDiff; // RVAs in .edata point to .text
-    const int32_t* addresses() const { return (int32_t*)hdr(); }
+    size_t m_length{};
+    static size_t s_diskToMemDiff; // RVAs in .edata point to .text
+    const uint32_t* addresses() const { return (uint32_t*)hdr(); }
 public:
     enum Fields {
         _NUM_FIELDS,
@@ -44,24 +44,24 @@ public:
     : IHeader()
     {}
 
-    ExportAddressTable(const PeFile &pe, const FileBytes &fbytes, int raw, int len);
+    ExportAddressTable(const PeFile &pe, const FileBytes &fbytes, size_t raw, size_t len);
 
     // member functions
     const void* getFieldPtr(int index) const override;
 
-    int32_t codeRva(int index) const
+    uint32_t codeRva(size_t index) const
     {
-        int32_t* ret = (int32_t*)getFieldPtr(index);
-        return (ret == nullptr) ? -1 : *ret;
+        uint32_t* ret = (uint32_t*)getFieldPtr(index);
+        return (ret == nullptr) ? 0 : *ret;
     }
 
-    int32_t codeRaw(int index) const
+    uint32_t codeRaw(size_t index) const
     {
-        int32_t* ret = (int32_t*)getFieldPtr(index);
-        return (ret == nullptr) ? -1 : (*ret) - s_diskToMemDiff;
+        uint32_t* ret = (uint32_t*)getFieldPtr(index);
+        return (ret == nullptr) ? 0 : (*ret) - s_diskToMemDiff;
     }
 
-    int length() const { return m_length; }
+    size_t length() const { return m_length; }
 
     // static functions
     static const char* getFieldName(int index);
@@ -71,9 +71,9 @@ public:
  */
 class ExportNameTable final : public IHeader {
 private:
-    int m_length{};
-    static int s_diskToMemDiff;
-    const int32_t* addresses() const { return (int32_t*)hdr(); }
+    size_t m_length{};
+    static size_t s_diskToMemDiff;
+    const uint32_t* addresses() const { return (uint32_t*)hdr(); }
 public:
     enum Fields {
         _NUM_FIELDS,
@@ -83,27 +83,27 @@ public:
     : IHeader()
     {}
 
-    ExportNameTable(const PeFile &pe, const FileBytes &fbytes, int raw, int len);
+    ExportNameTable(const PeFile &pe, const FileBytes &fbytes, size_t raw, size_t len);
 
     // member functions
     const void* getFieldPtr(int index) const override;
 
-    // get array element or -1 if out of range
-    int32_t nameRva(int index) const
+    // get array element or 0 if out of range
+    uint32_t nameRva(size_t index) const
     {
-        return (0 <= index && index < length())
-        ? addresses()[index] : -1;
+        return (index < length())
+        ? addresses()[index] : 0;
     }
 
     // get ASCII name or nullptr if out of range
-    const char* funcName(int index) const
+    const char* funcName(size_t index) const
     {
-        return (0 <= index && index < length())
+        return (index < length())
         ? &mem()[nameRva(index) - s_diskToMemDiff]
         : nullptr;
     }
 
-    int length() const { return m_length; }
+    size_t length() const { return m_length; }
 
     // static functions
     static const char* getFieldName(int index);
@@ -113,7 +113,7 @@ public:
  */
 class ExportOrdinalTable final : public IHeader {
 private:
-    int m_length{};
+    size_t m_length{};
     const int16_t* ordinals() const { return (int16_t*)hdr(); }
 public:
     enum Fields {
@@ -124,19 +124,19 @@ public:
     : IHeader()
     {}
 
-    ExportOrdinalTable(const FileBytes &fbytes, int raw, int len);
+    ExportOrdinalTable(const FileBytes &fbytes, size_t raw, size_t len);
 
     // member functions
     const void* getFieldPtr(int index) const override;
 
     // get array element or -1 if out of range
-    int16_t ordinal(int index) const
+    int16_t ordinal(size_t index) const
     {
         int16_t *ret = (int16_t*)getFieldPtr(index);
         return (ret == nullptr) ? -1 : *ret;
     }
 
-    int length() const { return m_length; }
+    size_t length() const { return m_length; }
 
     // static functions
     static const char* getFieldName(int index);

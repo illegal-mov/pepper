@@ -4,7 +4,7 @@
 
 using namespace Pepper;
 
-CodeIntegrity::CodeIntegrity(const FileBytes &fbytes, int raw)
+CodeIntegrity::CodeIntegrity(const FileBytes &fbytes, size_t raw)
 : IHeader(fbytes, raw)
 {}
 
@@ -14,13 +14,13 @@ LoadConfigDir::LoadConfigDir(const PeFile &pe, const FileBytes &fbytes, const Da
 {
     if (Ident::dirExists(*this)) {
         bool is32bit = Ident::is32bit(*m_pe);
-        int32_t size = ldcfg32()->Size;
-        if (is32bit && (int)offsetof(IMAGE_LOAD_CONFIG_DIRECTORY32, CodeIntegrity) < size) {
+        uint32_t size = ldcfg32()->Size;
+        if (is32bit && offsetof(IMAGE_LOAD_CONFIG_DIRECTORY32, CodeIntegrity) < size) {
             m_codeInteg = CodeIntegrity(fbytes, dirOffset()
-                + (int)offsetof(IMAGE_LOAD_CONFIG_DIRECTORY32, CodeIntegrity));
-        } else if (!is32bit && (int)offsetof(IMAGE_LOAD_CONFIG_DIRECTORY32, CodeIntegrity) < size) {
+                + offsetof(IMAGE_LOAD_CONFIG_DIRECTORY32, CodeIntegrity));
+        } else if (!is32bit && offsetof(IMAGE_LOAD_CONFIG_DIRECTORY32, CodeIntegrity) < size) {
             m_codeInteg = CodeIntegrity(fbytes, dirOffset()
-                + (int)offsetof(IMAGE_LOAD_CONFIG_DIRECTORY64, CodeIntegrity));
+                + offsetof(IMAGE_LOAD_CONFIG_DIRECTORY64, CodeIntegrity));
         }
     }
 }
@@ -103,15 +103,15 @@ const char* LoadConfigDir::getFieldName(int index)
  * including the range and architecture checks.
  */
 #define LDCFG_RET_FIELD(FIELD)                                       \
-    (   is32bit && (int)offsetof(IMAGE_LOAD_CONFIG_DIRECTORY32, FIELD) < size) \
+    (   is32bit && offsetof(IMAGE_LOAD_CONFIG_DIRECTORY32, FIELD) < size) \
     ? (void*)&ldcfg32()->FIELD                                       \
-    : (!is32bit && (int)offsetof(IMAGE_LOAD_CONFIG_DIRECTORY64, FIELD) < size) \
+    : (!is32bit && offsetof(IMAGE_LOAD_CONFIG_DIRECTORY64, FIELD) < size) \
     ? (void*)&ldcfg64()->FIELD : nullptr
 
 const void* LoadConfigDir::getFieldPtr(int index) const
 {
     bool is32bit = Ident::is32bit(*m_pe);
-    int32_t size = ldcfg32()->Size;
+    uint32_t size = ldcfg32()->Size;
     switch (index) {
         case SIZE                                          : return LDCFG_RET_FIELD(Size);
         case TIMESTAMP                                     : return LDCFG_RET_FIELD(TimeDateStamp);

@@ -11,10 +11,10 @@ CertificateDir::CertificateDir(const PeFile &pe, const FileBytes &fbytes, const 
         // certificate is special and does not need a diff
         m_diffOfRvaRaw = 0;
 
-        int32_t currentSize = 0;
+        uint32_t currentSize = 0;
         while (currentSize < dde.size()) {
             m_elements.emplace_back(fbytes, dirOffset() + currentSize);
-            currentSize += *(int32_t*)m_elements.back().getFieldPtr(CertificateEntry::LENGTH);
+            currentSize += *(uint32_t*)m_elements.back().getFieldPtr(CertificateEntry::LENGTH);
             // round up to 8 byte alignment
             currentSize += (8 - (currentSize & 7)) & 7;
         }

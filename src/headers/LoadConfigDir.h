@@ -136,7 +136,7 @@ public:
     : IHeader()
     {}
 
-    CodeIntegrity(const FileBytes &fbytes, int raw);
+    CodeIntegrity(const FileBytes &fbytes, size_t raw);
 
     // member functions
     const void* getFieldPtr(int index) const override;

@@ -14,7 +14,7 @@ namespace Pepper {
  */
 class ClrSignature final : public IDirectory {
 private:
-    int m_length{};
+    size_t m_length{};
 public:
     enum Fields {
         _NUM_FIELDS,
@@ -29,7 +29,7 @@ public:
     // member functions
     const char* sig() const { return (char*)dir(); }
     const void* getFieldPtr(int index) const override;
-    int length() const { return m_length; }
+    size_t length() const { return m_length; }
 
     // static functions
     static const char* getFieldName(int index);

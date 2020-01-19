@@ -6,7 +6,7 @@
 
 using namespace Pepper;
 
-DebugEntry::DebugEntry(const FileBytes &fbytes, int raw)
+DebugEntry::DebugEntry(const FileBytes &fbytes, size_t raw)
 : IHeader(fbytes, raw)
 , m_dbgRsds()
 {
@@ -18,10 +18,10 @@ DebugDir::DebugDir(const PeFile &pe, const FileBytes &fbytes, const DataDirector
 {
     if (Ident::dirExists(*this)) {
         char null[sizeof(IMAGE_DEBUG_DIRECTORY)] = {0};
-        for (int i=0;
-        memcmp(&dir()[i*(int)sizeof(null)], &null, sizeof(null));
+        for (size_t i=0;
+        memcmp(&dir()[i*sizeof(null)], &null, sizeof(null));
         i++)
-            m_elements.emplace_back(fbytes, dirOffset() + i*(int)sizeof(null));
+            m_elements.emplace_back(fbytes, dirOffset() + i*sizeof(null));
     }
 }
 

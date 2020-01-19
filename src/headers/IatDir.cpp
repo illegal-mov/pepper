@@ -5,7 +5,7 @@
 using namespace Pepper;
 
 template <typename T>
-AddressList<T>::AddressList(const FileBytes &fbytes, int raw, int len)
+AddressList<T>::AddressList(const FileBytes &fbytes, size_t raw, size_t len)
 : IHeader(fbytes, raw)
 , m_length(len)
 {}
@@ -14,11 +14,11 @@ template <typename T>
 void IatDir::readAddrList(const FileBytes &fbytes, const DataDirectoryEntry &dde)
 {
     T *addrs = (T*)dir();
-    int i=0;
-    int32_t bytesRead = 0;
+    size_t i=0;
+    uint32_t bytesRead = 0;
     while (bytesRead < dde.size()) {
         // get current addrs list len
-        int len = 0;
+        size_t len = 0;
         while (addrs[i] != 0) {
             len++; // length of current row
             i++;   // index for whole table
@@ -26,7 +26,7 @@ void IatDir::readAddrList(const FileBytes &fbytes, const DataDirectoryEntry &dde
 
         m_list32.emplace_back(fbytes, dirOffset() + bytesRead, len);
 
-        bytesRead += (len+1) * (int)sizeof(T); // +1 because of null terminator
+        bytesRead += (len+1) * sizeof(T); // +1 because of null terminator
         i++; // `i` was left sitting on a null-terminator, so step over
     }
 }
@@ -36,9 +36,9 @@ IatDir::IatDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEnt
 {
     if (Ident::dirExists(*this)) {
         if (Ident::is32bit(pe))
-            readAddrList<int32_t>(fbytes, dde);
+            readAddrList<uint32_t>(fbytes, dde);
         else
-            readAddrList<int64_t>(fbytes, dde);
+            readAddrList<uint64_t>(fbytes, dde);
     }
 }
 
@@ -53,8 +53,9 @@ const char* AddressList<T>::getFieldName(int index)
 template <typename T> // requires variant declaration in header to link
 const void* AddressList<T>::getFieldPtr(int index) const
 {
-    return (0 <= index && index < length())
-        ? &addresses()[index]
+    size_t uindex = static_cast<size_t>(index);
+    return (uindex < length())
+        ? &addresses()[uindex]
         : nullptr;
 }
 

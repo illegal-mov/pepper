@@ -20,7 +20,7 @@ protected:
     const PeFile *m_pe{};
     const DataDirectoryEntry *m_dde{};
     const SectionHeaderEntry *m_she{};
-    int m_diffOfRvaRaw{};
+    size_t m_diffOfRvaRaw{};
 
     const IDirectory& operator=(const IDirectory &id)
     {
@@ -55,13 +55,13 @@ protected:
     }
 public:
     /* get true offset into PE file content where directory is located */
-    int dirOffset() const { return hdrOffset() - m_diffOfRvaRaw; }
+    size_t dirOffset() const { return hdrOffset() - m_diffOfRvaRaw; }
 
     /* pointer to base of directory as char* only if the directory exists */
     const char* dir() const;
 
     /* get size of directory */
-    int32_t size() const;
+    uint32_t size() const;
 
     /* get a pointer to the section containing this directory's data */
     const SectionHeaderEntry* owningSection() const { return m_she; }

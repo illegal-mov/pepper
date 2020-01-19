@@ -4,10 +4,10 @@
 
 using namespace Pepper;
 
-int ExportAddressTable::s_diskToMemDiff = 0;
-int ExportNameTable::s_diskToMemDiff = 0;
+size_t ExportAddressTable::s_diskToMemDiff = 0;
+size_t ExportNameTable::s_diskToMemDiff = 0;
 
-ExportAddressTable::ExportAddressTable(const PeFile &pe, const FileBytes &fbytes, int raw, int len)
+ExportAddressTable::ExportAddressTable(const PeFile &pe, const FileBytes &fbytes, size_t raw, size_t len)
 : IHeader(fbytes, raw)
 , m_length(len)
 {
@@ -15,14 +15,14 @@ ExportAddressTable::ExportAddressTable(const PeFile &pe, const FileBytes &fbytes
     s_diskToMemDiff = Convert::getRvaToRawDiff(pe, addresses()[0]);
 }
 
-ExportNameTable::ExportNameTable(const PeFile &pe, const FileBytes &fbytes, int raw, int len)
+ExportNameTable::ExportNameTable(const PeFile &pe, const FileBytes &fbytes, size_t raw, size_t len)
 : IHeader(fbytes, raw)
 , m_length(len)
 {
     s_diskToMemDiff = Convert::getRvaToRawDiff(pe, addresses()[0]);
 }
 
-ExportOrdinalTable::ExportOrdinalTable(const FileBytes &fbytes, int raw, int len)
+ExportOrdinalTable::ExportOrdinalTable(const FileBytes &fbytes, size_t raw, size_t len)
 : IHeader(fbytes, raw)
 , m_length(len)
 {}
@@ -60,8 +60,9 @@ const char* ExportAddressTable::getFieldName(int index)
 
 const void* ExportAddressTable::getFieldPtr(int index) const
 {
-    return (0 <= index && index < length())
-        ? &addresses()[index]
+    size_t uindex = static_cast<size_t>(index);
+    return (uindex < length())
+        ? &addresses()[uindex]
         : nullptr;
 }
 
@@ -74,8 +75,9 @@ const char* ExportNameTable::getFieldName(int index)
 
 const void* ExportNameTable::getFieldPtr(int index) const
 {
-    return (0 <= index && index < length())
-        ? &addresses()[index]
+    size_t uindex = static_cast<size_t>(index);
+    return (uindex < length())
+        ? &addresses()[uindex]
         : nullptr;
 }
 
@@ -88,8 +90,9 @@ const char* ExportOrdinalTable::getFieldName(int index)
 
 const void* ExportOrdinalTable::getFieldPtr(int index) const
 {
-    return (0 <= index && index < length())
-        ? &ordinals()[index]
+    size_t uindex = static_cast<size_t>(index);
+    return (uindex < length())
+        ? &ordinals()[uindex]
         : nullptr;
 }
 

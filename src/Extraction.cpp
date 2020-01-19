@@ -37,7 +37,7 @@ static bool genericDump(const std::string &path, const T &t, bool mayThrow)
     static_assert(is_dumpable<T>::value, "Cannot dump this type to disk");
     std::ofstream out(path, std::ios_base::out | std::ios_base::binary);
     if (out.is_open()) {
-        out.write(t.bytes(), (size_t)t.size());
+        out.write(t.bytes(), t.size());
     } else {
         if (!mayThrow)
             return false;

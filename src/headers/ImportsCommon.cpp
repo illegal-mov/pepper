@@ -7,10 +7,10 @@ using namespace Pepper;
  */
 template <typename T> // for the class
 template <typename U> // for the function
-void GenericImportDescriptor<T>::readAddresses(int raw)
+void GenericImportDescriptor<T>::readAddresses(size_t raw)
 {
     U *addr = (U*)&mem()[raw];
-    int i=0;
+    size_t i=0;
     while (addr[i] != 0) {
         m_addresses32.push_back(addr[i]);
         i++;
@@ -21,11 +21,11 @@ void GenericImportDescriptor<T>::readAddresses(int raw)
  */
 template <typename T> // for the class
 template <typename U> // for the function
-void GenericImportDescriptor<T>::readThunks(const FileBytes &fbytes, int raw)
+void GenericImportDescriptor<T>::readThunks(const FileBytes &fbytes, size_t raw)
 {
     U *thunk = (U*)&mem()[raw];
     // count number of IMAGE_IMPORT_DESCRIPTORS up until the null descriptor
-    int i=0;
+    size_t i=0;
     while (thunk[i].HintNameTableRVA != 0) {
         if (thunk[i].OrdinalFlag) {
             // make ordinal string
@@ -35,9 +35,9 @@ void GenericImportDescriptor<T>::readThunks(const FileBytes &fbytes, int raw)
             ss.width(sizeof(U)<<1); // 2 hex digits per byte
             ss << thunk[i].OrdinalNumber << ']';
 
-            m_thunks32.emplace_back(fbytes, raw + (i * (int)sizeof(U)), ss.str());
+            m_thunks32.emplace_back(fbytes, raw + (i * sizeof(U)), ss.str());
         } else {
-            m_thunks32.emplace_back(fbytes, raw + (i * (int)sizeof(U)));
+            m_thunks32.emplace_back(fbytes, raw + (i * sizeof(U)));
         }
 
         i++;
@@ -53,13 +53,13 @@ void GenericImportDescriptor<T>::makeDescriptor(const PeFile &pe, const FileByte
      * (contains AVAs) by seeing if TimeDateStamp == -1 (don't ask).
      * Nothing to parse if ImportLookupTableRVA is zero and IAT is bound.
      */
-    int32_t iltRva = *(int32_t*)getFieldPtr(ILT);
-    int32_t iatRva = *(int32_t*)getFieldPtr(IAT);
+    uint32_t iltRva = *(uint32_t*)getFieldPtr(ILT);
+    uint32_t iatRva = *(uint32_t*)getFieldPtr(IAT);
     if (iltRva == 0) {
         if (*(int32_t*)getFieldPtr(TIMESTAMP) == -1)
             return; // it's bound, do nothing
         else
-            iltRva = *(int32_t*)getFieldPtr(IAT);
+            iltRva = *(uint32_t*)getFieldPtr(IAT);
     }
 
     iltRva = Convert::convertAddr(pe, iltRva, Convert::RVA, Convert::RAW);
@@ -67,10 +67,10 @@ void GenericImportDescriptor<T>::makeDescriptor(const PeFile &pe, const FileByte
 
     if (Ident::is32bit(pe)) {
         readThunks<IMAGE_THUNK_DATA32>(fbytes, iltRva);
-        readAddresses<int32_t>(iatRva);
+        readAddresses<uint32_t>(iatRva);
     } else {
         readThunks<IMAGE_THUNK_DATA64>(fbytes, iltRva);
-        readAddresses<int64_t>(iatRva);
+        readAddresses<uint64_t>(iatRva);
     }
 }
 
@@ -79,14 +79,14 @@ void GenericImportDescriptor<T>::makeDescriptor(const PeFile &pe, const FileByte
  * the implementations are practically the same.
  */
 template<>
-GenericImportDescriptor<IMAGE_IMPORT_DESCRIPTOR>::GenericImportDescriptor(const PeFile &pe, const FileBytes &fbytes, int raw)
+GenericImportDescriptor<IMAGE_IMPORT_DESCRIPTOR>::GenericImportDescriptor(const PeFile &pe, const FileBytes &fbytes, size_t raw)
 : IHeader(fbytes, raw)
 {
     makeDescriptor<IMPORT_LOOKUP_TABLE_RVA, IMPORT_ADDRESS_TABLE_RVA, TIMESTAMP>(pe, fbytes);
 }
 
 template<>
-GenericImportDescriptor<IMAGE_DELAY_IMPORT_DESCRIPTOR>::GenericImportDescriptor(const PeFile &pe, const FileBytes &fbytes, int raw)
+GenericImportDescriptor<IMAGE_DELAY_IMPORT_DESCRIPTOR>::GenericImportDescriptor(const PeFile &pe, const FileBytes &fbytes, size_t raw)
 : IHeader(fbytes, raw)
 {
     makeDescriptor<DELAY_IMPORT_NAME_TABLE_RVA, DELAY_IMPORT_ADDRESS_TABLE_RVA, TIMESTAMP>(pe, fbytes);
@@ -157,7 +157,7 @@ const void* GenericImportDescriptor<IMAGE_IMPORT_DESCRIPTOR>::getFieldPtr(int in
 template<>
 const char* GenericImportDescriptor<IMAGE_IMPORT_DESCRIPTOR>::dllName() const
 {
-    int32_t nameRva = *(int32_t*)getFieldPtr(NAME_RVA);
+    uint32_t nameRva = *(uint32_t*)getFieldPtr(NAME_RVA);
     return &mem()[nameRva - *s_pDiskToMemDiff];
 }
 
@@ -196,7 +196,7 @@ const void* GenericImportDescriptor<IMAGE_DELAY_IMPORT_DESCRIPTOR>::getFieldPtr(
 template<>
 const char* GenericImportDescriptor<IMAGE_DELAY_IMPORT_DESCRIPTOR>::dllName() const
 {
-    int32_t nameRva = *(int32_t*)getFieldPtr(NAME_RVA);
+    uint32_t nameRva = *(uint32_t*)getFieldPtr(NAME_RVA);
     return &mem()[nameRva - *s_pDiskToMemDiff];
 }
 

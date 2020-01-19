@@ -38,8 +38,8 @@ class DataDirectoryEntry;
 template <typename T>
 class CallbacksTable final : public IHeader {
 private:
-    int m_length{};
-    static int s_codeDiff; // AVAs in the Callbacks array point to .text
+    size_t m_length{};
+    static size_t s_codeDiff; // AVAs in the Callbacks array point to .text
 
     const T* callbacks() const { return (T*)hdr(); }
 public:
@@ -47,26 +47,26 @@ public:
     : IHeader()
     {}
 
-    CallbacksTable(const PeFile &pe, const FileBytes &fbytes, int raw);
+    CallbacksTable(const PeFile &pe, const FileBytes &fbytes, size_t raw);
 
     // member functions
     const void* getFieldPtr(int index) const override;
 
-    // get array element or -1 if out of range
+    // get array element or 0 if out of range
     T callbackAva(int index) const
     {
         T *ret = (T*)getFieldPtr(index);
-        return (ret == nullptr) ? -1 : *ret;
+        return (ret == nullptr) ? 0 : *ret;
     }
 
-    // get array element or -1 if out of range
+    // get array element or 0 if out of range
     T callbackRaw(int index) const
     {
         T *ret = (T*)getFieldPtr(index);
-        return (ret == nullptr) ? -1 : *ret - s_codeDiff;
+        return (ret == nullptr) ? 0 : *ret - s_codeDiff;
     }
 
-    int length() const { return m_length; }
+    size_t length() const { return m_length; }
 
     // static functions
     static const char* getFieldName(int index);
@@ -77,8 +77,8 @@ public:
 class TlsDir final : public IDirectory {
 private:
     union {
-        CallbacksTable<int32_t> m_callbacks32;
-        CallbacksTable<int64_t> m_callbacks64;
+        CallbacksTable<uint32_t> m_callbacks32;
+        CallbacksTable<uint64_t> m_callbacks64;
     };
 public:
     enum Fields {
@@ -112,16 +112,16 @@ public:
     const void* getFieldPtr(int index) const override;
     const IMAGE_TLS_DIRECTORY32*   tls32() const { return (PIMAGE_TLS_DIRECTORY32)dir(); }
     const IMAGE_TLS_DIRECTORY64*   tls64() const { return (PIMAGE_TLS_DIRECTORY64)dir(); }
-    const CallbacksTable<int32_t>* cbt32() const { return Ident::dirExists(*this) ? &m_callbacks32 : nullptr; }
-    const CallbacksTable<int64_t>* cbt64() const { return Ident::dirExists(*this) ? &m_callbacks64 : nullptr; }
+    const CallbacksTable<uint32_t>* cbt32() const { return Ident::dirExists(*this) ? &m_callbacks32 : nullptr; }
+    const CallbacksTable<uint64_t>* cbt64() const { return Ident::dirExists(*this) ? &m_callbacks64 : nullptr; }
 
     // static functions
     static const char* getFieldName(int index);
 };
 
 // variant declarations
-template class CallbacksTable<int32_t>;
-template class CallbacksTable<int64_t>;
+template class CallbacksTable<uint32_t>;
+template class CallbacksTable<uint64_t>;
 
 } // namespace Pepper
 

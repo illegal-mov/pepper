@@ -13,12 +13,12 @@ namespace Pepper {
 class IHeader {
 protected:
     std::shared_ptr<const char> m_headerPtr{};
-    int m_baseOffset{};
+    size_t m_baseOffset{};
 
     IHeader()
     {}
 
-    IHeader(const FileBytes &fbytes, int offset)
+    IHeader(const FileBytes &fbytes, size_t offset)
     : m_headerPtr(fbytes.bytes())
     , m_baseOffset(offset)
     {}
@@ -33,7 +33,7 @@ public:
     const char* mem() const { return m_headerPtr.get(); }
 
     // get offset into PE file content where header is located
-    int hdrOffset() const { return m_baseOffset; };
+    size_t hdrOffset() const { return m_baseOffset; };
 
     // pointer to base of header as char*
     const char* hdr() const { return &m_headerPtr.get()[hdrOffset()]; }

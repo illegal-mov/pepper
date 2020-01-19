@@ -16,11 +16,12 @@ IDirectory::IDirectory(const PeFile &pe, const FileBytes &fbytes, const DataDire
     // linear search for containing section
     SectionHeaders *sctns = (SectionHeaders*)pe.getHeaderPtr(PeFile::SECTION);
     for (const auto &section : sctns->sections()) {
-        int32_t sctnBase = *(int32_t*)section.getFieldPtr(SectionHeaderEntry::VIRTUAL_ADDRESS);
-        int32_t sctnSize = *(int32_t*)section.getFieldPtr(SectionHeaderEntry::VIRTUAL_SIZE);
+        uint32_t sctnBase = *(uint32_t*)section.getFieldPtr(SectionHeaderEntry::VIRTUAL_ADDRESS);
+        uint32_t sctnSize = *(uint32_t*)section.getFieldPtr(SectionHeaderEntry::VIRTUAL_SIZE);
+        uint32_t sctnRaw  = *(uint32_t*)section.getFieldPtr(SectionHeaderEntry::POINTER_TO_RAW_DATA);
         if (sctnBase <= dde.rva() && dde.rva() < sctnBase + sctnSize) {
             m_she = &section;
-            m_diffOfRvaRaw = abs(sctnBase - *(int32_t*)section.getFieldPtr(SectionHeaderEntry::POINTER_TO_RAW_DATA));
+            m_diffOfRvaRaw = (sctnBase > sctnRaw) ? sctnBase - sctnRaw : sctnRaw - sctnBase;
             break;
         }
     }
@@ -35,7 +36,7 @@ const char* IDirectory::dir() const
 }
 
 /* get size of directory */
-int32_t IDirectory::size() const
+uint32_t IDirectory::size() const
 {
     return m_dde->size();
 }

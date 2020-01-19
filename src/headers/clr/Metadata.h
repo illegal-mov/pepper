@@ -50,7 +50,7 @@ public:
     : IHeader()
     {}
 
-    ClrStream(const FileBytes &fbytes, int raw)
+    ClrStream(const FileBytes &fbytes, size_t raw)
     : IHeader(fbytes, raw)
     {}
 

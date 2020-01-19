@@ -90,7 +90,7 @@ public:
 
     // member functions
     const void* getHeaderPtr(int index) const;
-    void readBytes(int pos, char *buf, int bufLen) const;
+    void readBytes(size_t pos, char *buf, size_t bufLen) const;
     const std::string& path() const { return m_fname; }
 
     // static functions

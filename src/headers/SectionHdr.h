@@ -89,8 +89,8 @@ public:
         MEM_WRITE       = 0x80000000,
     };
 
-    SectionHeaderEntry(const FileBytes &fbytes, int offset)
-    : IHeader(fbytes, offset)
+    SectionHeaderEntry(const FileBytes &fbytes, size_t raw)
+    : IHeader(fbytes, raw)
     {}
 
     // member functions
@@ -117,7 +117,7 @@ public:
 
     // member functions
     const std::vector<SectionHeaderEntry>& sections() const { return m_elements; }
-    int length() const { return (int)m_elements.size(); }
+    size_t length() const { return m_elements.size(); }
 
     // static functions
     static const char* getFieldName(int index);

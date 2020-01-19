@@ -19,11 +19,11 @@ ClrMetadata::ClrMetadata(const PeFile &pe, const FileBytes &fbytes, const DataDi
     /* Because of the length-prefixed string in the middle of the
      * structure, this is a really ridiculous way of doing `sizeof`
      */
-    size_t pos = (size_t)offsetof(IMAGE_COR20_METADATA_HEADER, Version)
-        + (size_t)metadata()->Length + 4;
+    size_t pos = offsetof(IMAGE_COR20_METADATA_HEADER, Version)
+               + metadata()->Length + 4;
     // construct each ClrStream object
     for (size_t i=0; i < numStreams; i++) {
-        ClrStream tmp(fbytes, dirOffset() + (int)pos);
+        ClrStream tmp(fbytes, dirOffset() + pos);
         m_streams.push_back(tmp);
 
         char *name = (char*)tmp.getFieldPtr(ClrStream::NAME);
@@ -79,8 +79,8 @@ const void* ClrMetadata::getFieldPtr(int index) const
         case LENGTH           : return &metadata()->Length;
         case VERSION          : return &metadata()->Version;
         // the length-prefixed string makes this part weird
-        case FLAGS            : return &dir()[(int)offsetof(IMAGE_COR20_METADATA_HEADER, Version) + metadata()->Length];
-        case NUMBER_OF_STREAMS: return &dir()[(int)offsetof(IMAGE_COR20_METADATA_HEADER, Version) + metadata()->Length + 2];
+        case FLAGS            : return &dir()[offsetof(IMAGE_COR20_METADATA_HEADER, Version) + metadata()->Length];
+        case NUMBER_OF_STREAMS: return &dir()[offsetof(IMAGE_COR20_METADATA_HEADER, Version) + metadata()->Length + 2];
         default               : return nullptr;
     }
 }

@@ -26,7 +26,7 @@ FileBytes::FileBytes(const std::string &path)
     // allocate memory, copy file bytes into memory
     std::shared_ptr<char> tmp(new char [ m_fsize ]);
     m_bytes = std::move(tmp);
-    in.read(m_bytes.get(), m_fsize);
+    in.read(m_bytes.get(), static_cast<std::streamsize>(m_fsize));
     in.close();
 
     if (in.fail()) {
@@ -39,20 +39,20 @@ FileBytes::FileBytes(const std::string &path)
  */
 void FileBytes::readBytes(size_t pos, char *buf, size_t bufLen) const
 {
-    if (pos < (size_t)m_fsize) {
-        size_t min = (pos + bufLen <= (size_t)m_fsize)
+    if (pos < m_fsize) {
+        size_t min = (pos + bufLen <= m_fsize)
             ? bufLen
-            : (size_t)m_fsize - pos;
+            : m_fsize - pos;
         memcpy(buf, &bytes().get()[pos], min);
     } else {
         memset(buf, 0, bufLen);
     }
 }
 
-long FileBytes::getFileSize(std::ifstream &in)
+size_t FileBytes::getFileSize(std::ifstream &in)
 {
     in.seekg(0, in.end);
-    long size = in.tellg();
+    size_t size = static_cast<size_t>(in.tellg());
     in.seekg(0);
     return size;
 }

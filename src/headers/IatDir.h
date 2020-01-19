@@ -30,14 +30,14 @@ typedef AddressList<int64_t> AddressList64;
 template <typename T>
 class AddressList final : public IHeader {
 private:
-    int m_length{};
+    size_t m_length{};
     const T* addresses() const { return (T*)hdr(); }
 public:
     AddressList()
     : IHeader()
     {}
 
-    AddressList(const FileBytes &fbytes, int raw, int len);
+    AddressList(const FileBytes &fbytes, size_t raw, size_t len);
 
     // member functions
     const void* getFieldPtr(int index) const override;
@@ -48,7 +48,7 @@ public:
         return (ret == nullptr) ? -1 : *ret;
     }
 
-    int length() const { return m_length; }
+    size_t length() const { return m_length; }
 
     // static functions
     static const char* getFieldName(int index);
@@ -91,7 +91,7 @@ public:
     const void* getFieldPtr(int index) const override;
     const std::vector<AddressList32>& list32() const { return m_list32; }
     const std::vector<AddressList64>& list64() const { return m_list64; }
-    int length() const { return (int)m_list32.size(); }
+    size_t length() const { return m_list32.size(); }
 
     // static functions
     static const char* getFieldName(int index);

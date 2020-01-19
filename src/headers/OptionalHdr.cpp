@@ -5,30 +5,30 @@ using namespace Pepper;
 OptionalHeader::OptionalHeader(const FileBytes &fbytes, const FileHeader &file)
 : IHeader(fbytes, 0)
 {
-    m_baseOffset = file.hdrOffset() + (int)sizeof(IMAGE_FILE_HEADER);
+    m_baseOffset = file.hdrOffset() + sizeof(IMAGE_FILE_HEADER);
 }
 
 DataDirectory::DataDirectory(const FileBytes &fbytes, const OptionalHeader &opt)
 {
     // get offset to data directory
     bool is32bit = opt.optional32()->Magic == OptionalHeader::BIT32;
-    int base = opt.hdrOffset() + (int)((is32bit) ?
+    size_t base = opt.hdrOffset() + ((is32bit) ?
         offsetof(IMAGE_OPTIONAL_HEADER32, DataDirectory):
         offsetof(IMAGE_OPTIONAL_HEADER64, DataDirectory));
 
     // construct each data directory entry by copy assignment
-    int index = 0;
+    size_t index = 0;
     for (auto &entry : m_directoryEntries) {
-        entry = DataDirectoryEntry(fbytes, base + (index * (int)sizeof(IMAGE_DATA_DIRECTORY)));
+        entry = DataDirectoryEntry(fbytes, base + (index * sizeof(IMAGE_DATA_DIRECTORY)));
         index++;
     }
 }
 
-int64_t OptionalHeader::imageBase() const
+uint64_t OptionalHeader::imageBase() const
 {
     return (optional32()->Magic == BIT32)
-        ? *(int32_t*)getFieldPtr(IMAGE_BASE)
-        : *(int64_t*)getFieldPtr(IMAGE_BASE);
+        ? *(uint32_t*)getFieldPtr(IMAGE_BASE)
+        : *(uint64_t*)getFieldPtr(IMAGE_BASE);
 }
 
 const char* OptionalHeader::getFieldName(int index)

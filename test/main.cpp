@@ -115,8 +115,8 @@ void printExport(const Pepper::PeFile &pe)
 
         std::cout << "\n RVA        | RAW        | ORD  | NAME       | STRING\n";
         std::cout << "------------+------------+------+------------+--------\n";
-        for (i=0; i < eat->length(); i++) {
-            printf(" 0x%08x | 0x%08x | 0x%02x | 0x%08x | %s\n", eat->codeRva(i), eat->codeRaw(i), eot->ordinal(i), ent->nameRva(i), ent->funcName(i));
+        for (size_t j=0; j < eat->length(); j++) {
+            printf(" 0x%08x | 0x%08x | 0x%02x | 0x%08x | %s\n", eat->codeRva(j), eat->codeRaw(j), eot->ordinal(j), ent->nameRva(j), ent->funcName(j));
         }
     }
 }
@@ -340,7 +340,7 @@ void printArchitecture(const Pepper::PeFile &pe)
     using namespace Pepper;
     const ArchitectureDir *pad = (ArchitectureDir*)pe.getHeaderPtr(PeFile::ARCHITECTURE);
     if (Ident::dirExists(*pad)) {
-        printf("[DEBUG] '%s' has %s (RAW = 0x%08x, diff = 0x%08x)\n", pe.path().c_str(), pe.getHeaderName(PeFile::ARCHITECTURE), pad->dirOffset(), pad->hdrOffset() - pad->dirOffset());
+        printf("[DEBUG] '%s' has %s (RAW = 0x%08lx, diff = 0x%08lx)\n", pe.path().c_str(), pe.getHeaderName(PeFile::ARCHITECTURE), pad->dirOffset(), pad->hdrOffset() - pad->dirOffset());
     }
 }
 
@@ -349,7 +349,7 @@ void printGlobalPointer(const Pepper::PeFile &pe)
     using namespace Pepper;
     const GlobalPointerDir *pgd = (GlobalPointerDir*)pe.getHeaderPtr(PeFile::GLOBAL_POINTER);
     if (Ident::dirExists(*pgd)) {
-        printf("[DEBUG] '%s' has %s (RAW = 0x%08x, diff = 0x%08x)\n", pe.path().c_str(), pe.getHeaderName(PeFile::GLOBAL_POINTER), pgd->dirOffset(), pgd->hdrOffset() - pgd->dirOffset());
+        printf("[DEBUG] '%s' has %s (RAW = 0x%08lx, diff = 0x%08lx)\n", pe.path().c_str(), pe.getHeaderName(PeFile::GLOBAL_POINTER), pgd->dirOffset(), pgd->hdrOffset() - pgd->dirOffset());
     }
 }
 
@@ -365,7 +365,7 @@ void printTlsStruct(const Pepper::TlsDir& tls)
 
     printf("Callbacks Table\n");
     const CallbacksTable<T> *pct = (tls.*U)();
-    for (int i=0; i < pct->length(); i++) {
+    for (size_t i=0; i < pct->length(); i++) {
         printf(fmt, "", pct->callbackRaw(i));
     }
 }
@@ -376,9 +376,9 @@ void printTls(const Pepper::PeFile &pe)
     const TlsDir *ptd = (TlsDir*)pe.getHeaderPtr(PeFile::TLS);
     if (Ident::dirExists(*ptd)) {
         if (Ident::is32bit(pe))
-            printTlsStruct<int32_t, fmt32, &TlsDir::cbt32>(*ptd);
+            printTlsStruct<uint32_t, fmt32, &TlsDir::cbt32>(*ptd);
         else
-            printTlsStruct<int64_t, fmt64, &TlsDir::cbt64>(*ptd);
+            printTlsStruct<uint64_t, fmt64, &TlsDir::cbt64>(*ptd);
     }
 }
 
@@ -447,7 +447,7 @@ void printBoundImport(const Pepper::PeFile &pe)
     using namespace Pepper;
     const BoundImportDir *pbd = (BoundImportDir*)pe.getHeaderPtr(PeFile::BOUND_IMPORT);
     if (Ident::dirExists(*pbd)) {
-        printf("[DEBUG] '%s' has %s (RAW = 0x%08x, diff = 0x%08x)\n", pe.path().c_str(), pe.getHeaderName(PeFile::BOUND_IMPORT), pbd->dirOffset(), pbd->hdrOffset() - pbd->dirOffset());
+        printf("[DEBUG] '%s' has %s (RAW = 0x%08lx, diff = 0x%08lx)\n", pe.path().c_str(), pe.getHeaderName(PeFile::BOUND_IMPORT), pbd->dirOffset(), pbd->hdrOffset() - pbd->dirOffset());
     }
 }
 
@@ -456,7 +456,7 @@ void printAddressesList(const Pepper::IatDir &id)
 {
     using namespace Pepper;
     for (const auto &list : (id.*U)()) {
-        for (int i=0; i < list.length(); i++) {
+        for (size_t i=0; i < list.length(); i++) {
             std::cout << std::hex << "0x" << list.address(i) << '\n';
         }
         printf("\n");
@@ -532,7 +532,7 @@ void printClrSignature(const Pepper::ClrDir &clr)
     const ClrSignature *psg = (ClrSignature*)clr.getHeaderPtr(ClrDir::CLR_SIGNATURE);
     if (Ident::dirExists(*psg)) {
         std::cout << "CLR Signature\n";
-        for (int i=0; i < psg->size(); i++) {
+        for (size_t i=0; i < psg->size(); i++) {
             printf("%02x ", psg->sig()[i] & 0xFF);
         }
         printf("\n");

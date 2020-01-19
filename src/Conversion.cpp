@@ -11,7 +11,7 @@ using namespace Pepper;
 /* Compare addresses in the section headers to find the difference between
  * RVAs and file offsets.
  */
-static int32_t getDiffRvaRaw(const PeFile &pe, int32_t addr, Convert::AddrType type)
+static uint32_t getDiffRvaRaw(const PeFile &pe, uint32_t addr, Convert::AddrType type)
 {
     int base, size, oppo;
     if (type == Convert::RVA) {
@@ -29,10 +29,11 @@ static int32_t getDiffRvaRaw(const PeFile &pe, int32_t addr, Convert::AddrType t
     // linear search for containing section
     SectionHeaders *sctns = (SectionHeaders*)pe.getHeaderPtr(PeFile::SECTION);
     for (const auto &section : sctns->sections()) {
-        int32_t sctnBase = *(int32_t*)section.getFieldPtr(base);
-        int32_t sctnSize = *(int32_t*)section.getFieldPtr(size);
+        uint32_t sctnBase = *(uint32_t*)section.getFieldPtr(base);
+        uint32_t sctnSize = *(uint32_t*)section.getFieldPtr(size);
         if (sctnBase <= addr && addr < sctnBase + sctnSize) {
-            return abs(sctnBase - *(int32_t*)section.getFieldPtr(oppo));
+            uint32_t sctnOppo = *(uint32_t*)section.getFieldPtr(oppo);
+            return (sctnBase > sctnOppo) ? sctnBase - sctnOppo : sctnOppo - sctnBase;
         }
     }
 
@@ -40,13 +41,13 @@ static int32_t getDiffRvaRaw(const PeFile &pe, int32_t addr, Convert::AddrType t
 }
 
 /* Use an RVA address to get the difference between RVAs and RAWs */
-int32_t Convert::getRvaToRawDiff(const PeFile &pe, int64_t rva)
+uint32_t Convert::getRvaToRawDiff(const PeFile &pe, uint64_t rva)
 {
     return getDiffRvaRaw(pe, rva, RVA);
 }
 
 /* Use a RAW address to get the difference between RVAs and RAWs */
-int32_t Convert::getRawToRvaDiff(const PeFile &pe, int64_t raw)
+uint32_t Convert::getRawToRvaDiff(const PeFile &pe, uint64_t raw)
 {
     return getDiffRvaRaw(pe, raw, RAW);
 }
@@ -54,12 +55,12 @@ int32_t Convert::getRawToRvaDiff(const PeFile &pe, int64_t raw)
 /* Convert an {AVA,RVA,RAW} to an {AVA,RVA,RAW}.
  * RAW < RVA < AVA, so comparisons are required
  * for conversions to smaller types.
- * Returns -1 if the conversion fails.
+ * Returns 0 if the conversion fails.
  */
-int64_t Convert::convertAddr(const PeFile &pe, int64_t addr, AddrType src, AddrType dst)
+uint64_t Convert::convertAddr(const PeFile &pe, uint64_t addr, AddrType src, AddrType dst)
 {
     OptionalHeader *poh = (OptionalHeader*)pe.getHeaderPtr(PeFile::OPTIONAL);
-    int64_t diff = 0;
+    uint64_t diff = 0;
 
     if (src == dst)
         return addr;
@@ -70,18 +71,18 @@ int64_t Convert::convertAddr(const PeFile &pe, int64_t addr, AddrType src, AddrT
         // convert to RAW
         diff = getRvaToRawDiff(pe, addr);
         return (addr > diff) ? addr - diff
-                             : -1;
+                             : 0;
     }
 
     // Always subtract ImageBase when converting from an AVA
     if (src == AVA) {
-        int64_t base = poh->imageBase();
+        uint64_t base = poh->imageBase();
         if (dst == RVA) return (addr > base) ? addr - base
-                                             : -1;
+                                             : 0;
         // convert to RAW
         diff = getRvaToRawDiff(pe, addr - base);
         return (addr > base + diff) ? addr - base - diff
-                                    : -1;
+                                    : 0;
     }
 
     // Always add DiskToMem diff when converting from a RAW
@@ -91,5 +92,5 @@ int64_t Convert::convertAddr(const PeFile &pe, int64_t addr, AddrType src, AddrT
         return addr + diff;
     }
 
-    return -1;
+    return 0;
 }

@@ -30,7 +30,7 @@ typedef GenericImportDescriptor<IMAGE_IMPORT_DESCRIPTOR> ImportDescriptor;
 class ImportDir final : public IDirectory {
 private:
     std::vector<ImportDescriptor> m_descriptors{};
-    static int s_diskToMemDiff;
+    static size_t s_diskToMemDiff;
 public:
     ImportDir()
     : IDirectory()
@@ -45,7 +45,7 @@ public:
         return m_descriptors;
     }
 
-    int length() const { return (int)m_descriptors.size(); }
+    size_t length() const { return m_descriptors.size(); }
 
     // static functions
     static const char* getFieldName(int index);

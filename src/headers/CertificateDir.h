@@ -36,7 +36,7 @@ public:
     : IHeader()
     {}
 
-    CertificateEntry(const FileBytes &fbytes, int raw)
+    CertificateEntry(const FileBytes &fbytes, size_t raw)
     : IHeader(fbytes, raw)
     {}
 
@@ -44,7 +44,7 @@ public:
     const IMAGE_ATTRIBUTE_CERTIFICATE* cert() const { return (PIMAGE_ATTRIBUTE_CERTIFICATE)hdr(); }
     const void* getFieldPtr(int index) const override;
     const char* bytes() const { return cert()->CertificateBytes; }
-    int32_t size() const { return cert()->Length; }
+    uint32_t size() const { return cert()->Length; }
 
     // static functions
     static const char* getFieldName(int index);
@@ -67,7 +67,7 @@ public:
     // member functions
     const void* getFieldPtr(int index) const override;
     const std::vector<CertificateEntry>& certs() const { return m_elements; }
-    int length() const { return (int)m_elements.size(); }
+    size_t length() const { return m_elements.size(); }
 
     // static functions
     static const char* getFieldName(int index);

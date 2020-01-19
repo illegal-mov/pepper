@@ -11,7 +11,7 @@ namespace Pepper {
 
 class FileBytes final {
 private:
-    long m_fsize;
+    size_t m_fsize;
     std::shared_ptr<char> m_bytes;
 public:
     FileBytes(const FileBytes& fb) = delete;
@@ -24,7 +24,7 @@ public:
     void readBytes(size_t pos, char *buf, size_t bufLen) const;
 
     // static functions
-    static long getFileSize(std::ifstream &in);
+    static size_t getFileSize(std::ifstream &in);
 };
 } // namespace Pepper
 

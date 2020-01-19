@@ -6,13 +6,13 @@ using namespace Pepper;
 SectionHeaders::SectionHeaders(const FileBytes &fbytes, const FileHeader &file)
 {
     // find base of section headers
-    int16_t optHdrSize = *(int16_t*)file.getFieldPtr(FileHeader::SIZE_OF_OPTIONAL_HEADER);
-    int base = file.hdrOffset() + (int)sizeof(IMAGE_FILE_HEADER) + optHdrSize;
+    uint16_t optHdrSize = *(uint16_t*)file.getFieldPtr(FileHeader::SIZE_OF_OPTIONAL_HEADER);
+    size_t base = file.hdrOffset() + sizeof(IMAGE_FILE_HEADER) + optHdrSize;
 
     // construct each section header
-    int16_t length = *(int16_t*)file.getFieldPtr(FileHeader::NUMBER_OF_SECTIONS);
-    for (int i=0; i < length; i++)
-        m_elements.emplace_back(fbytes, base + (i * (int)sizeof(IMAGE_SECTION_HEADER)));
+    uint16_t length = *(uint16_t*)file.getFieldPtr(FileHeader::NUMBER_OF_SECTIONS);
+    for (size_t i=0; i < length; i++)
+        m_elements.emplace_back(fbytes, base + (i * sizeof(IMAGE_SECTION_HEADER)));
 }
 
 const char* SectionHeaderEntry::getFieldName(int index)

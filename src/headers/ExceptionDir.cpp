@@ -5,23 +5,23 @@
 
 using namespace Pepper;
 
-int ExceptionDir::s_codeDiff = 0; // RVAs in .pdata point to .text
-template<> int *FunctionTableEntry32::s_pCodeDiff  = &ExceptionDir::s_codeDiff;
-template<> int *FunctionTableEntry64::s_pCodeDiff  = &ExceptionDir::s_codeDiff;
-template<> int *FunctionTableEntryArm::s_pCodeDiff = &ExceptionDir::s_codeDiff;
+size_t ExceptionDir::s_codeDiff = 0; // RVAs in .pdata point to .text
+template<> size_t *FunctionTableEntry32::s_pCodeDiff  = &ExceptionDir::s_codeDiff;
+template<> size_t *FunctionTableEntry64::s_pCodeDiff  = &ExceptionDir::s_codeDiff;
+template<> size_t *FunctionTableEntryArm::s_pCodeDiff = &ExceptionDir::s_codeDiff;
 
 // Append elements to the vector. Works for any type of FunctionTable because
 // entrySize is chosen by the caller when it knows the architecture.
 template <typename T>
-void ExceptionDir::appendEntries(const FileBytes &fbytes, int32_t totalSize)
+void ExceptionDir::appendEntries(const FileBytes &fbytes, uint32_t totalSize)
 {
-    size_t numEntries = (size_t)totalSize / sizeof(T);
+    size_t numEntries = totalSize / sizeof(T);
     m_entries32.reserve(numEntries);
     for (size_t i=0; i < numEntries; i++)
-        m_entries32.emplace_back(fbytes, (size_t)dirOffset() + (i * sizeof(T)));
+        m_entries32.emplace_back(fbytes, dirOffset() + (i * sizeof(T)));
 
     // Use the `BeginAddress` field of an exception structure to find the offset to code
-    s_codeDiff = Convert::getRvaToRawDiff(*m_pe, *(int32_t*)m_entries32[0].getFieldPtr(0));
+    s_codeDiff = Convert::getRvaToRawDiff(*m_pe, *(uint32_t*)m_entries32[0].getFieldPtr(0));
 }
 
 ExceptionDir::ExceptionDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde)
@@ -121,13 +121,13 @@ const char* ExceptionDir::getFieldName(int index)
 }
 
 template<>
-int32_t FunctionTableEntryArm::endRaw() const
+uint32_t FunctionTableEntryArm::endRaw() const
 {
     return entry()->BeginAddress + entry()->FunctionLength - *s_pCodeDiff;
 }
 
 template<>
-int32_t FunctionTableEntryArm::codeLen() const
+uint32_t FunctionTableEntryArm::codeLen() const
 {
     return entry()->FunctionLength;
 }

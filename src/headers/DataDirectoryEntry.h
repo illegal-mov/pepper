@@ -27,15 +27,15 @@ public:
     : IHeader()
     {}
 
-    DataDirectoryEntry(const FileBytes &fbytes, int raw)
+    DataDirectoryEntry(const FileBytes &fbytes, size_t raw)
     : IHeader(fbytes, raw)
     {}
 
     // member functions
     const void* getFieldPtr(int index) const override;
     const IMAGE_DATA_DIRECTORY* entry() const { return (IMAGE_DATA_DIRECTORY*)hdr(); }
-    int32_t rva() const { return *(int32_t*)getFieldPtr(VIRTUAL_ADDRESS); }
-    int32_t size() const { return *(int32_t*)getFieldPtr(SIZE); }
+    uint32_t rva() const { return *(uint32_t*)getFieldPtr(VIRTUAL_ADDRESS); }
+    uint32_t size() const { return *(uint32_t*)getFieldPtr(SIZE); }
 
     // static functions
     static const char* getFieldName(int index);

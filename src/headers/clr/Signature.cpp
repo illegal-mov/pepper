@@ -17,8 +17,9 @@ const char* ClrSignature::getFieldName(int index)
 
 const void* ClrSignature::getFieldPtr(int index) const
 {
-    return (0 <= index && index < length())
-        ? &sig()[index]
+    size_t uindex = static_cast<size_t>(index);
+    return (uindex < length())
+        ? &sig()[uindex]
         : nullptr;
 }
 

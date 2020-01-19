@@ -86,8 +86,8 @@ public:
     FileHeader(const FileBytes &fbytes, const DosHeader &dos)
     : IHeader(fbytes, 0)
     {
-        int16_t lfanew = *(int16_t*)dos.getFieldPtr(DosHeader::E_LFANEW);
-        m_baseOffset = lfanew + 4; // NT signature is "PE\0\0"
+        uint16_t lfanew = *(uint16_t*)dos.getFieldPtr(DosHeader::E_LFANEW);
+        m_baseOffset = static_cast<size_t>(lfanew) + 4; // NT signature is "PE\0\0"
 
         int32_t sig = *(int32_t*)ntSig();
         if (sig != 0x00004550 && sig != 0x50450000)

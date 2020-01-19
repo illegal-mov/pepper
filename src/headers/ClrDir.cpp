@@ -15,31 +15,31 @@ ClrDir::ClrDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEnt
 {
     if (Ident::dirExists(*this)) {
         m_directoryEntries[CLR_METADATA] = DataDirectoryEntry(fbytes,
-            dirOffset() + (int)offsetof(IMAGE_COR20_HEADER, MetaData));
+            dirOffset() + offsetof(IMAGE_COR20_HEADER, MetaData));
         m_Meta = ClrMetadata(pe, fbytes, m_directoryEntries[CLR_METADATA]);
 
         m_directoryEntries[CLR_RESOURCES] = DataDirectoryEntry(fbytes,
-            dirOffset() + (int)offsetof(IMAGE_COR20_HEADER, Resources));
+            dirOffset() + offsetof(IMAGE_COR20_HEADER, Resources));
         m_Rsrc = ClrResource(pe, fbytes, m_directoryEntries[CLR_RESOURCES]);
 
         m_directoryEntries[CLR_SIGNATURE] = DataDirectoryEntry(fbytes,
-            dirOffset() + (int)offsetof(IMAGE_COR20_HEADER, StrongNameSignature));
+            dirOffset() + offsetof(IMAGE_COR20_HEADER, StrongNameSignature));
         m_Signtr = ClrSignature(pe, fbytes, m_directoryEntries[CLR_SIGNATURE]);
 
         m_directoryEntries[CLR_CODE_MANAGER] = DataDirectoryEntry(fbytes,
-            dirOffset() + (int)offsetof(IMAGE_COR20_HEADER, CodeManagerTable));
+            dirOffset() + offsetof(IMAGE_COR20_HEADER, CodeManagerTable));
         m_CodeMan = ClrCodeManager(pe, fbytes, m_directoryEntries[CLR_CODE_MANAGER]);
 
         m_directoryEntries[CLR_VTABLE_FIXUPS] = DataDirectoryEntry(fbytes,
-            dirOffset() + (int)offsetof(IMAGE_COR20_HEADER, VTableFixups));
+            dirOffset() + offsetof(IMAGE_COR20_HEADER, VTableFixups));
         m_VTabFix = ClrVTableFixup(pe, fbytes, m_directoryEntries[CLR_VTABLE_FIXUPS]);
 
         m_directoryEntries[CLR_EXPORT_JUMP] = DataDirectoryEntry(fbytes,
-            dirOffset() + (int)offsetof(IMAGE_COR20_HEADER, ExportAddressTableJumps));
+            dirOffset() + offsetof(IMAGE_COR20_HEADER, ExportAddressTableJumps));
         m_XprtJmp = ClrExportJump(pe, fbytes, m_directoryEntries[CLR_EXPORT_JUMP]);
 
         m_directoryEntries[CLR_NATIVE_HEADER] = DataDirectoryEntry(fbytes,
-            dirOffset() + (int)offsetof(IMAGE_COR20_HEADER, ManagedNativeHeader));
+            dirOffset() + offsetof(IMAGE_COR20_HEADER, ManagedNativeHeader));
         m_NatHead = ClrNativeHeader(pe, fbytes, m_directoryEntries[CLR_NATIVE_HEADER]);
     }
 }

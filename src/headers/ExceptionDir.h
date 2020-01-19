@@ -48,12 +48,12 @@ typedef FunctionTableEntry<IMAGE_EXCEPTION_ENTRY_ARM> FunctionTableEntryArm;
 template <typename T>
 class FunctionTableEntry final : public IHeader {
 private:
-    static int *s_pCodeDiff;
+    static size_t *s_pCodeDiff;
 public:
     // defined in template specializations
     enum Fields : int {};
 
-    FunctionTableEntry(const FileBytes &fbytes, int raw)
+    FunctionTableEntry(const FileBytes &fbytes, size_t raw)
     : IHeader(fbytes, raw)
     {}
 
@@ -61,10 +61,10 @@ public:
     const T* entry() const { return (T*)hdr(); }
     const void* getFieldPtr(int index) const override;
 
-    int32_t     beginRaw() const { return entry()->BeginAddress - *s_pCodeDiff; }
-    int32_t     endRaw()   const { return entry()->EndAddress   - *s_pCodeDiff; }
-    int32_t     codeLen()  const { return entry()->EndAddress   -  entry()->BeginAddress; }
-    const void* codePtr()  const { return &mem()[beginRaw()]; }
+    uint32_t     beginRaw() const { return entry()->BeginAddress - *s_pCodeDiff; }
+    uint32_t     endRaw()   const { return entry()->EndAddress   - *s_pCodeDiff; }
+    uint32_t     codeLen()  const { return entry()->EndAddress   -  entry()->BeginAddress; }
+    const void*  codePtr()  const { return &mem()[beginRaw()]; }
 
     // static functions
     static const char* getFieldName(int index);
@@ -75,7 +75,7 @@ public:
  */
 class ExceptionDir final : public IDirectory {
 private:
-    static int s_codeDiff; // RVAs in .pdata point to .text
+    static size_t s_codeDiff; // RVAs in .pdata point to .text
     union {
         std::vector<FunctionTableEntry32>  m_entries32{};
         std::vector<FunctionTableEntry64>  m_entries64;
@@ -85,7 +85,7 @@ private:
     // Append entries to the vector. Works for any type of FunctionTable because
     // entrySize is chosen by the caller when it knows the architecture.
     template <typename T>
-    void appendEntries(const FileBytes &fbytes, int32_t totalSize);
+    void appendEntries(const FileBytes &fbytes, uint32_t totalSize);
 public:
     ExceptionDir()
     : IDirectory()
@@ -120,7 +120,7 @@ public:
     }
 
     const void* getFieldPtr(int index) const override;
-    int length() const { return (int)m_entries32.size(); }
+    size_t length() const { return m_entries32.size(); }
 
     // static functions
     static const char* getFieldName(int index);

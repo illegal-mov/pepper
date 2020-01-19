@@ -50,7 +50,7 @@ public:
     : IHeader()
     {}
 
-    DebugRsds(const FileBytes &fbytes, int raw)
+    DebugRsds(const FileBytes &fbytes, size_t raw)
     : IHeader(fbytes, raw)
     {}
 
@@ -103,7 +103,7 @@ public:
     , m_dbgRsds()
     {}
 
-    DebugEntry(const FileBytes &fbytes, int raw);
+    DebugEntry(const FileBytes &fbytes, size_t raw);
 
     // member functions
     const void* getFieldPtr(int index) const override;

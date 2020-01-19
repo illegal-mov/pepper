@@ -33,7 +33,7 @@ typedef GenericImportDescriptor<IMAGE_DELAY_IMPORT_DESCRIPTOR> DelayImportDescri
 class DelayImportDir final : public IDirectory {
 private:
     std::vector<DelayImportDescriptor> m_descriptors{};
-    static int s_diskToMemDiff;
+    static size_t s_diskToMemDiff;
 public:
     DelayImportDir()
     : IDirectory()
@@ -48,7 +48,7 @@ public:
         return m_descriptors;
     }
 
-    int length() const { return (int)m_descriptors.size(); }
+    size_t length() const { return m_descriptors.size(); }
 
     // static functions
     static const char* getFieldName(int index);

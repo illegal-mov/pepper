@@ -59,7 +59,7 @@ public:
     : IHeader()
     {}
 
-    RelocationTable(const FileBytes &fbytes, int raw, int len)
+    RelocationTable(const FileBytes &fbytes, size_t raw, int len)
     : IHeader(fbytes, raw)
     , m_length(len)
     {}
@@ -91,7 +91,7 @@ public:
         _NUM_FIELDS,
     };
 
-    RelocationBase(const FileBytes &fbytes, int raw)
+    RelocationBase(const FileBytes &fbytes, size_t raw)
     : IHeader(fbytes, raw)
     {}
 
@@ -129,7 +129,7 @@ public:
     , m_relocTable()
     {}
 
-    RelocationBlock(const FileBytes &fbytes, int raw);
+    RelocationBlock(const FileBytes &fbytes, size_t raw);
 
     // member functions
     const void* getFieldPtr(int index) const override;
@@ -155,7 +155,7 @@ public:
     // member functions
     const void* getFieldPtr(int index) const override;
     const std::vector<RelocationBlock>& blocks() const { return m_elements; }
-    int length() const { return (int)m_elements.size(); }
+    size_t length() const { return m_elements.size(); }
 
     // static functions
     static const char* getFieldName(int index);

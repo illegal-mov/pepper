@@ -4,22 +4,22 @@
 
 using namespace Pepper;
 
-int  ResourceDir::s_diskToMemDiff   = 0;
-int *ResourceData::s_pDiskToMemDiff = &ResourceDir::s_diskToMemDiff;
+size_t  ResourceDir::s_diskToMemDiff   = 0;
+size_t *ResourceData::s_pDiskToMemDiff = &ResourceDir::s_diskToMemDiff;
 
-int  ResourceDir::s_rsrcBase    = 0;
-int *ResourceNode::s_pRsrcBase  = &ResourceDir::s_rsrcBase;
-int *ResourceEntry::s_pRsrcBase = &ResourceDir::s_rsrcBase;
-int *ResourceData::s_pRsrcBase  = &ResourceDir::s_rsrcBase;
+size_t  ResourceDir::s_rsrcBase    = 0;
+size_t *ResourceNode::s_pRsrcBase  = &ResourceDir::s_rsrcBase;
+size_t *ResourceEntry::s_pRsrcBase = &ResourceDir::s_rsrcBase;
+size_t *ResourceData::s_pRsrcBase  = &ResourceDir::s_rsrcBase;
 
 template<>
-ResourceString::GenericResourceString(const FileBytes &fbytes, int raw)
+ResourceString::GenericResourceString(const FileBytes &fbytes, size_t raw)
 : IHeader(fbytes, raw)
 , m_name((char*)getFieldPtr(NAME_STRING), length())
 {}
 
 template<>
-ResourceStringU::GenericResourceString(const FileBytes &fbytes, int raw)
+ResourceStringU::GenericResourceString(const FileBytes &fbytes, size_t raw)
 : IHeader(fbytes, raw)
 {
     uint16_t *strBytes = (uint16_t*)getFieldPtr(NAME_STRING);
@@ -31,12 +31,12 @@ ResourceStringU::GenericResourceString(const FileBytes &fbytes, int raw)
     }
 }
 
-ResourceData::ResourceData(const FileBytes &fbytes, int raw, const ResourceNode *parent)
+ResourceData::ResourceData(const FileBytes &fbytes, size_t raw, const ResourceNode *parent)
 : IHeader(fbytes, raw)
 , m_parent(parent)
 {}
 
-ResourceEntry::ResourceEntry(const FileBytes &fbytes, int raw, const ResourceNode *parent, std::map<int32_t, ResourceData*> &dataMap)
+ResourceEntry::ResourceEntry(const FileBytes &fbytes, size_t raw, const ResourceNode *parent, std::map<uint32_t, ResourceData*> &dataMap)
 : IHeader(fbytes, raw)
 {
     if (hasName())
@@ -69,21 +69,21 @@ ResourceEntry::~ResourceEntry()
     m_node = nullptr;
 }
 
-ResourceNode::ResourceNode(const FileBytes &fbytes, int raw, const ResourceNode *parent, std::map<int32_t, ResourceData*> &dataMap)
+ResourceNode::ResourceNode(const FileBytes &fbytes, size_t raw, const ResourceNode *parent, std::map<uint32_t, ResourceData*> &dataMap)
 : IHeader(fbytes, raw)
 , m_parent(parent)
 {
     // pre-allocate for total number of entries
-    int numEntries = header()->NumberOfNamedEntries
-                   + header()->NumberOfIdEntries;
-    m_entries.reserve((size_t)numEntries);
+    size_t numEntries = static_cast<size_t>(header()->NumberOfNamedEntries)
+                      + header()->NumberOfIdEntries;
+    m_entries.reserve(numEntries);
 
     // construct each entry
-    int entriesBase = hdrOffset()
-                    + (int)sizeof(IMAGE_RESOURCE_DIRECTORY);
-    for (int i=0; i < numEntries; i++)
+    size_t entriesBase = hdrOffset()
+                       + sizeof(IMAGE_RESOURCE_DIRECTORY);
+    for (size_t i=0; i < numEntries; i++)
         m_entries.emplace_back(fbytes,
-            entriesBase + ((int)sizeof(IMAGE_RESOURCE_ENTRY) * i),
+            entriesBase + (sizeof(IMAGE_RESOURCE_ENTRY) * i),
             this, dataMap);
 }
 
