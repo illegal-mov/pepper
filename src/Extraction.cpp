@@ -31,7 +31,7 @@ struct is_dumpable<CertificateEntry> {
 };
 
 template <typename T>
-static bool genericDump(const std::string &path, const T &t, bool mayThrow)
+static bool genericDump(const std::string &path, const T &t, Extract::ExceptionFlag throwFlag)
 {
     // `static_assert` knows at compile time when you've done a bad thing
     static_assert(is_dumpable<T>::value, "Cannot dump this type to disk");
@@ -39,9 +39,10 @@ static bool genericDump(const std::string &path, const T &t, bool mayThrow)
     if (out.is_open()) {
         out.write(t.bytes(), t.size());
     } else {
-        if (!mayThrow)
-            return false;
-        throw FailedOpen("Unable to open the file for writing");
+        if (throwFlag) {
+            throw FailedOpen("Unable to open the file for writing");
+        }
+        return false;
     }
 
     out.close();
@@ -49,12 +50,12 @@ static bool genericDump(const std::string &path, const T &t, bool mayThrow)
     return true;
 }
 
-bool Extract::dumpResource(const std::string &path, const ResourceData &rd, bool mayThrow)
+bool Extract::dumpResource(const std::string &path, const ResourceData &rd, ExceptionFlag throwFlag)
 {
-    return genericDump<ResourceData>(path, rd, mayThrow);
+    return genericDump<ResourceData>(path, rd, throwFlag);
 }
 
-bool Extract::dumpCertificate(const std::string &path, const CertificateEntry &ce, bool mayThrow)
+bool Extract::dumpCertificate(const std::string &path, const CertificateEntry &ce, ExceptionFlag throwFlag)
 {
-    return genericDump<CertificateEntry>(path, ce, mayThrow);
+    return genericDump<CertificateEntry>(path, ce, throwFlag);
 }
