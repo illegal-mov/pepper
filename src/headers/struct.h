@@ -501,7 +501,7 @@ typedef struct _IMAGE_EXPORT_DIRECTORY {
     int16_t  MajorVersion;          // major version number
     int16_t  MinorVersion;          // minor version number
     uint32_t NameRVA;               // pointer to dll name
-    int32_t  OrdinalBase;           // ordinal starting index
+    uint32_t OrdinalBase;           // ordinal starting index
     uint32_t AddressTableEntries;   // number of export table entries
     uint32_t NumberOfNamePointers;  // number of ordinal table entries
     uint32_t ExportAddressTableRVA; // pointer to export table
@@ -512,11 +512,11 @@ typedef struct _IMAGE_EXPORT_DIRECTORY {
 /* IMPORT DIRECTORY */
 
 typedef struct _IMAGE_IMPORT_DESCRIPTOR {
-    int32_t  ImportLookupTableRVA;  // pointer to array of thunk data
+    uint32_t ImportLookupTableRVA;  // pointer to array of thunk data
     int32_t  TimeDateStamp;         // dll timestamp after binding
     int32_t  ForwarderChain;        // index of first forwarder reference
     uint32_t NameRVA;               // pointer to module name
-    int32_t  ImportAddressTableRVA; // pointer to import address table
+    uint32_t ImportAddressTableRVA; // pointer to import address table
 } IMAGE_IMPORT_DESCRIPTOR, *PIMAGE_IMPORT_DESCRIPTOR;
 
 typedef struct _IMAGE_THUNK_DATA32 {
@@ -542,8 +542,8 @@ typedef struct _IMAGE_THUNK_DATA64 {
 } IMAGE_THUNK_DATA64, *PIMAGE_THUNK_DATA64;
 
 typedef struct _IMAGE_IMPORT_BY_NAME {
-    int16_t Hint;   // Index into export name table pointer
-    char    Name[]; // Imported function name as null-terminated ASCII string
+    uint16_t Hint;   // Index into export name table pointer
+    char     Name[]; // Imported function name as null-terminated ASCII string
 } IMAGE_IMPORT_BY_NAME, *PIMAGE_IMPORT_BY_NAME;
 
 /* RESOURCE DIRECTORY */
@@ -691,9 +691,9 @@ typedef struct _RSDSI {
 /* TLS DIRECTORY */
 
 typedef struct _IMAGE_TLS_DIRECTORY32 {
-    int32_t RawDataStartVA;
-    int32_t RawDataEndVA;
-    int32_t  AddressOfIndex;
+    int32_t  RawDataStartVA;
+    int32_t  RawDataEndVA;
+    uint32_t AddressOfIndex;
     uint32_t AddressOfCallbacks;
     uint32_t SizeOfZeroFill;
     int32_t  Characteristics;
@@ -702,7 +702,7 @@ typedef struct _IMAGE_TLS_DIRECTORY32 {
 typedef struct _IMAGE_TLS_DIRECTORY64 {
     int64_t  RawDataStartVA;
     int64_t  RawDataEndVA;
-    int64_t  AddressOfIndex;
+    uint64_t AddressOfIndex;
     uint64_t AddressOfCallbacks;
     uint32_t SizeOfZeroFill;
     int32_t  Characteristics;
@@ -711,10 +711,10 @@ typedef struct _IMAGE_TLS_DIRECTORY64 {
 /* LOAD CONFIG DIRECTORY */
 
 typedef struct _IMAGE_LOAD_CONFIG_CODE_INTEGRITY {
-    int16_t Flags;
-    int16_t Catalog;
-    int32_t CatalogOffset;
-    int32_t Reserved;
+    int16_t  Flags;
+    int16_t  Catalog;
+    uint32_t CatalogOffset;
+    int32_t  Reserved;
 } IMAGE_LOAD_CONFIG_CODE_INTEGRITY, *PIMAGE_LOAD_CONFIG_CODE_INTEGRITY;
 
 typedef struct _IMAGE_LOAD_CONFIG_DIRECTORY32 {
@@ -738,28 +738,28 @@ typedef struct _IMAGE_LOAD_CONFIG_DIRECTORY32 {
     int32_t                          SecurityCookie;
     int32_t                          SEHandlerTable;
     int32_t                          SEHandlerCount;
-    int32_t                          GuardCFCheckFunctionPointer;
-    int32_t                          GuardCFDispatchFunctionPointer;
+    uint32_t                         GuardCFCheckFunctionPointer;
+    uint32_t                         GuardCFDispatchFunctionPointer;
     int32_t                          GuardCFFunctionTable;
     int32_t                          GuardCFFunctionCount;
     int32_t                          GuardFlags;
     IMAGE_LOAD_CONFIG_CODE_INTEGRITY CodeIntegrity;
-    int32_t                          GuardAddressTakenIatEntryTable;
-    int32_t                          GuardAddressTakenIatEntryCount;
+    uint32_t                         GuardAddressTakenIatEntryTable;
+    uint32_t                         GuardAddressTakenIatEntryCount;
     int32_t                          GuardLongJumpTargetTable;
     int32_t                          GuardLongJumpTargetCount;
     int32_t                          DynamicValueRelocTable;
-    int32_t                          CHPEMetadataPointer;
+    uint32_t                         CHPEMetadataPointer;
     int32_t                          GuardRFFailureRoutine;
-    int32_t                          GuardRFFailureRoutineFunctionPointer;
-    int32_t                          DynamicValueRelocTableOffset;
+    uint32_t                         GuardRFFailureRoutineFunctionPointer;
+    uint32_t                         DynamicValueRelocTableOffset;
     int16_t                          DynamicValueRelocTableSection;
     int16_t                          Reserved2;
-    int32_t                          GuardRFVerifyStackPointerFunctionPointer;
-    int32_t                          HotPatchTableOffset;
+    uint32_t                         GuardRFVerifyStackPointerFunctionPointer;
+    uint32_t                         HotPatchTableOffset;
     int32_t                          Reserved3;
-    int32_t                          EnclaveConfigurationPointer;
-    int32_t                          VolatileMetadataPointer;
+    uint32_t                         EnclaveConfigurationPointer;
+    uint32_t                         VolatileMetadataPointer;
 } IMAGE_LOAD_CONFIG_DIRECTORY32, *PIMAGE_LOAD_CONFIG_DIRECTORY32;
 
 typedef struct _IMAGE_LOAD_CONFIG_DIRECTORY64 {
@@ -783,42 +783,42 @@ typedef struct _IMAGE_LOAD_CONFIG_DIRECTORY64 {
     int64_t                          SecurityCookie;
     int64_t                          SEHandlerTable;
     int64_t                          SEHandlerCount;
-    int64_t                          GuardCFCheckFunctionPointer;
-    int64_t                          GuardCFDispatchFunctionPointer;
+    uint64_t                         GuardCFCheckFunctionPointer;
+    uint64_t                         GuardCFDispatchFunctionPointer;
     int64_t                          GuardCFFunctionTable;
     int64_t                          GuardCFFunctionCount;
     int32_t                          GuardFlags;
     IMAGE_LOAD_CONFIG_CODE_INTEGRITY CodeIntegrity;
-    int64_t                          GuardAddressTakenIatEntryTable;
-    int64_t                          GuardAddressTakenIatEntryCount;
+    uint64_t                         GuardAddressTakenIatEntryTable;
+    uint64_t                         GuardAddressTakenIatEntryCount;
     int64_t                          GuardLongJumpTargetTable;
     int64_t                          GuardLongJumpTargetCount;
     int64_t                          DynamicValueRelocTable;
-    int64_t                          CHPEMetadataPointer;
+    uint64_t                         CHPEMetadataPointer;
     int64_t                          GuardRFFailureRoutine;
-    int64_t                          GuardRFFailureRoutineFunctionPointer;
-    int32_t                          DynamicValueRelocTableOffset;
+    uint64_t                         GuardRFFailureRoutineFunctionPointer;
+    uint32_t                         DynamicValueRelocTableOffset;
     int16_t                          DynamicValueRelocTableSection;
     int16_t                          Reserved2;
-    int64_t                          GuardRFVerifyStackPointerFunctionPointer;
-    int32_t                          HotPatchTableOffset;
+    uint64_t                         GuardRFVerifyStackPointerFunctionPointer;
+    uint32_t                         HotPatchTableOffset;
     int32_t                          Reserved3;
-    int64_t                          EnclaveConfigurationPointer;
-    int64_t                          VolatileMetadataPointer;
+    uint64_t                         EnclaveConfigurationPointer;
+    uint64_t                         VolatileMetadataPointer;
 } IMAGE_LOAD_CONFIG_DIRECTORY64, *PIMAGE_LOAD_CONFIG_DIRECTORY64;
 
 /* BOUND IMPORT DIRECTORY */
 
 typedef struct _IMAGE_BOUND_IMPORT_DESCRIPTOR {
     int32_t  TimeDateStamp;
-    int16_t  OffsetModuleName;
+    uint16_t OffsetModuleName;
     uint16_t NumberOfModuleForwarderRefs;
 } IMAGE_BOUND_IMPORT_DESCRIPTOR,*PIMAGE_BOUND_IMPORT_DESCRIPTOR;
 
 typedef struct _IMAGE_BOUND_FORWARDER_REF {
-    int32_t TimeDateStamp;
-    int16_t OffsetModuleName;
-    int16_t Reserved;
+    int32_t  TimeDateStamp;
+    uint16_t OffsetModuleName;
+    int16_t  Reserved;
 } IMAGE_BOUND_FORWARDER_REF,*PIMAGE_BOUND_FORWARDER_REF;
 
 /* IAT DIRECTORY */
@@ -848,7 +848,7 @@ typedef struct _IMAGE_COR20_HEADER {
     int32_t              Flags;
     union {
         int32_t          EntryPointToken;
-        int32_t          EntryPointRVA;
+        uint32_t         EntryPointRVA;
     };
     IMAGE_DATA_DIRECTORY Resources;
     IMAGE_DATA_DIRECTORY StrongNameSignature;
