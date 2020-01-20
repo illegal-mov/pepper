@@ -15,14 +15,14 @@ size_t *ResourceData::s_pRsrcBase  = &ResourceDir::s_rsrcBase;
 template<>
 ResourceString::GenericResourceString(const FileBytes &fbytes, const size_t raw)
 : IHeader(fbytes, raw)
-, m_name((char*)getFieldPtr(NAME_STRING), length())
+, m_name(string()->NameString, length())
 {}
 
 template<>
 ResourceStringU::GenericResourceString(const FileBytes &fbytes, const size_t raw)
 : IHeader(fbytes, raw)
 {
-    const uint16_t *strBytes = (uint16_t*)getFieldPtr(NAME_STRING);
+    const uint16_t *strBytes = stringu()->NameString;
     m_name.resize(length());
     // I hate string encodings so much, so just hacky-copy each
     //  char16_t into a regular std::string and force ASCII range

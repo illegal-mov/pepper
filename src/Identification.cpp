@@ -12,14 +12,14 @@ using namespace Pepper;
 bool Ident::isDll(const PeFile &pe)
 {
     const FileHeader *pfh = (FileHeader*)pe.getHeaderPtr(PeFile::Headers::FILE);
-    const uint16_t charact = *(uint16_t*)pfh->getFieldPtr(FileHeader::Fields::CHARACTERISTICS);
+    const uint16_t charact = pfh->file()->Characteristics;
     return charact & FileHeader::Characteristics::DLL;
 }
 
 static uint16_t getOptionalHeaderMagic(const PeFile &pe)
 {
     const OptionalHeader *poh = (OptionalHeader*)pe.getHeaderPtr(PeFile::Headers::OPTIONAL);
-    return *(uint16_t*)poh->getFieldPtr(OptionalHeader::Fields::MAGIC);
+    return poh->optional32()->Magic;
 }
 
 bool Ident::is32bit(const PeFile &pe)
@@ -51,7 +51,7 @@ bool Ident::isAllSigsValid(const PeFile &pe)
 {
     // check DOS signature
     const DosHeader *dos = (DosHeader*)pe.getHeaderPtr(PeFile::DOS);
-    const uint16_t dosMagic = *(uint16_t*)dos->getFieldPtr(DosHeader::E_MAGIC);
+    const uint16_t dosMagic = *(uint16_t*)dos->dos()->e_magic;
     if (dosMagic != 0x4D5A && dosMagic != 0x5A4D) {
         return false;
     }
@@ -69,7 +69,7 @@ bool Ident::isAllSigsValid(const PeFile &pe)
 static uint16_t getFileHeaderMachine(const PeFile &pe)
 {
     const FileHeader *pfh = (FileHeader*)pe.getHeaderPtr(PeFile::Headers::FILE);
-    return *(uint16_t*)pfh->getFieldPtr(FileHeader::Fields::MACHINE);
+    return pfh->file()->Machine;
 }
 
 bool Ident::isX86(const PeFile &pe)

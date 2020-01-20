@@ -13,7 +13,7 @@ ClrMetadata::ClrMetadata(const PeFile &pe, const FileBytes &fbytes, const DataDi
 {
     s_metadataBase = dirOffset();
 
-    const uint16_t numStreams = *(uint16_t*)getFieldPtr(NUMBER_OF_STREAMS);
+    const uint16_t numStreams = *static_cast<const uint16_t*>(getFieldPtr(NUMBER_OF_STREAMS));
     m_streams.reserve(numStreams);
 
     /* Because of the length-prefixed string in the middle of the
@@ -26,7 +26,7 @@ ClrMetadata::ClrMetadata(const PeFile &pe, const FileBytes &fbytes, const DataDi
         ClrStream tmp(fbytes, dirOffset() + pos);
         m_streams.push_back(tmp);
 
-        const char *name = (char*)tmp.getFieldPtr(ClrStream::NAME);
+        const char *name = tmp.stream()->Name;
         // it is important that the member `Name[]` counts as zero bytes
         pos += sizeof(IMAGE_COR20_METADATA_STREAM_HEADER) + strlen(name) + 1;
         // align to next 4-byte boundary

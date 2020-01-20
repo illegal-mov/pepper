@@ -41,10 +41,10 @@ typedef struct _IMAGE_RESOURCE_DIRECTORY_STRING {
 	char     NameString[];
 } IMAGE_RESOURCE_DIRECTORY_STRING, *PIMAGE_RESOURCE_DIRECTORY_STRING;
 
-typedef struct _IMAGE_RESOURCE_DIR_STRING_U {
+typedef struct _IMAGE_RESOURCE_DIRECTORY_STRING_U {
 	uint16_t Length;
 	uint16_t NameString[]; // TODO: maybe char16_t
-} IMAGE_RESOURCE_DIR_STRING_U, *PIMAGE_RESOURCE_DIR_STRING_U;
+} IMAGE_RESOURCE_DIRECTORY_STRING_U, *PIMAGE_RESOURCE_DIRECTORY_STRING_U;
 
 typedef struct _IMAGE_RESOURCE_DATA {
     int32_t OffsetToData;
@@ -95,7 +95,8 @@ public:
 
     // member functions
     const void* getFieldPtr(const int index) const override;
-    const IMAGE_RESOURCE_DIR_STRING_U* string() const { return (PIMAGE_RESOURCE_DIR_STRING_U)hdr(); }
+    const IMAGE_RESOURCE_DIRECTORY_STRING* string() const { return (PIMAGE_RESOURCE_DIRECTORY_STRING)hdr(); }
+    const IMAGE_RESOURCE_DIRECTORY_STRING_U* stringu() const { return (PIMAGE_RESOURCE_DIRECTORY_STRING_U)hdr(); }
     uint16_t length() const { return string()->Length; }
     const std::string& name() const { return m_name; }
 

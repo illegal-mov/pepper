@@ -264,7 +264,7 @@ typedef struct _IMAGE_DOS_HEADER {
     int16_t  e_oemid;    // oem Identifier
     int16_t  e_oeminfo;  // oem Info
     int16_t  e_res2[10]; // reserved2
-    uint32_t e_lfanew;   // file offset to NT header
+    uint16_t e_lfanew;   // file offset to NT header
 } IMAGE_DOS_HEADER, *PIMAGE_DOS_HEADER;
 
 typedef struct _IMAGE_FILE_HEADER {
@@ -583,7 +583,7 @@ typedef struct _IMAGE_RESOURCE_DIRECTORY_STRING {
 typedef struct _IMAGE_RESOURCE_DIR_STRING_U {
 	uint16_t Length;
 	uint16_t NameString[]; // TODO: maybe char16_t
-} IMAGE_RESOURCE_DIR_STRING_U, *PIMAGE_RESOURCE_DIR_STRING_U;
+} IMAGE_RESOURCE_DIRECTORY_STRING_U, *PIMAGE_RESOURCE_DIRECTORY_STRING_U;
 
 typedef struct _IMAGE_RESOURCE_DATA {
     uint32_t OffsetToData;
@@ -828,14 +828,14 @@ typedef struct _IMAGE_BOUND_FORWARDER_REF {
 /* DELAY IMPORT DIRECTORY */
 
 typedef struct _IMAGE_DELAY_IMPORT_DESCRIPTOR {
-    int32_t Attributes;                 // reserved, must be zero
-    int32_t NameRVA;                    // pointer to DLL's name
-    int32_t ModuleHandleRVA;            // pointer to DLL's module handle
-    int32_t DelayImportAddressTableRVA; // pointer to delay-load import address table
-    int32_t DelayImportNameTableRVA;    // pointer to delay-load import name table
-    int32_t BoundDelayImportTableRVA;   // pointer to bound delay-load address table
-    int32_t UnloadDelayImportTableRVA;  // pointer to unload delay-load address table
-    int32_t Timestamp;                  // dll timestamp after binding
+    int32_t  Attributes;                 // reserved, must be zero
+    uint32_t NameRVA;                    // pointer to DLL's name
+    uint32_t ModuleHandleRVA;            // pointer to DLL's module handle
+    uint32_t DelayImportAddressTableRVA; // pointer to delay-load import address table
+    uint32_t DelayImportNameTableRVA;    // pointer to delay-load import name table
+    uint32_t BoundDelayImportTableRVA;   // pointer to bound delay-load address table
+    uint32_t UnloadDelayImportTableRVA;  // pointer to unload delay-load address table
+    int32_t  Timestamp;                  // dll timestamp after binding
 } IMAGE_DELAY_IMPORT_DESCRIPTOR, *PIMAGE_DELAY_IMPORT_DESCRIPTOR;
 
 /* CLR DIRECTORY */

@@ -14,7 +14,7 @@ CertificateDir::CertificateDir(const PeFile &pe, const FileBytes &fbytes, const 
         uint32_t currentSize = 0;
         while (currentSize < dde.size()) {
             m_elements.emplace_back(fbytes, dirOffset() + currentSize);
-            currentSize += *(uint32_t*)m_elements.back().getFieldPtr(CertificateEntry::LENGTH);
+            currentSize += m_elements.back().cert()->Length;
             // round up to 8 byte alignment
             currentSize += (8 - (currentSize & 7)) & 7;
         }

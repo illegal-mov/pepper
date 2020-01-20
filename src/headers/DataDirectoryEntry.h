@@ -34,8 +34,8 @@ public:
     // member functions
     const void* getFieldPtr(const int index) const override;
     const IMAGE_DATA_DIRECTORY* entry() const { return (IMAGE_DATA_DIRECTORY*)hdr(); }
-    uint32_t rva() const { return *(uint32_t*)getFieldPtr(VIRTUAL_ADDRESS); }
-    uint32_t size() const { return *(uint32_t*)getFieldPtr(SIZE); }
+    uint32_t rva() const { return entry()->VirtualAddress; }
+    uint32_t size() const { return entry()->Size; }
 
     // static functions
     static const char* getFieldName(const int index);

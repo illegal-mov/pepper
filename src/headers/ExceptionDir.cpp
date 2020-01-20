@@ -13,15 +13,16 @@ template<> size_t *FunctionTableEntryArm::s_pCodeDiff = &ExceptionDir::s_codeDif
 // Append elements to the vector. Works for any type of FunctionTable because
 // entrySize is chosen by the caller when it knows the architecture.
 template <typename T>
-void ExceptionDir::appendEntries(const FileBytes &fbytes, uint32_t totalSize)
+void ExceptionDir::appendEntries(const FileBytes &fbytes, const uint32_t totalSize)
 {
     size_t numEntries = totalSize / sizeof(T);
     m_entries32.reserve(numEntries);
-    for (size_t i=0; i < numEntries; i++)
+    for (size_t i=0; i < numEntries; i++) {
         m_entries32.emplace_back(fbytes, dirOffset() + (i * sizeof(T)));
+    }
 
     // Use the `BeginAddress` field of an exception structure to find the offset to code
-    s_codeDiff = Convert::getRvaToRawDiff(*m_pe, *(uint32_t*)m_entries32[0].getFieldPtr(0));
+    s_codeDiff = Convert::getRvaToRawDiff(*m_pe, *static_cast<const size_t*>(m_entries32[0].getFieldPtr(0)));
 }
 
 ExceptionDir::ExceptionDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde)
@@ -29,12 +30,13 @@ ExceptionDir::ExceptionDir(const PeFile &pe, const FileBytes &fbytes, const Data
 {
     if (Ident::dirExists(*this)) {
         // Fill elements vector according to architecture's exception table entry size
-        if (Ident::is32bit(*m_pe))
+        if (Ident::is32bit(*m_pe)) {
             appendEntries<IMAGE_EXCEPTION_ENTRY32>(fbytes, dde.size());
-        else if (Ident::is64bit(*m_pe))
+        } else if (Ident::is64bit(*m_pe)) {
             appendEntries<IMAGE_EXCEPTION_ENTRY64>(fbytes, dde.size());
-        else
+        } else {
             appendEntries<IMAGE_EXCEPTION_ENTRY_ARM>(fbytes, dde.size());
+        }
     }
 }
 

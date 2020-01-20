@@ -27,8 +27,8 @@ DataDirectory::DataDirectory(const FileBytes &fbytes, const OptionalHeader &opt)
 uint64_t OptionalHeader::imageBase() const
 {
     return (optional32()->Magic == BIT32)
-        ? *(uint32_t*)getFieldPtr(IMAGE_BASE)
-        : *(uint64_t*)getFieldPtr(IMAGE_BASE);
+        ? optional32()->ImageBase
+        : optional64()->ImageBase;
 }
 
 const char* OptionalHeader::getFieldName(const int index)

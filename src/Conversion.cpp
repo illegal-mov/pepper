@@ -29,10 +29,10 @@ static uint32_t getDiffRvaRaw(const PeFile &pe, const uint32_t addr, Convert::Ad
     // linear search for containing section
     SectionHeaders *sctns = (SectionHeaders*)pe.getHeaderPtr(PeFile::SECTION);
     for (const auto &section : sctns->sections()) {
-        const uint32_t sctnBase = *(uint32_t*)section.getFieldPtr(base);
-        const uint32_t sctnSize = *(uint32_t*)section.getFieldPtr(size);
+        const uint32_t sctnBase = *static_cast<const uint32_t*>(section.getFieldPtr(base));
+        const uint32_t sctnSize = *static_cast<const uint32_t*>(section.getFieldPtr(size));
         if (sctnBase <= addr && addr < sctnBase + sctnSize) {
-            const uint32_t sctnOppo = *(uint32_t*)section.getFieldPtr(oppo);
+            const uint32_t sctnOppo = *static_cast<const uint32_t*>(section.getFieldPtr(oppo));
             return (sctnBase > sctnOppo) ? sctnBase - sctnOppo : sctnOppo - sctnBase;
         }
     }
