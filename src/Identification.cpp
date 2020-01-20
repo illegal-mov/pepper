@@ -11,15 +11,15 @@ using namespace Pepper;
 
 bool Ident::isDll(const PeFile &pe)
 {
-    FileHeader *pfh = (FileHeader*)pe.getHeaderPtr(PeFile::Headers::FILE);
-    int16_t charact = *(int16_t*)pfh->getFieldPtr(FileHeader::Fields::CHARACTERISTICS);
+    const FileHeader *pfh = (FileHeader*)pe.getHeaderPtr(PeFile::Headers::FILE);
+    const uint16_t charact = *(uint16_t*)pfh->getFieldPtr(FileHeader::Fields::CHARACTERISTICS);
     return charact & FileHeader::Characteristics::DLL;
 }
 
-static int16_t getOptionalHeaderMagic(const PeFile &pe)
+static uint16_t getOptionalHeaderMagic(const PeFile &pe)
 {
-    OptionalHeader *poh = (OptionalHeader*)pe.getHeaderPtr(PeFile::Headers::OPTIONAL);
-    return *(int16_t*)poh->getFieldPtr(OptionalHeader::Fields::MAGIC);
+    const OptionalHeader *poh = (OptionalHeader*)pe.getHeaderPtr(PeFile::Headers::OPTIONAL);
+    return *(uint16_t*)poh->getFieldPtr(OptionalHeader::Fields::MAGIC);
 }
 
 bool Ident::is32bit(const PeFile &pe)
@@ -51,35 +51,37 @@ bool Ident::isAllSigsValid(const PeFile &pe)
 {
     // check DOS signature
     const DosHeader *dos = (DosHeader*)pe.getHeaderPtr(PeFile::DOS);
-    int16_t dosMagic = *(int16_t*)dos->getFieldPtr(DosHeader::E_MAGIC);
-    if (dosMagic != 0x4D5A && dosMagic != 0x5A4D)
+    const uint16_t dosMagic = *(uint16_t*)dos->getFieldPtr(DosHeader::E_MAGIC);
+    if (dosMagic != 0x4D5A && dosMagic != 0x5A4D) {
         return false;
+    }
 
     // check NT signature
     const FileHeader *file = (FileHeader*)pe.getHeaderPtr(PeFile::FILE);
-    int32_t ntSig = *(int32_t*)file->ntSig();
-    if (ntSig != 0x00004550 && ntSig != 0x50450000)
+    const int32_t ntSig = *(int32_t*)file->ntSig();
+    if (ntSig != 0x00004550 && ntSig != 0x50450000) {
         return false;
+    }
 
     return true;
 }
 
-static int16_t getFileHeaderMachine(const PeFile &pe)
+static uint16_t getFileHeaderMachine(const PeFile &pe)
 {
-    FileHeader *pfh = (FileHeader*)pe.getHeaderPtr(PeFile::Headers::FILE);
-    return *(int16_t*)pfh->getFieldPtr(FileHeader::Fields::MACHINE);
+    const FileHeader *pfh = (FileHeader*)pe.getHeaderPtr(PeFile::Headers::FILE);
+    return *(uint16_t*)pfh->getFieldPtr(FileHeader::Fields::MACHINE);
 }
 
 bool Ident::isX86(const PeFile &pe)
 {
-    int16_t type = getFileHeaderMachine(pe);
+    const uint16_t type = getFileHeaderMachine(pe);
     return type == FileHeader::Machine::I386
         || type == FileHeader::Machine::AMD64;
 }
 
 bool Ident::isArmThumb(const PeFile &pe)
 {
-    int16_t type = getFileHeaderMachine(pe);
+    const uint16_t type = getFileHeaderMachine(pe);
     return type == FileHeader::Machine::ARM
         || type == FileHeader::Machine::ARM64
         || type == FileHeader::Machine::ARMNT
@@ -88,7 +90,7 @@ bool Ident::isArmThumb(const PeFile &pe)
 
 bool Ident::isMips(const PeFile &pe)
 {
-    int16_t type = getFileHeaderMachine(pe);
+    const uint16_t type = getFileHeaderMachine(pe);
     return type == FileHeader::Machine::MIPS16
         || type == FileHeader::Machine::MIPSFPU
         || type == FileHeader::Machine::MIPSFPU16
@@ -98,7 +100,7 @@ bool Ident::isMips(const PeFile &pe)
 
 bool Ident::isRiscv(const PeFile &pe)
 {
-    int16_t type = getFileHeaderMachine(pe);
+    const uint16_t type = getFileHeaderMachine(pe);
     return type == FileHeader::Machine::RISCV32
         || type == FileHeader::Machine::RISCV64
         || type == FileHeader::Machine::RISCV128;
@@ -106,7 +108,7 @@ bool Ident::isRiscv(const PeFile &pe)
 
 bool Ident::isThumb(const PeFile &pe)
 {
-    int16_t type = getFileHeaderMachine(pe);
+    const uint16_t type = getFileHeaderMachine(pe);
     return type == FileHeader::Machine::THUMB;
 }
 

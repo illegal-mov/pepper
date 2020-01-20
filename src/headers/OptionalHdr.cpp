@@ -11,8 +11,8 @@ OptionalHeader::OptionalHeader(const FileBytes &fbytes, const FileHeader &file)
 DataDirectory::DataDirectory(const FileBytes &fbytes, const OptionalHeader &opt)
 {
     // get offset to data directory
-    bool is32bit = opt.optional32()->Magic == OptionalHeader::BIT32;
-    size_t base = opt.hdrOffset() + ((is32bit) ?
+    const bool is32bit = opt.optional32()->Magic == OptionalHeader::BIT32;
+    const size_t base = opt.hdrOffset() + ((is32bit) ?
         offsetof(IMAGE_OPTIONAL_HEADER32, DataDirectory):
         offsetof(IMAGE_OPTIONAL_HEADER64, DataDirectory));
 
@@ -31,7 +31,7 @@ uint64_t OptionalHeader::imageBase() const
         : *(uint64_t*)getFieldPtr(IMAGE_BASE);
 }
 
-const char* OptionalHeader::getFieldName(int index)
+const char* OptionalHeader::getFieldName(const int index)
 {
     switch (index) {
         case MAGIC                         : return "Magic";
@@ -69,9 +69,9 @@ const char* OptionalHeader::getFieldName(int index)
     }
 }
 
-const void* OptionalHeader::getFieldPtr(int index) const
+const void* OptionalHeader::getFieldPtr(const int index) const
 {
-    bool is32bit = optional32()->Magic == BIT32;
+    const bool is32bit = optional32()->Magic == BIT32;
     switch (index) {
         case MAGIC                         : return (is32bit) ? (void*)&optional32()->Magic                       : (void*)&optional64()->Magic;
         case MAJOR_LINKER_VERSION          : return (is32bit) ? (void*)&optional32()->MajorLinkerVersion          : (void*)&optional64()->MajorLinkerVersion;
@@ -108,7 +108,7 @@ const void* OptionalHeader::getFieldPtr(int index) const
     }
 }
 
-const char* OptionalHeader::getCharacteristicName(int index)
+const char* OptionalHeader::getCharacteristicName(const int index)
 {
     switch (index) {
         case RESERVED_1           : return "<Reserved>";
@@ -131,7 +131,7 @@ const char* OptionalHeader::getCharacteristicName(int index)
     }
 }
 
-const char* DataDirectory::getFieldName(int index)
+const char* DataDirectory::getFieldName(const int index)
 {
     switch (index) {
         case XPRT  : return "Export";
@@ -154,7 +154,7 @@ const char* DataDirectory::getFieldName(int index)
     }
 }
 
-const void* DataDirectory::getFieldPtr(int index) const
+const void* DataDirectory::getFieldPtr(const int index) const
 {
     switch (index) {
         case XPRT  : return &directories()[XPRT];

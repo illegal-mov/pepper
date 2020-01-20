@@ -28,7 +28,7 @@ PeFile::PeFile(std::string path)
 , m_Clr   (*this, m_Bytes, m_DDir.directories()[DataDirectory::CLR])
 {}
 
-const void* PeFile::getHeaderPtr(int index) const
+const void* PeFile::getHeaderPtr(const int index) const
 {
     switch (index) {
         case DOS           : return &m_Dos;
@@ -55,7 +55,7 @@ const void* PeFile::getHeaderPtr(int index) const
     }
 }
 
-const char* PeFile::getHeaderName(int index)
+const char* PeFile::getHeaderName(const int index)
 {
     switch (index) {
         case DOS           : return "DOS Header";
@@ -82,7 +82,7 @@ const char* PeFile::getHeaderName(int index)
     }
 }
 
-void PeFile::readBytes(size_t pos, char *buf, size_t bufLen) const
+void PeFile::readBytes(const size_t pos, char *buf, const size_t bufLen) const
 {
     m_Bytes.readBytes(pos, buf, bufLen);
 }

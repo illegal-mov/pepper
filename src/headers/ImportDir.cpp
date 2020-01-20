@@ -28,14 +28,14 @@ ImportDir::ImportDir(const PeFile &pe, const FileBytes &fbytes, const DataDirect
     }
 }
 
-const char* ImportDir::getFieldName(int index)
+const char* ImportDir::getFieldName(const int index)
 {
     switch (index) {
         default: return "Import Descriptor";
     }
 }
 
-const void* ImportDir::getFieldPtr(int index) const
+const void* ImportDir::getFieldPtr(const int index) const
 {
     switch (index) {
         default: return nullptr;

@@ -15,8 +15,8 @@ DelayImportDir::DelayImportDir(const PeFile &pe, const FileBytes &fbytes, const 
     if (Ident::dirExists(*this)) {
         s_diskToMemDiff = m_diffOfRvaRaw;
         // append non-null IMPORT_DESCRIPTOR to m_descriptors vector
-        char null[sizeof(IMAGE_DELAY_IMPORT_DESCRIPTOR)] = {0};
-        IMAGE_DELAY_IMPORT_DESCRIPTOR *pid = (PIMAGE_DELAY_IMPORT_DESCRIPTOR)dir();
+        const char null[sizeof(IMAGE_DELAY_IMPORT_DESCRIPTOR)] = {0};
+        const IMAGE_DELAY_IMPORT_DESCRIPTOR *pid = (PIMAGE_DELAY_IMPORT_DESCRIPTOR)dir();
         size_t i=0;
         while (memcmp(&pid[i], &null, sizeof(null))) {
             m_descriptors.emplace_back(pe, fbytes, dirOffset() + (i * sizeof(null)));
@@ -25,14 +25,14 @@ DelayImportDir::DelayImportDir(const PeFile &pe, const FileBytes &fbytes, const 
     }
 }
 
-const char* DelayImportDir::getFieldName(int index)
+const char* DelayImportDir::getFieldName(const int index)
 {
     switch (index) {
         default: return "Delay Import Descriptor";
     }
 }
 
-const void* DelayImportDir::getFieldPtr(int index) const
+const void* DelayImportDir::getFieldPtr(const int index) const
 {
     switch (index) {
         default: return nullptr;

@@ -7,14 +7,14 @@ ClrCodeManager::ClrCodeManager(const PeFile &pe, const FileBytes &fbytes, const 
 : IDirectory(pe, fbytes, dde)
 {}
 
-const char* ClrCodeManager::getFieldName(int index)
+const char* ClrCodeManager::getFieldName(const int index)
 {
     switch (index) {
         default: return "<UNKNOWN>";
     }
 }
 
-const void* ClrCodeManager::getFieldPtr(int index) const
+const void* ClrCodeManager::getFieldPtr(const int index) const
 {
     switch (index) {
         default: return nullptr;

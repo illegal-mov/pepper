@@ -44,10 +44,10 @@ public:
     : IHeader()
     {}
 
-    ExportAddressTable(const PeFile &pe, const FileBytes &fbytes, size_t raw, size_t len);
+    ExportAddressTable(const PeFile &pe, const FileBytes &fbytes, const size_t raw, const size_t len);
 
     // member functions
-    const void* getFieldPtr(int index) const override;
+    const void* getFieldPtr(const int index) const override;
 
     uint32_t codeRva(size_t index) const
     {
@@ -64,7 +64,7 @@ public:
     size_t length() const { return m_length; }
 
     // static functions
-    static const char* getFieldName(int index);
+    static const char* getFieldName(const int index);
 };
 
 /* Variable-length array of RVAs to function names
@@ -83,10 +83,10 @@ public:
     : IHeader()
     {}
 
-    ExportNameTable(const PeFile &pe, const FileBytes &fbytes, size_t raw, size_t len);
+    ExportNameTable(const PeFile &pe, const FileBytes &fbytes, const size_t raw, const size_t len);
 
     // member functions
-    const void* getFieldPtr(int index) const override;
+    const void* getFieldPtr(const int index) const override;
 
     // get array element or 0 if out of range
     uint32_t nameRva(size_t index) const
@@ -106,7 +106,7 @@ public:
     size_t length() const { return m_length; }
 
     // static functions
-    static const char* getFieldName(int index);
+    static const char* getFieldName(const int index);
 };
 
 /* Variable-length array of sequential numbers as int16_t
@@ -124,10 +124,10 @@ public:
     : IHeader()
     {}
 
-    ExportOrdinalTable(const FileBytes &fbytes, size_t raw, size_t len);
+    ExportOrdinalTable(const FileBytes &fbytes, const size_t raw, const size_t len);
 
     // member functions
-    const void* getFieldPtr(int index) const override;
+    const void* getFieldPtr(const int index) const override;
 
     // get array element or -1 if out of range
     int16_t ordinal(size_t index) const
@@ -139,7 +139,7 @@ public:
     size_t length() const { return m_length; }
 
     // static functions
-    static const char* getFieldName(int index);
+    static const char* getFieldName(const int index);
 };
 
 /* A single EXPORT_DIRECTORY structure.
@@ -176,7 +176,7 @@ public:
     ExportDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde);
 
     // member functions
-    const void* getFieldPtr(int index) const override;
+    const void* getFieldPtr(const int index) const override;
     const IMAGE_EXPORT_DIRECTORY* xport() const { return (PIMAGE_EXPORT_DIRECTORY)dir(); }
 
     const ExportAddressTable* eat() const { return Ident::dirExists(*this) ? &m_addrTable : nullptr; }
@@ -185,7 +185,7 @@ public:
     const char* dllName() const { return &mem()[xport()->NameRVA - m_diffOfRvaRaw]; }
 
     // static functions
-    static const char* getFieldName(int index);
+    static const char* getFieldName(const int index);
 };
 } // namespace Pepper
 

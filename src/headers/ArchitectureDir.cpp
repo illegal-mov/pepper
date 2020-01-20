@@ -12,14 +12,14 @@ ArchitectureDir::ArchitectureDir(const PeFile &pe, const FileBytes &fbytes, cons
     }
 }
 
-const char* ArchitectureDir::getFieldName(int index)
+const char* ArchitectureDir::getFieldName(const int index)
 {
     switch (index) {
         default: return "<UNKNOWN>";
     }
 }
 
-const void* ArchitectureDir::getFieldPtr(int index) const
+const void* ArchitectureDir::getFieldPtr(const int index) const
 {
     switch (index) {
         default: return nullptr;

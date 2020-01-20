@@ -136,17 +136,17 @@ public:
     : IHeader()
     {}
 
-    CodeIntegrity(const FileBytes &fbytes, size_t raw);
+    CodeIntegrity(const FileBytes &fbytes, const size_t raw);
 
     // member functions
-    const void* getFieldPtr(int index) const override;
+    const void* getFieldPtr(const int index) const override;
     const IMAGE_LOAD_CONFIG_CODE_INTEGRITY* integrity() const
     {
         return (PIMAGE_LOAD_CONFIG_CODE_INTEGRITY)hdr();
     }
 
     // static functions
-    static const char* getFieldName(int index);
+    static const char* getFieldName(const int index);
 };
 
 /* The LOAD_CONFIG directory is a single 32-bit or 64-bit data structure.
@@ -209,7 +209,7 @@ public:
     LoadConfigDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde);
 
     // member functions
-    const void* getFieldPtr(int index) const override;
+    const void* getFieldPtr(const int index) const override;
 
     const IMAGE_LOAD_CONFIG_DIRECTORY32* ldcfg32() const
     {
@@ -222,7 +222,7 @@ public:
     }
 
     // static functions
-    static const char* getFieldName(int index);
+    static const char* getFieldName(const int index);
 };
 } // namespace Pepper
 

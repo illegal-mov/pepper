@@ -268,13 +268,13 @@ typedef struct _IMAGE_DOS_HEADER {
 } IMAGE_DOS_HEADER, *PIMAGE_DOS_HEADER;
 
 typedef struct _IMAGE_FILE_HEADER {
-    int16_t  Machine;              // type of cpu the binary was compiled for
+    uint16_t Machine;              // type of cpu the binary was compiled for
     uint16_t NumberOfSections;     // number of section headers
     int32_t  TimeDateStamp;        // file creation time as UNIX epoch
-    int32_t  PointerToSymbolTable; // file offset to symbol table (deprecated)
+    uint32_t PointerToSymbolTable; // file offset to symbol table (deprecated)
     uint32_t NumberOfSymbols;      // number of symbol table entries (deprecated)
     uint16_t SizeOfOptionalHeader; // size of optional header in bytes
-    int16_t  Characteristics;      // bitfields for various things
+    uint16_t Characteristics;      // bitfields for various things
     /* 0x0001 IMAGE_FILE_RELOCS_STRIPPED
      * 0x0002 IMAGE_FILE_EXECUTABLE_IMAGE
      * 0x0004 IMAGE_FILE_LINE_NUMS_STRIPPED
@@ -299,7 +299,7 @@ typedef struct _IMAGE_DATA_DIRECTORY {
 } IMAGE_DATA_DIRECTORY, *PIMAGE_DATA_DIRECTORY;
 
 typedef struct _IMAGE_OPTIONAL_HEADER32 {
-    int16_t  Magic;                                                    // identifies file as 32bit, 64bit, or ROM
+    uint16_t Magic;                                                    // identifies file as 32bit, 64bit, or ROM
     /* 0x10b IMAGE_NT_OPTIONAL_HDR32_MAGIC
      * 0x20b IMAGE_NT_OPTIONAL_HDR64_MAGIC
      * 0x107 IMAGE_ROM_OPTIONAL_HDR_MAGIC
@@ -309,12 +309,12 @@ typedef struct _IMAGE_OPTIONAL_HEADER32 {
     uint32_t SizeOfCode;                                               // sum of all code section sizes
     uint32_t SizeOfInitializedData;                                    // sum of all initialized data section sizes
     uint32_t SizeOfUninitializedData;                                  // sum of all uninitialized data section sizes
-    int32_t  AddressOfEntryPoint;                                      // entry point address relative to image base
-    int32_t  BaseOfCode;                                               // start of code section relative to image base
-    int32_t  BaseOfData;                                               // start of data section relative to image base
+    uint32_t AddressOfEntryPoint;                                      // entry point address relative to image base
+    uint32_t BaseOfCode;                                               // start of code section relative to image base
+    uint32_t BaseOfData;                                               // start of data section relative to image base
     uint32_t ImageBase;                                                // preferred base address of binary (must be % 65536 == 0)
-    int32_t  SectionAlignment;                                         // byte alignment for section data in memory (must be >= FileAlignment)
-    int32_t  FileAlignment;                                            // byte alignment for section data on disk
+    uint32_t SectionAlignment;                                         // byte alignment for section data in memory (must be >= FileAlignment)
+    uint32_t FileAlignment;                                            // byte alignment for section data on disk
     int16_t  MajorOperatingSystemVersion;                              // operating system major version number
     int16_t  MinorOperatingSystemVersion;                              // operating system minor version number
     int16_t  MajorImageVersion;                                        // image major version number
@@ -324,7 +324,7 @@ typedef struct _IMAGE_OPTIONAL_HEADER32 {
     int32_t  Win32VersionValue;                                        // reserved, must be zero
     uint32_t SizeOfImage;                                              // size of image, including headers, in bytes (must be % SectionAlignment == 0)
     uint32_t SizeOfHeaders;                                            // sum of all header sizes
-    int32_t  CheckSum;                                                 // file checksum
+    uint32_t CheckSum;                                                 // file checksum
     int16_t  Subsystem;                                                // required subsystem
     /* 0  IMAGE_SUBSYSTEM_UNKNOWN
      * 1  IMAGE_SUBSYSTEM_NATIVE
@@ -340,7 +340,7 @@ typedef struct _IMAGE_OPTIONAL_HEADER32 {
      * 14 IMAGE_SUBSYSTEM_XBOX
      * 16 IMAGE_SUBSYSTEM_WINDOWS_BOOT_APPLICATION
      */
-    int16_t  DllCharacteristics;                                       // bit fields for various properties
+    uint16_t DllCharacteristics;                                       // bit fields for various properties
     /* 0x0001 IMAGE_DLLCHARACTERISTICS_RESERVED_1
      * 0x0002 IMAGE_DLLCHARACTERISTICS_RESERVED_2
      * 0x0004 IMAGE_DLLCHARACTERISTICS_RESERVED_4
@@ -368,7 +368,7 @@ typedef struct _IMAGE_OPTIONAL_HEADER32 {
 } IMAGE_OPTIONAL_HEADER32, *PIMAGE_OPTIONAL_HEADER32;
 
 typedef struct _IMAGE_OPTIONAL_HEADER64 {
-    int16_t  Magic;                                                    // identifies file as 32bit, 64bit, or ROM
+    uint16_t Magic;                                                    // identifies file as 32bit, 64bit, or ROM
     /* 0x10b IMAGE_NT_OPTIONAL_HDR32_MAGIC
      * 0x20b IMAGE_NT_OPTIONAL_HDR64_MAGIC
      * 0x107 IMAGE_ROM_OPTIONAL_HDR_MAGIC
@@ -378,11 +378,11 @@ typedef struct _IMAGE_OPTIONAL_HEADER64 {
     uint32_t SizeOfCode;                                               // sum of all code section sizes
     uint32_t SizeOfInitializedData;                                    // sum of all initialized data section sizes
     uint32_t SizeOfUninitializedData;                                  // sum of all uninitialized data section sizes
-    int32_t  AddressOfEntryPoint;                                      // entry point address relative to image base
-    int32_t  BaseOfCode;                                               // start of code section relative to image base
+    uint32_t AddressOfEntryPoint;                                      // entry point address relative to image base
+    uint32_t BaseOfCode;                                               // start of code section relative to image base
     uint64_t ImageBase;                                                // preferred base address of binary (must be % 65536 == 0)
-    int32_t  SectionAlignment;                                         // byte alignment for section data in memory (must be >= FileAlignment)
-    int32_t  FileAlignment;                                            // byte alignment for section data on disk
+    uint32_t SectionAlignment;                                         // byte alignment for section data in memory (must be >= FileAlignment)
+    uint32_t FileAlignment;                                            // byte alignment for section data on disk
     int16_t  MajorOperatingSystemVersion;                              // operating system major version number
     int16_t  MinorOperatingSystemVersion;                              // operating system minor version number
     int16_t  MajorImageVersion;                                        // image major version number
@@ -392,7 +392,7 @@ typedef struct _IMAGE_OPTIONAL_HEADER64 {
     int32_t  Win32VersionValue;                                        // reserved, must be zero
     uint32_t SizeOfImage;                                              // size of image, including headers, in bytes (must be % SectionAlignment == 0)
     uint32_t SizeOfHeaders;                                            // sum of all header sizes
-    int32_t  CheckSum;                                                 // file checksum
+    uint32_t CheckSum;                                                 // file checksum
     int16_t  Subsystem;                                                // required subsystem
     /* 0  IMAGE_SUBSYSTEM_UNKNOWN
      * 1  IMAGE_SUBSYSTEM_NATIVE
@@ -408,7 +408,7 @@ typedef struct _IMAGE_OPTIONAL_HEADER64 {
      * 14 IMAGE_SUBSYSTEM_XBOX
      * 16 IMAGE_SUBSYSTEM_WINDOWS_BOOT_APPLICATION
      */
-    int16_t  DllCharacteristics;                                       // bit fields for various properties
+    uint16_t DllCharacteristics;                                       // bit fields for various properties
     /* 0x0001 IMAGE_DLLCHARACTERISTICS_RESERVED_1
      * 0x0002 IMAGE_DLLCHARACTERISTICS_RESERVED_2
      * 0x0004 IMAGE_DLLCHARACTERISTICS_RESERVED_4
@@ -454,7 +454,7 @@ typedef struct _IMAGE_SECTION_HEADER {
     uint32_t PointerToLineNumbers;                   // offset to line numbers on disk
     uint16_t NumberOfRelocations;                    // number of relocation entries
     uint16_t NumberOfLineNumbers;                    // number of line number entries
-    int32_t  Characteristics;                        // bit fields for various properties
+    uint32_t Characteristics;                        // bit fields for various properties
     /* 0x00000008 IMAGE_SCN_TYPE_NO_PAD
      * 0x00000020 IMAGE_SCN_CNT_CODE
      * 0x00000040 IMAGE_SCN_CNT_INITIALIZED_DATA
@@ -641,8 +641,8 @@ typedef struct _IMAGE_BASE_RELOCATION {
 } IMAGE_BASE_RELOCATION, *PIMAGE_BASE_RELOCATION;
 
 typedef struct _IMAGE_BASE_RELOCATION_ENTRY {
-    int16_t Offset : 12;
-    int16_t Type   : 4;
+    uint16_t Offset : 12;
+    uint16_t Type   : 4;
     /* 0x0 IMAGE_REL_BASED_ABSOLUTE
      * 0x1 IMAGE_REL_BASED_HIGH
      * 0x2 IMAGE_REL_BASED_LOW
@@ -871,14 +871,14 @@ typedef struct _IMAGE_COR20_METADATA_HEADER {
 } IMAGE_COR20_METADATA_HEADER, *PIMAGE_COR20_METADATA_HEADER;
 
 typedef struct _IMAGE_COR20_METADATA_STREAM_HEADER {
-    int32_t  Offset; // relative to METADATA_header
+    uint32_t Offset; // relative to METADATA_header
     uint32_t Size;
     char     Name[];
 } IMAGE_COR20_METADATA_STREAM_HEADER, *PIMAGE_COR20_METADATA_STREAM_HEADER;
 
 typedef struct _IMAGE_COR20_RESOURCES_HEADER {
     int32_t  Unknown1; // TODO: is this total size - 4?
-    int32_t  Magic;    // always set to 0xBEEFCACE
+    uint32_t Magic;    // always set to 0xBEEFCACE
     int32_t  Unknown2; // TODO: is this a count of something?
     uint32_t Size;
 } IMAGE_COR20_RESOURCES_HEADER, *PIMAGE_COR20_RESOURCES_HEADER;

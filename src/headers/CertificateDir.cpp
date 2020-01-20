@@ -21,7 +21,7 @@ CertificateDir::CertificateDir(const PeFile &pe, const FileBytes &fbytes, const 
     }
 }
 
-const char* CertificateEntry::getFieldName(int index)
+const char* CertificateEntry::getFieldName(const int index)
 {
     switch (index) {
         case LENGTH           : return "Certificate Size";
@@ -32,7 +32,7 @@ const char* CertificateEntry::getFieldName(int index)
     }
 }
 
-const void* CertificateEntry::getFieldPtr(int index) const
+const void* CertificateEntry::getFieldPtr(const int index) const
 {
     switch (index) {
         case LENGTH           : return &cert()->Length;
@@ -43,14 +43,14 @@ const void* CertificateEntry::getFieldPtr(int index) const
     }
 }
 
-const char* CertificateDir::getFieldName(int index)
+const char* CertificateDir::getFieldName(const int index)
 {
     switch (index) {
         default: return "Attribute Certificate";
     }
 }
 
-const void* CertificateDir::getFieldPtr(int index) const
+const void* CertificateDir::getFieldPtr(const int index) const
 {
     switch (index) {
         default: return nullptr;

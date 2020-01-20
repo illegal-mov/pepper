@@ -11,7 +11,7 @@ using namespace Pepper;
 /* Compare addresses in the section headers to find the difference between
  * RVAs and file offsets.
  */
-static uint32_t getDiffRvaRaw(const PeFile &pe, uint32_t addr, Convert::AddrType type)
+static uint32_t getDiffRvaRaw(const PeFile &pe, const uint32_t addr, Convert::AddrType type)
 {
     int base, size, oppo;
     if (type == Convert::RVA) {
@@ -29,10 +29,10 @@ static uint32_t getDiffRvaRaw(const PeFile &pe, uint32_t addr, Convert::AddrType
     // linear search for containing section
     SectionHeaders *sctns = (SectionHeaders*)pe.getHeaderPtr(PeFile::SECTION);
     for (const auto &section : sctns->sections()) {
-        uint32_t sctnBase = *(uint32_t*)section.getFieldPtr(base);
-        uint32_t sctnSize = *(uint32_t*)section.getFieldPtr(size);
+        const uint32_t sctnBase = *(uint32_t*)section.getFieldPtr(base);
+        const uint32_t sctnSize = *(uint32_t*)section.getFieldPtr(size);
         if (sctnBase <= addr && addr < sctnBase + sctnSize) {
-            uint32_t sctnOppo = *(uint32_t*)section.getFieldPtr(oppo);
+            const uint32_t sctnOppo = *(uint32_t*)section.getFieldPtr(oppo);
             return (sctnBase > sctnOppo) ? sctnBase - sctnOppo : sctnOppo - sctnBase;
         }
     }
@@ -41,13 +41,13 @@ static uint32_t getDiffRvaRaw(const PeFile &pe, uint32_t addr, Convert::AddrType
 }
 
 /* Use an RVA address to get the difference between RVAs and RAWs */
-uint32_t Convert::getRvaToRawDiff(const PeFile &pe, uint64_t rva)
+uint32_t Convert::getRvaToRawDiff(const PeFile &pe, const uint64_t rva)
 {
     return getDiffRvaRaw(pe, rva, RVA);
 }
 
 /* Use a RAW address to get the difference between RVAs and RAWs */
-uint32_t Convert::getRawToRvaDiff(const PeFile &pe, uint64_t raw)
+uint32_t Convert::getRawToRvaDiff(const PeFile &pe, const uint64_t raw)
 {
     return getDiffRvaRaw(pe, raw, RAW);
 }
@@ -57,7 +57,7 @@ uint32_t Convert::getRawToRvaDiff(const PeFile &pe, uint64_t raw)
  * for conversions to smaller types.
  * Returns 0 if the conversion fails.
  */
-uint64_t Convert::convertAddr(const PeFile &pe, uint64_t addr, AddrType src, AddrType dst)
+uint64_t Convert::convertAddr(const PeFile &pe, const uint64_t addr, AddrType src, AddrType dst)
 {
     OptionalHeader *poh = (OptionalHeader*)pe.getHeaderPtr(PeFile::OPTIONAL);
     uint64_t diff = 0;
@@ -76,7 +76,7 @@ uint64_t Convert::convertAddr(const PeFile &pe, uint64_t addr, AddrType src, Add
 
     // Always subtract ImageBase when converting from an AVA
     if (src == AVA) {
-        uint64_t base = poh->imageBase();
+        const uint64_t base = poh->imageBase();
         if (dst == RVA) return (addr > base) ? addr - base
                                              : 0;
         // convert to RAW

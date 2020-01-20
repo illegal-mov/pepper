@@ -2,7 +2,7 @@
 
 using namespace Pepper;
 
-const char* FileHeader::getFieldName(int index)
+const char* FileHeader::getFieldName(const int index)
 {
     switch (index) {
         case MACHINE                : return "Machine";              // type of cpu the binary was compiled for
@@ -16,7 +16,7 @@ const char* FileHeader::getFieldName(int index)
     }
 }
 
-const void* FileHeader::getFieldPtr(int index) const
+const void* FileHeader::getFieldPtr(const int index) const
 {
     switch (index) {
         case MACHINE                : return &file()->Machine;              // type of cpu the binary was compiled for
@@ -30,7 +30,7 @@ const void* FileHeader::getFieldPtr(int index) const
     }
 }
 
-const char* FileHeader::getMachineName(int id)
+const char* FileHeader::getMachineName(const int id)
 {
     switch (id) {
         case AM33     : return "Matsushita AM33";
@@ -61,7 +61,7 @@ const char* FileHeader::getMachineName(int id)
     }
 }
 
-const char* FileHeader::getCharacteristicName(int index)
+const char* FileHeader::getCharacteristicName(const int index)
 {
     switch (index) {
         case RELOCS_STRIPPED        : return "Relocations Stripped";

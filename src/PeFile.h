@@ -89,12 +89,12 @@ public:
     PeFile(std::string path);
 
     // member functions
-    const void* getHeaderPtr(int index) const;
-    void readBytes(size_t pos, char *buf, size_t bufLen) const;
+    const void* getHeaderPtr(const int index) const;
+    void readBytes(const size_t pos, char *buf, const size_t bufLen) const;
     const std::string& path() const { return m_fname; }
 
     // static functions
-    static const char* getHeaderName(int index);
+    static const char* getHeaderName(const int index);
 };
 } // namespace Pepper
 

@@ -10,7 +10,7 @@ template <typename T>
 size_t CallbacksTable<T>::s_codeDiff = 0;
 
 template <typename T>
-CallbacksTable<T>::CallbacksTable(const PeFile &pe, const FileBytes &fbytes, size_t raw)
+CallbacksTable<T>::CallbacksTable(const PeFile &pe, const FileBytes &fbytes, const size_t raw)
 : IHeader(fbytes, raw)
 {
     const T *cbArray = callbacks();
@@ -46,7 +46,7 @@ TlsDir::TlsDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEnt
 }
 
 template <typename T> // requires variant declaration in header to link
-const char* CallbacksTable<T>::getFieldName(int index)
+const char* CallbacksTable<T>::getFieldName(const int index)
 {
     switch (index) {
         default: return "Callback Address";
@@ -54,7 +54,7 @@ const char* CallbacksTable<T>::getFieldName(int index)
 }
 
 template <typename T> // requires variant declaration in header to link
-const void* CallbacksTable<T>::getFieldPtr(int index) const
+const void* CallbacksTable<T>::getFieldPtr(const int index) const
 {
     size_t uindex = static_cast<size_t>(index);
     return (uindex < length())
@@ -62,7 +62,7 @@ const void* CallbacksTable<T>::getFieldPtr(int index) const
         : nullptr;
 }
 
-const char* TlsDir::getFieldName(int index)
+const char* TlsDir::getFieldName(const int index)
 {
     switch (index) {
         case RAW_DATA_START_VA   : return "Raw Data Start Address";
@@ -75,7 +75,7 @@ const char* TlsDir::getFieldName(int index)
     }
 }
 
-const void* TlsDir::getFieldPtr(int index) const
+const void* TlsDir::getFieldPtr(const int index) const
 {
     bool is32bit = Ident::is32bit(*m_pe);
     switch (index) {

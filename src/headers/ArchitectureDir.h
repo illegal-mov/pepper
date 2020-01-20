@@ -24,11 +24,11 @@ public:
     ArchitectureDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde);
 
     // member functions
-    const void* getFieldPtr(int index) const override;
+    const void* getFieldPtr(const int index) const override;
 //  const IMAGE_ARCHITECTURE_DIRECTORY* arch() const { return (PIMAGE_ARCHITECTURE_DIRECTORY)dir(); }
 
     // static functions
-    static const char* getFieldName(int index);
+    static const char* getFieldName(const int index);
 };
 } // namespace Pepper
 

@@ -296,7 +296,7 @@ void printRelocation(const Pepper::PeFile &pe)
                 *(int32_t*)prb->getFieldPtr(RelocationBase::PAGE_RVA),
                 *(int32_t*)prb->getFieldPtr(RelocationBase::BLOCK_SIZE));
             const RelocationTable *prt = block.relocTable();
-            for (int i=0; i < prt->length(); i++) {
+            for (size_t i=0; i < prt->length(); i++) {
                 printf("\t0x%1x | 0x%03x\n", prt->type(i), prt->offset(i));
             }
         }

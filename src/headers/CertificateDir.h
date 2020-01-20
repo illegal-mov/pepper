@@ -36,18 +36,18 @@ public:
     : IHeader()
     {}
 
-    CertificateEntry(const FileBytes &fbytes, size_t raw)
+    CertificateEntry(const FileBytes &fbytes, const size_t raw)
     : IHeader(fbytes, raw)
     {}
 
     // member functions
     const IMAGE_ATTRIBUTE_CERTIFICATE* cert() const { return (PIMAGE_ATTRIBUTE_CERTIFICATE)hdr(); }
-    const void* getFieldPtr(int index) const override;
+    const void* getFieldPtr(const int index) const override;
     const char* bytes() const { return cert()->CertificateBytes; }
     uint32_t size() const { return cert()->Length; }
 
     // static functions
-    static const char* getFieldName(int index);
+    static const char* getFieldName(const int index);
 };
 
 class CertificateDir final : public IDirectory {
@@ -65,12 +65,12 @@ public:
     CertificateDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde);
 
     // member functions
-    const void* getFieldPtr(int index) const override;
+    const void* getFieldPtr(const int index) const override;
     const std::vector<CertificateEntry>& certs() const { return m_elements; }
     size_t length() const { return m_elements.size(); }
 
     // static functions
-    static const char* getFieldName(int index);
+    static const char* getFieldName(const int index);
 };
 } // namespace Pepper
 

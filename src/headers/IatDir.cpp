@@ -5,7 +5,7 @@
 using namespace Pepper;
 
 template <typename T>
-AddressList<T>::AddressList(const FileBytes &fbytes, size_t raw, size_t len)
+AddressList<T>::AddressList(const FileBytes &fbytes, const size_t raw, const size_t len)
 : IHeader(fbytes, raw)
 , m_length(len)
 {}
@@ -43,7 +43,7 @@ IatDir::IatDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEnt
 }
 
 template <typename T> // requires variant declaration in header to link
-const char* AddressList<T>::getFieldName(int index)
+const char* AddressList<T>::getFieldName(const int index)
 {
     switch (index) {
         default: return "Import Address";
@@ -51,7 +51,7 @@ const char* AddressList<T>::getFieldName(int index)
 }
 
 template <typename T> // requires variant declaration in header to link
-const void* AddressList<T>::getFieldPtr(int index) const
+const void* AddressList<T>::getFieldPtr(const int index) const
 {
     size_t uindex = static_cast<size_t>(index);
     return (uindex < length())
@@ -59,14 +59,14 @@ const void* AddressList<T>::getFieldPtr(int index) const
         : nullptr;
 }
 
-const char* IatDir::getFieldName(int index)
+const char* IatDir::getFieldName(const int index)
 {
     switch (index) {
         default: return "<UNKNOWN>";
     }
 }
 
-const void* IatDir::getFieldPtr(int index) const
+const void* IatDir::getFieldPtr(const int index) const
 {
     switch (index) {
         default: return nullptr;

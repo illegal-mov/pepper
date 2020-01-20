@@ -148,7 +148,7 @@ public:
     OptionalHeader(const FileBytes &fbytes, const FileHeader &file);
 
     // member functions
-    const void* getFieldPtr(int index) const override;
+    const void* getFieldPtr(const int index) const override;
     const IMAGE_OPTIONAL_HEADER32* optional32() const { return (PIMAGE_OPTIONAL_HEADER32)hdr(); }
     const IMAGE_OPTIONAL_HEADER64* optional64() const { return (PIMAGE_OPTIONAL_HEADER64)hdr(); }
     // the `ImageBase` is important for address conversions,
@@ -156,8 +156,8 @@ public:
     uint64_t imageBase() const;
 
     // static functions
-    static const char* getFieldName(int index);
-    static const char* getCharacteristicName(int index);
+    static const char* getFieldName(const int index);
+    static const char* getCharacteristicName(const int index);
 };
 
 /* DataDirectory is an array of structures built in to the OptionalHeader.
@@ -194,12 +194,12 @@ public:
         return m_directoryEntries;
     }
 
-    const void* getFieldPtr(int index) const;
-    int length() const { return _NUM_ENTRIES; };
+    const void* getFieldPtr(const int index) const;
+    size_t length() const { return _NUM_ENTRIES; };
 
     // static functions
-    static const char* getFieldName(int index);
-    static const char* getDirectoryEntryName(int index) { return getFieldName(index); }
+    static const char* getFieldName(const int index);
+    static const char* getDirectoryEntryName(const int index) { return getFieldName(index); }
 };
 } // namespace Pepper
 

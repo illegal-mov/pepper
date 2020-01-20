@@ -47,20 +47,20 @@ public:
     : IHeader()
     {}
 
-    CallbacksTable(const PeFile &pe, const FileBytes &fbytes, size_t raw);
+    CallbacksTable(const PeFile &pe, const FileBytes &fbytes, const size_t raw);
 
     // member functions
-    const void* getFieldPtr(int index) const override;
+    const void* getFieldPtr(const int index) const override;
 
     // get array element or 0 if out of range
-    T callbackAva(int index) const
+    T callbackAva(const int index) const
     {
         T *ret = (T*)getFieldPtr(index);
         return (ret == nullptr) ? 0 : *ret;
     }
 
     // get array element or 0 if out of range
-    T callbackRaw(int index) const
+    T callbackRaw(const int index) const
     {
         T *ret = (T*)getFieldPtr(index);
         return (ret == nullptr) ? 0 : *ret - s_codeDiff;
@@ -69,7 +69,7 @@ public:
     size_t length() const { return m_length; }
 
     // static functions
-    static const char* getFieldName(int index);
+    static const char* getFieldName(const int index);
 };
 
 /* The TLS directory is a single 32-bit or 64-bit data structure.
@@ -109,14 +109,14 @@ public:
     }
 
     // member functions
-    const void* getFieldPtr(int index) const override;
+    const void* getFieldPtr(const int index) const override;
     const IMAGE_TLS_DIRECTORY32*   tls32() const { return (PIMAGE_TLS_DIRECTORY32)dir(); }
     const IMAGE_TLS_DIRECTORY64*   tls64() const { return (PIMAGE_TLS_DIRECTORY64)dir(); }
     const CallbacksTable<uint32_t>* cbt32() const { return Ident::dirExists(*this) ? &m_callbacks32 : nullptr; }
     const CallbacksTable<uint64_t>* cbt64() const { return Ident::dirExists(*this) ? &m_callbacks64 : nullptr; }
 
     // static functions
-    static const char* getFieldName(int index);
+    static const char* getFieldName(const int index);
 };
 
 // variant declarations

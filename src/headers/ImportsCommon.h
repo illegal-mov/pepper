@@ -62,19 +62,19 @@ public:
     : IHeader()
     {}
 
-    ImportName(const FileBytes &fbytes, size_t raw)
+    ImportName(const FileBytes &fbytes, const size_t raw)
     : IHeader(fbytes, raw)
     {}
 
     // member functions
-    const void* getFieldPtr(int index) const override;
+    const void* getFieldPtr(const int index) const override;
     const IMAGE_IMPORT_BY_NAME* hintname() const
     {
         return (PIMAGE_IMPORT_BY_NAME)hdr();
     }
 
     // static functions
-    static const char* getFieldName(int index);
+    static const char* getFieldName(const int index);
 };
 
 /* An IMAGE_THUNK_DATA struct
@@ -94,20 +94,20 @@ public:
     };
 
     // constructor for import by ordinal (when OrdinalFlag is set)
-    ImportThunk(const FileBytes &fbytes, size_t raw, std::string ordstr)
+    ImportThunk(const FileBytes &fbytes, const size_t raw, std::string ordstr)
     : IHeader(fbytes, raw)
     , m_hintname()
     , m_ordstr(ordstr)
     {}
 
     // constructor for regular import
-    ImportThunk(const FileBytes &fbytes, size_t raw)
+    ImportThunk(const FileBytes &fbytes, const size_t raw)
     : IHeader(fbytes, raw)
     , m_hintname(fbytes, thunk()->HintNameTableRVA - *s_pDiskToMemDiff)
     {}
 
     // member functions
-    const void* getFieldPtr(int index) const override;
+    const void* getFieldPtr(const int index) const override;
     const T* thunk() const { return (T*)hdr(); }
 
     const ImportName* importname() const
@@ -121,7 +121,7 @@ public:
     }
 
     // static functions
-    static const char* getFieldName(int index);
+    static const char* getFieldName(const int index);
 };
 
 /* Has members that point to a variable-length array of ImportThunks
@@ -154,7 +154,7 @@ private:
     void makeDescriptor(const PeFile &pe, const FileBytes &fbytes);
 
     template <typename U>
-    void readThunks(const FileBytes &fbytes, size_t raw);
+    void readThunks(const FileBytes &fbytes, const size_t raw);
 
     template <typename U>
     void readAddresses(size_t raw);
@@ -162,7 +162,7 @@ public:
     // this enum is defined in template specializations
     enum Fields : int {};
 
-    GenericImportDescriptor(const PeFile &pe, const FileBytes &fbytes, size_t raw);
+    GenericImportDescriptor(const PeFile &pe, const FileBytes &fbytes, const size_t raw);
 
     GenericImportDescriptor(const GenericImportDescriptor &id)
     : IHeader(id)
@@ -182,7 +182,7 @@ public:
     }
 
     // member functions
-    const void* getFieldPtr(int index) const override;
+    const void* getFieldPtr(const int index) const override;
     const T* descriptor() const { return (T*)hdr(); }
 
     const char* dllName() const;
@@ -196,7 +196,7 @@ public:
     size_t addressesLength() const { return m_addresses32.size(); }
 
     // static functions
-    static const char* getFieldName(int index);
+    static const char* getFieldName(const int index);
 };
 
 template<>

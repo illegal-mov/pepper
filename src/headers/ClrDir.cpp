@@ -44,7 +44,7 @@ ClrDir::ClrDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEnt
     }
 }
 
-const char* ClrDir::getHeaderName(int index)
+const char* ClrDir::getHeaderName(const int index)
 {
     switch (index) {
         case CLR_METADATA     : return "Metadata";
@@ -58,7 +58,7 @@ const char* ClrDir::getHeaderName(int index)
     }
 }
 
-const void* ClrDir::getHeaderPtr(int index) const
+const void* ClrDir::getHeaderPtr(const int index) const
 {
     switch (index) {
         case CLR_METADATA     : return &m_Meta;
@@ -72,7 +72,7 @@ const void* ClrDir::getHeaderPtr(int index) const
     }
 }
 
-const char* ClrDir::getFieldName(int index)
+const char* ClrDir::getFieldName(const int index)
 {
     switch (index) {
         case SIZE                 : return "Size";
@@ -84,7 +84,7 @@ const char* ClrDir::getFieldName(int index)
     }
 }
 
-const void* ClrDir::getFieldPtr(int index) const
+const void* ClrDir::getFieldPtr(const int index) const
 {
     switch (index) {
         case SIZE                 : return &clr()->Size;

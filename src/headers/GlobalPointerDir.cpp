@@ -12,14 +12,14 @@ GlobalPointerDir::GlobalPointerDir(const PeFile &pe, const FileBytes &fbytes, co
     }
 }
 
-const char* GlobalPointerDir::getFieldName(int index)
+const char* GlobalPointerDir::getFieldName(const int index)
 {
     switch (index) {
         default: return "<UNKNOWN>";
     }
 }
 
-const void* GlobalPointerDir::getFieldPtr(int index) const
+const void* GlobalPointerDir::getFieldPtr(const int index) const
 {
     switch (index) {
         default: return nullptr;

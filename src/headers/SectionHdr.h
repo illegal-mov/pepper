@@ -30,6 +30,8 @@ class FileHeader;
  */
 class SectionHeaderEntry final : public IHeader {
 public:
+    static constexpr int ALIGN_NYBBLE = 0x00F00000;
+
     enum Fields {
         NAME,
         VIRTUAL_SIZE,
@@ -89,18 +91,18 @@ public:
         MEM_WRITE       = 0x80000000,
     };
 
-    SectionHeaderEntry(const FileBytes &fbytes, size_t raw)
+    SectionHeaderEntry(const FileBytes &fbytes, const size_t raw)
     : IHeader(fbytes, raw)
     {}
 
     // member functions
-    const void* getFieldPtr(int index) const override;
+    const void* getFieldPtr(const int index) const override;
     const IMAGE_SECTION_HEADER* entry() const { return (IMAGE_SECTION_HEADER*)hdr(); }
 
     // static functions
-    static const char* getFieldName(int index);
-    static const char* getCharacteristicName(int index);
-    static const char* getCharacteristicAlignName(int alignNybble);
+    static const char* getFieldName(const int index);
+    static const char* getCharacteristicName(const int index);
+    static const char* getCharacteristicAlignName(const int alignNybble);
 };
 
 /* Section headers exist immediately after the Optional header.
@@ -120,9 +122,9 @@ public:
     size_t length() const { return m_elements.size(); }
 
     // static functions
-    static const char* getFieldName(int index);
-    static const char* getCharacteristicName(int index);
-    static const char* getCharacteristicAlignName(int index);
+    static const char* getFieldName(const int index);
+    static const char* getCharacteristicName(const int index);
+    static const char* getCharacteristicAlignName(const int alignNybble);
 };
 } // namespace Pepper
 

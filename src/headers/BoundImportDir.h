@@ -61,10 +61,10 @@ public:
 
     // member functions
 //  const IMAGE_BOUND_IMPORT_DIRECTORY* imports() const { return (PIMAGE_)dir(); }
-    const void* getFieldPtr(int index) const override;
+    const void* getFieldPtr(const int index) const override;
 
     // static functions
-    static const char* getFieldName(int index);
+    static const char* getFieldName(const int index);
 };
 } // namespace Pepper
 

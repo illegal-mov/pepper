@@ -21,7 +21,7 @@ public:
 
     // member functions
     const std::shared_ptr<char>& bytes() const { return m_bytes; }
-    void readBytes(size_t pos, char *buf, size_t bufLen) const;
+    void readBytes(const size_t pos, char *buf, const size_t bufLen) const;
 
     // static functions
     static size_t getFileSize(std::ifstream &in);

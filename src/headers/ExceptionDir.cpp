@@ -39,7 +39,7 @@ ExceptionDir::ExceptionDir(const PeFile &pe, const FileBytes &fbytes, const Data
 }
 
 template<>
-const void* FunctionTableEntry32::getFieldPtr(int index) const
+const void* FunctionTableEntry32::getFieldPtr(const int index) const
 {
     switch (index) {
         case BEGIN_ADDRESS     : return &entry()->BeginAddress;
@@ -52,7 +52,7 @@ const void* FunctionTableEntry32::getFieldPtr(int index) const
 }
 
 template<>
-const char* FunctionTableEntry32::getFieldName(int index)
+const char* FunctionTableEntry32::getFieldName(const int index)
 {
     switch (index) {
         case BEGIN_ADDRESS     : return "Pointer to Function Start";
@@ -65,7 +65,7 @@ const char* FunctionTableEntry32::getFieldName(int index)
 }
 
 template<>
-const void* FunctionTableEntry64::getFieldPtr(int index) const
+const void* FunctionTableEntry64::getFieldPtr(const int index) const
 {
     switch (index) {
         case BEGIN_ADDRESS     : return &entry()->BeginAddress;
@@ -76,7 +76,7 @@ const void* FunctionTableEntry64::getFieldPtr(int index) const
 }
 
 template<>
-const char* FunctionTableEntry64::getFieldName(int index)
+const char* FunctionTableEntry64::getFieldName(const int index)
 {
     switch (index) {
         case BEGIN_ADDRESS     : return "Pointer to Function Start";
@@ -87,7 +87,7 @@ const char* FunctionTableEntry64::getFieldName(int index)
 }
 
 template<>
-const void* FunctionTableEntryArm::getFieldPtr(int index) const
+const void* FunctionTableEntryArm::getFieldPtr(const int index) const
 {
     switch (index) {
         case BEGIN_ADDRESS: return   &entry()->BeginAddress;
@@ -97,7 +97,7 @@ const void* FunctionTableEntryArm::getFieldPtr(int index) const
 }
 
 template<>
-const char* FunctionTableEntryArm::getFieldName(int index)
+const char* FunctionTableEntryArm::getFieldName(const int index)
 {
     switch (index) {
         case BEGIN_ADDRESS: return "Pointer to Function Start";
@@ -106,14 +106,14 @@ const char* FunctionTableEntryArm::getFieldName(int index)
     }
 }
 
-const void* ExceptionDir::getFieldPtr(int index) const
+const void* ExceptionDir::getFieldPtr(const int index) const
 {
     switch (index) {
         default: return nullptr;
     }
 }
 
-const char* ExceptionDir::getFieldName(int index)
+const char* ExceptionDir::getFieldName(const int index)
 {
     switch (index) {
         default: return "<UNKNOWN>";

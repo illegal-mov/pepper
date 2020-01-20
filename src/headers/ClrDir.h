@@ -99,12 +99,12 @@ public:
     }
 
     const IMAGE_COR20_HEADER* clr() const { return (PIMAGE_COR20_HEADER)dir(); }
-    const void* getHeaderPtr(int index) const;
-    const void* getFieldPtr(int index) const override;
+    const void* getHeaderPtr(const int index) const;
+    const void* getFieldPtr(const int index) const override;
 
     // static functions
-    static const char* getHeaderName(int index);
-    static const char* getFieldName(int index);
+    static const char* getHeaderName(const int index);
+    static const char* getFieldName(const int index);
 };
 } // namespace Pepper
 

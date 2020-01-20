@@ -36,10 +36,10 @@ FileBytes::FileBytes(const std::string &path)
 /* Copy `bufLen` file bytes starting from `pos`
  * into the memory space pointed to by `buf`
  */
-void FileBytes::readBytes(size_t pos, char *buf, size_t bufLen) const
+void FileBytes::readBytes(const size_t pos, char *buf, const size_t bufLen) const
 {
     if (pos < m_fsize) {
-        size_t min = (pos + bufLen <= m_fsize)
+        const size_t min = (pos + bufLen <= m_fsize)
             ? bufLen
             : m_fsize - pos;
         memcpy(buf, &bytes().get()[pos], min);
@@ -51,7 +51,7 @@ void FileBytes::readBytes(size_t pos, char *buf, size_t bufLen) const
 size_t FileBytes::getFileSize(std::ifstream &in)
 {
     in.seekg(0, in.end);
-    size_t size = static_cast<size_t>(in.tellg());
+    const size_t size = static_cast<size_t>(in.tellg());
     in.seekg(0);
     return size;
 }

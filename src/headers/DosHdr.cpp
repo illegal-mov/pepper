@@ -2,7 +2,7 @@
 
 using namespace Pepper;
 
-const char* DosHeader::getFieldName(int index)
+const char* DosHeader::getFieldName(const int index)
 {
     switch (index) {
         case E_MAGIC   : return "Signature";
@@ -28,7 +28,7 @@ const char* DosHeader::getFieldName(int index)
     }
 }
 
-const void* DosHeader::getFieldPtr(int index) const
+const void* DosHeader::getFieldPtr(const int index) const
 {
     switch (index) {
         case E_MAGIC   : return &dos()->e_magic;

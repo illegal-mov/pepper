@@ -50,16 +50,16 @@ public:
     : IHeader()
     {}
 
-    DebugRsds(const FileBytes &fbytes, size_t raw)
+    DebugRsds(const FileBytes &fbytes, const size_t raw)
     : IHeader(fbytes, raw)
     {}
 
     // member functions
-    const void* getFieldPtr(int index) const override;
+    const void* getFieldPtr(const int index) const override;
     const RSDSI* rsds() const { return (PRSDSI)hdr(); }
 
     // static functions
-    static const char* getFieldName(int index);
+    static const char* getFieldName(const int index);
 };
 
 /* An IMAGE_DEBUG_DIRECTORY struct.
@@ -103,16 +103,16 @@ public:
     , m_dbgRsds()
     {}
 
-    DebugEntry(const FileBytes &fbytes, size_t raw);
+    DebugEntry(const FileBytes &fbytes, const size_t raw);
 
     // member functions
-    const void* getFieldPtr(int index) const override;
+    const void* getFieldPtr(const int index) const override;
     const IMAGE_DEBUG_DIRECTORY* dbg() const { return (PIMAGE_DEBUG_DIRECTORY)hdr(); }
     const DebugRsds* rsds() const { return &m_dbgRsds; }
 
     // static functions
-    static const char* getFieldName(int index);
-    static const char* getDebugTypeName(int index);
+    static const char* getFieldName(const int index);
+    static const char* getDebugTypeName(const int index);
 };
 
 /* Null-terminated array of IMAGE_DEBUG_DIRECTORY structs.
@@ -133,10 +133,10 @@ public:
 
     // member functions
     const std::vector<DebugEntry>& entries() const { return m_elements; }
-    const void* getFieldPtr(int index) const override;
+    const void* getFieldPtr(const int index) const override;
 
     // static functions
-    static const char* getFieldName(int index);
+    static const char* getFieldName(const int index);
 };
 } // namespace Pepper
 

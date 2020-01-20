@@ -18,7 +18,7 @@ protected:
     IHeader()
     {}
 
-    IHeader(const FileBytes &fbytes, size_t offset)
+    IHeader(const FileBytes &fbytes, const size_t offset)
     : m_headerPtr(fbytes.bytes())
     , m_baseOffset(offset)
     {}
@@ -39,7 +39,7 @@ public:
     const char* hdr() const { return &m_headerPtr.get()[hdrOffset()]; }
 
     // only derived classes know how to return pointers to given header fields
-    virtual const void* getFieldPtr(int fieldIndex) const = 0;
+    virtual const void* getFieldPtr(const int fieldIndex) const = 0;
 };
 } // namespace Pepper
 

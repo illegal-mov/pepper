@@ -7,14 +7,14 @@ ClrExportJump::ClrExportJump(const PeFile &pe, const FileBytes &fbytes, const Da
 : IDirectory(pe, fbytes, dde)
 {}
 
-const char* ClrExportJump::getFieldName(int index)
+const char* ClrExportJump::getFieldName(const int index)
 {
     switch (index) {
         default: return "<UNKNOWN>";
     }
 }
 
-const void* ClrExportJump::getFieldPtr(int index) const
+const void* ClrExportJump::getFieldPtr(const int index) const
 {
     switch (index) {
         default: return nullptr;

@@ -7,7 +7,7 @@ using namespace Pepper;
 size_t ExportAddressTable::s_diskToMemDiff = 0;
 size_t ExportNameTable::s_diskToMemDiff = 0;
 
-ExportAddressTable::ExportAddressTable(const PeFile &pe, const FileBytes &fbytes, size_t raw, size_t len)
+ExportAddressTable::ExportAddressTable(const PeFile &pe, const FileBytes &fbytes, const size_t raw, const size_t len)
 : IHeader(fbytes, raw)
 , m_length(len)
 {
@@ -15,14 +15,14 @@ ExportAddressTable::ExportAddressTable(const PeFile &pe, const FileBytes &fbytes
     s_diskToMemDiff = Convert::getRvaToRawDiff(pe, addresses()[0]);
 }
 
-ExportNameTable::ExportNameTable(const PeFile &pe, const FileBytes &fbytes, size_t raw, size_t len)
+ExportNameTable::ExportNameTable(const PeFile &pe, const FileBytes &fbytes, const size_t raw, const size_t len)
 : IHeader(fbytes, raw)
 , m_length(len)
 {
     s_diskToMemDiff = Convert::getRvaToRawDiff(pe, addresses()[0]);
 }
 
-ExportOrdinalTable::ExportOrdinalTable(const FileBytes &fbytes, size_t raw, size_t len)
+ExportOrdinalTable::ExportOrdinalTable(const FileBytes &fbytes, const size_t raw, const size_t len)
 : IHeader(fbytes, raw)
 , m_length(len)
 {}
@@ -51,14 +51,14 @@ ExportDir::ExportDir(const PeFile &pe, const FileBytes &fbytes, const DataDirect
     }
 }
 
-const char* ExportAddressTable::getFieldName(int index)
+const char* ExportAddressTable::getFieldName(const int index)
 {
     switch (index) {
         default : return "Exported Function Address";
     }
 }
 
-const void* ExportAddressTable::getFieldPtr(int index) const
+const void* ExportAddressTable::getFieldPtr(const int index) const
 {
     size_t uindex = static_cast<size_t>(index);
     return (uindex < length())
@@ -66,14 +66,14 @@ const void* ExportAddressTable::getFieldPtr(int index) const
         : nullptr;
 }
 
-const char* ExportNameTable::getFieldName(int index)
+const char* ExportNameTable::getFieldName(const int index)
 {
     switch (index) {
         default : return "Exported Function Name";
     }
 }
 
-const void* ExportNameTable::getFieldPtr(int index) const
+const void* ExportNameTable::getFieldPtr(const int index) const
 {
     size_t uindex = static_cast<size_t>(index);
     return (uindex < length())
@@ -81,14 +81,14 @@ const void* ExportNameTable::getFieldPtr(int index) const
         : nullptr;
 }
 
-const char* ExportOrdinalTable::getFieldName(int index)
+const char* ExportOrdinalTable::getFieldName(const int index)
 {
     switch (index) {
         default : return "Exported Function Ordinal";
     }
 }
 
-const void* ExportOrdinalTable::getFieldPtr(int index) const
+const void* ExportOrdinalTable::getFieldPtr(const int index) const
 {
     size_t uindex = static_cast<size_t>(index);
     return (uindex < length())
@@ -96,7 +96,7 @@ const void* ExportOrdinalTable::getFieldPtr(int index) const
         : nullptr;
 }
 
-const char* ExportDir::getFieldName(int index)
+const char* ExportDir::getFieldName(const int index)
 {
     switch (index) {
         case EXPORT_FLAGS            : return "Export Flags";
@@ -114,7 +114,7 @@ const char* ExportDir::getFieldName(int index)
     }
 }
 
-const void* ExportDir::getFieldPtr(int index) const
+const void* ExportDir::getFieldPtr(const int index) const
 {
     switch (index) {
         case EXPORT_FLAGS            : return &xport()->ExportFlags;

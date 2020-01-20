@@ -7,14 +7,14 @@ ClrVTableFixup::ClrVTableFixup(const PeFile &pe, const FileBytes &fbytes, const 
 : IDirectory(pe, fbytes, dde)
 {}
 
-const char* ClrVTableFixup::getFieldName(int index)
+const char* ClrVTableFixup::getFieldName(const int index)
 {
     switch (index) {
         default: return "<UNKNOWN>";
     }
 }
 
-const void* ClrVTableFixup::getFieldPtr(int index) const
+const void* ClrVTableFixup::getFieldPtr(const int index) const
 {
     switch (index) {
         default: return nullptr;

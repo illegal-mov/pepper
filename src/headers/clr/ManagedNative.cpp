@@ -7,14 +7,14 @@ ClrNativeHeader::ClrNativeHeader(const PeFile &pe, const FileBytes &fbytes, cons
 : IDirectory(pe, fbytes, dde)
 {}
 
-const char* ClrNativeHeader::getFieldName(int index)
+const char* ClrNativeHeader::getFieldName(const int index)
 {
     switch (index) {
         default: return "<UNKNOWN>";
     }
 }
 
-const void* ClrNativeHeader::getFieldPtr(int index) const
+const void* ClrNativeHeader::getFieldPtr(const int index) const
 {
     switch (index) {
         default: return nullptr;

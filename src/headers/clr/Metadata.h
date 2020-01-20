@@ -37,7 +37,7 @@ class DataDirectoryEntry;
  */
 class ClrStream final : public IHeader {
 private:
-    static int *s_pMetadataBase;
+    static size_t *s_pMetadataBase;
 public:
     enum Fields {
         OFFSET,
@@ -50,12 +50,12 @@ public:
     : IHeader()
     {}
 
-    ClrStream(const FileBytes &fbytes, size_t raw)
+    ClrStream(const FileBytes &fbytes, const size_t raw)
     : IHeader(fbytes, raw)
     {}
 
     // member functions
-    const void* getFieldPtr(int index) const override;
+    const void* getFieldPtr(const int index) const override;
     const IMAGE_COR20_METADATA_STREAM_HEADER* stream() const
     {
         return (PIMAGE_COR20_METADATA_STREAM_HEADER)hdr();
@@ -67,7 +67,7 @@ public:
     }
 
     // static functions
-    static const char* getFieldName(int index);
+    static const char* getFieldName(const int index);
 };
 
 /* Exactly one COR20_METADATA_HEADER followed by a variable-number of STREAM_HEADERS
@@ -75,7 +75,7 @@ public:
 class ClrMetadata final : public IDirectory {
 private:
     std::vector<ClrStream> m_streams{};
-    static int s_metadataBase;
+    static size_t s_metadataBase;
 public:
     enum Fields {
         SIGNATURE,
@@ -98,10 +98,10 @@ public:
     // member functions
     const IMAGE_COR20_METADATA_HEADER* metadata() const { return (PIMAGE_COR20_METADATA_HEADER)dir(); }
     const std::vector<ClrStream>& streams() const { return m_streams; }
-    const void* getFieldPtr(int index) const override;
+    const void* getFieldPtr(const int index) const override;
 
     // static functions
-    static const char* getFieldName(int index);
+    static const char* getFieldName(const int index);
 
     // classes that need special access to s_metadataBase
     friend class ClrStream;

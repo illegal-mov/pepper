@@ -5,15 +5,15 @@
 
 using namespace Pepper;
 
-int  ClrMetadata::s_metadataBase = 0;
-int *ClrStream::s_pMetadataBase  = &ClrMetadata::s_metadataBase;
+size_t  ClrMetadata::s_metadataBase = 0;
+size_t *ClrStream::s_pMetadataBase  = &ClrMetadata::s_metadataBase;
 
 ClrMetadata::ClrMetadata(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde)
 : IDirectory(pe, fbytes, dde)
 {
     s_metadataBase = dirOffset();
 
-    size_t numStreams = *(uint16_t*)getFieldPtr(NUMBER_OF_STREAMS);
+    const uint16_t numStreams = *(uint16_t*)getFieldPtr(NUMBER_OF_STREAMS);
     m_streams.reserve(numStreams);
 
     /* Because of the length-prefixed string in the middle of the
@@ -26,7 +26,7 @@ ClrMetadata::ClrMetadata(const PeFile &pe, const FileBytes &fbytes, const DataDi
         ClrStream tmp(fbytes, dirOffset() + pos);
         m_streams.push_back(tmp);
 
-        char *name = (char*)tmp.getFieldPtr(ClrStream::NAME);
+        const char *name = (char*)tmp.getFieldPtr(ClrStream::NAME);
         // it is important that the member `Name[]` counts as zero bytes
         pos += sizeof(IMAGE_COR20_METADATA_STREAM_HEADER) + strlen(name) + 1;
         // align to next 4-byte boundary
@@ -34,7 +34,7 @@ ClrMetadata::ClrMetadata(const PeFile &pe, const FileBytes &fbytes, const DataDi
     }
 }
 
-const char* ClrStream::getFieldName(int index)
+const char* ClrStream::getFieldName(const int index)
 {
     switch (index) {
         case OFFSET: return "Offset";
@@ -44,7 +44,7 @@ const char* ClrStream::getFieldName(int index)
     }
 }
 
-const void* ClrStream::getFieldPtr(int index) const
+const void* ClrStream::getFieldPtr(const int index) const
 {
     switch (index) {
         case OFFSET: return &stream()->Offset;
@@ -54,7 +54,7 @@ const void* ClrStream::getFieldPtr(int index) const
     }
 }
 
-const char* ClrMetadata::getFieldName(int index)
+const char* ClrMetadata::getFieldName(const int index)
 {
     switch (index) {
         case SIGNATURE        : return "Signature";
@@ -69,7 +69,7 @@ const char* ClrMetadata::getFieldName(int index)
     }
 }
 
-const void* ClrMetadata::getFieldPtr(int index) const
+const void* ClrMetadata::getFieldPtr(const int index) const
 {
     switch (index) {
         case SIGNATURE        : return &metadata()->Signature;

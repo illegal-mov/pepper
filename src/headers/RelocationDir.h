@@ -29,7 +29,7 @@ class DataDirectoryEntry;
  */
 class RelocationTable final : public IHeader {
 private:
-    int m_length{};
+    size_t m_length{};
     const IMAGE_BASE_RELOCATION_ENTRY* relocations() const { return (IMAGE_BASE_RELOCATION_ENTRY*)hdr(); }
 public:
     enum Fields {
@@ -59,26 +59,26 @@ public:
     : IHeader()
     {}
 
-    RelocationTable(const FileBytes &fbytes, size_t raw, int len)
+    RelocationTable(const FileBytes &fbytes, const size_t raw, const size_t len)
     : IHeader(fbytes, raw)
     , m_length(len)
     {}
 
     // member functions
-    const void* getFieldPtr(int index) const override;
+    const void* getFieldPtr(const int index) const override;
 
-    PIMAGE_BASE_RELOCATION_ENTRY entry(int index) const
+    PIMAGE_BASE_RELOCATION_ENTRY entry(const int index) const
     {
         return (PIMAGE_BASE_RELOCATION_ENTRY)getFieldPtr(index);
     }
 
-    int16_t type(int index) const { return relocations()[index].Type & 0xF; }
-    int16_t offset(int index) const { return relocations()[index].Offset & 0x0FFF; }
-    int length() const { return m_length; }
+    int16_t type(const int index) const { return relocations()[index].Type & 0xF; }
+    int16_t offset(const int index) const { return relocations()[index].Offset & 0x0FFF; }
+    size_t length() const { return m_length; }
 
     // static functions
-    static const char* getFieldName(int index);
-    static const char* getRelocationTypeName(const PeFile &pe, int index);
+    static const char* getFieldName(const int index);
+    static const char* getRelocationTypeName(const PeFile &pe, const int index);
 };
 
 /* A single IMAGE_BASE_RELOCATION preceding the variable number of IMAGE_BASE_RELOCATION_ENTRY
@@ -91,7 +91,7 @@ public:
         _NUM_FIELDS,
     };
 
-    RelocationBase(const FileBytes &fbytes, size_t raw)
+    RelocationBase(const FileBytes &fbytes, const size_t raw)
     : IHeader(fbytes, raw)
     {}
 
@@ -100,11 +100,11 @@ public:
     {}
 
     // member functions
-    const void* getFieldPtr(int index) const override;
+    const void* getFieldPtr(const int index) const override;
     const IMAGE_BASE_RELOCATION* base() const { return (IMAGE_BASE_RELOCATION*)hdr(); }
 
     // static functions
-    static const char* getFieldName(int index);
+    static const char* getFieldName(const int index);
 };
 
 /* A RelocationBlock is an IMAGE_BASE_RELOCATION structure immediately
@@ -129,15 +129,15 @@ public:
     , m_relocTable()
     {}
 
-    RelocationBlock(const FileBytes &fbytes, size_t raw);
+    RelocationBlock(const FileBytes &fbytes, const size_t raw);
 
     // member functions
-    const void* getFieldPtr(int index) const override;
+    const void* getFieldPtr(const int index) const override;
     const RelocationBase*  relocBase()  const { return &m_relocBase; }
     const RelocationTable* relocTable() const { return &m_relocTable; }
 
     // static functions
-    static const char* getFieldName(int index);
+    static const char* getFieldName(const int index);
 };
 
 /* Variable-length array of RelocationBlocks
@@ -153,12 +153,12 @@ public:
     RelocationDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde);
 
     // member functions
-    const void* getFieldPtr(int index) const override;
+    const void* getFieldPtr(const int index) const override;
     const std::vector<RelocationBlock>& blocks() const { return m_elements; }
     size_t length() const { return m_elements.size(); }
 
     // static functions
-    static const char* getFieldName(int index);
+    static const char* getFieldName(const int index);
 };
 } // namespace Pepper
 

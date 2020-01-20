@@ -2,7 +2,7 @@
 
 using namespace Pepper;
 
-const char* DataDirectoryEntry::getFieldName(int index)
+const char* DataDirectoryEntry::getFieldName(const int index)
 {
     switch (index) {
         case VIRTUAL_ADDRESS: return "Virtual Address";
@@ -11,7 +11,7 @@ const char* DataDirectoryEntry::getFieldName(int index)
     }
 }
 
-const void* DataDirectoryEntry::getFieldPtr(int index) const
+const void* DataDirectoryEntry::getFieldPtr(const int index) const
 {
     switch (index) {
         case VIRTUAL_ADDRESS: return &entry()->VirtualAddress;

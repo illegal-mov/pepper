@@ -53,13 +53,13 @@ public:
     // defined in template specializations
     enum Fields : int {};
 
-    FunctionTableEntry(const FileBytes &fbytes, size_t raw)
+    FunctionTableEntry(const FileBytes &fbytes, const size_t raw)
     : IHeader(fbytes, raw)
     {}
 
     // member functions
     const T* entry() const { return (T*)hdr(); }
-    const void* getFieldPtr(int index) const override;
+    const void* getFieldPtr(const int index) const override;
 
     uint32_t     beginRaw() const { return entry()->BeginAddress - *s_pCodeDiff; }
     uint32_t     endRaw()   const { return entry()->EndAddress   - *s_pCodeDiff; }
@@ -67,7 +67,7 @@ public:
     const void*  codePtr()  const { return &mem()[beginRaw()]; }
 
     // static functions
-    static const char* getFieldName(int index);
+    static const char* getFieldName(const int index);
 };
 
 /* Variable-length array of architecture-specific exception structures.
@@ -119,11 +119,11 @@ public:
         return m_entriesArm;
     }
 
-    const void* getFieldPtr(int index) const override;
+    const void* getFieldPtr(const int index) const override;
     size_t length() const { return m_entries32.size(); }
 
     // static functions
-    static const char* getFieldName(int index);
+    static const char* getFieldName(const int index);
 
     // classes that need special access to s_codeDiff
     friend class FunctionTableEntry<IMAGE_EXCEPTION_ENTRY32>;

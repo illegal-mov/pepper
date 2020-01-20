@@ -91,16 +91,16 @@ public:
     : IHeader()
     {}
 
-    GenericResourceString(const FileBytes &fbytes, size_t raw);
+    GenericResourceString(const FileBytes &fbytes, const size_t raw);
 
     // member functions
-    const void* getFieldPtr(int index) const override;
+    const void* getFieldPtr(const int index) const override;
     const IMAGE_RESOURCE_DIR_STRING_U* string() const { return (PIMAGE_RESOURCE_DIR_STRING_U)hdr(); }
     uint16_t length() const { return string()->Length; }
     const std::string& name() const { return m_name; }
 
     // static functions
-    static const char* getFieldName(int index);
+    static const char* getFieldName(const int index);
 };
 
 /* A leaf in the resource tree.
@@ -124,7 +124,7 @@ public:
     : IHeader()
     {}
 
-    ResourceData(const FileBytes &fbytes, size_t raw, const ResourceNode *parent);
+    ResourceData(const FileBytes &fbytes, const size_t raw, const ResourceNode *parent);
 
     ResourceData(const ResourceData &rd)
     : IHeader(rd)
@@ -139,13 +139,13 @@ public:
     }
 
     // member functions
-    const void* getFieldPtr(int index) const override;
+    const void* getFieldPtr(const int index) const override;
     const IMAGE_RESOURCE_DATA* data() const { return (PIMAGE_RESOURCE_DATA)hdr(); }
     const char* bytes() const { return &mem()[data()->OffsetToData - *s_pDiskToMemDiff]; }
     uint32_t size() const { return data()->Size; }
 
     // static functions
-    static const char* getFieldName(int index);
+    static const char* getFieldName(const int index);
 };
 
 /* A pair of DWORDs describing an entry's type and offset;
@@ -171,7 +171,7 @@ public:
     : IHeader()
     {}
 
-    ResourceEntry(const FileBytes &fbytes, size_t raw, const ResourceNode *parent, std::map<uint32_t, ResourceData*> &dataMap);
+    ResourceEntry(const FileBytes &fbytes, const size_t raw, const ResourceNode *parent, std::map<uint32_t, ResourceData*> &dataMap);
 
     ResourceEntry(const ResourceEntry &re)
     : IHeader(re)
@@ -188,7 +188,7 @@ public:
     }
 
     // member functions
-    const void* getFieldPtr(int index) const override;
+    const void* getFieldPtr(const int index) const override;
     const IMAGE_RESOURCE_ENTRY* entry() const { return (PIMAGE_RESOURCE_ENTRY)hdr(); }
     bool isDirectory() const { return entry()->DataIsDirectory; }
     bool hasName() const { return entry()->NameIsString; }
@@ -197,7 +197,7 @@ public:
     const ResourceData* data() const { return m_data; }
 
     // static functions
-    static const char* getFieldName(int index);
+    static const char* getFieldName(const int index);
 };
 
 /* Exactly one RESOURCE_DIRECTORY immediately followed by a variable-length array of RESOURCE_ENTRY
@@ -222,7 +222,7 @@ public:
     : IHeader()
     {}
 
-    ResourceNode(const FileBytes &fbytes, size_t raw, const ResourceNode *parent, std::map<uint32_t, ResourceData*> &dataMap);
+    ResourceNode(const FileBytes &fbytes, const size_t raw, const ResourceNode *parent, std::map<uint32_t, ResourceData*> &dataMap);
 
     ResourceNode(const ResourceNode &rn)
     : IHeader(rn)
@@ -239,12 +239,12 @@ public:
     }
 
     // member functions
-    const void* getFieldPtr(int index) const override;
+    const void* getFieldPtr(const int index) const override;
     const IMAGE_RESOURCE_DIRECTORY* header() const { return (PIMAGE_RESOURCE_DIRECTORY)hdr(); }
     const std::vector<ResourceEntry>& entries() const { return m_entries; }
 
     // static functions
-    static const char* getFieldName(int index);
+    static const char* getFieldName(const int index);
 };
 
 /* The resource directory is a tree structure where each node has a variable-number of children.
@@ -271,12 +271,12 @@ public:
     const ResourceDir& operator=(const ResourceDir &rd) = delete;
 
     // member functions
-    const void* getFieldPtr(int index) const override;
+    const void* getFieldPtr(const int index) const override;
     const ResourceNode* resources() const { return m_root.get(); }
     const std::map<uint32_t, ResourceData*> map() const { return m_dataMap; }
 
     // static functions
-    static const char* getFieldName(int index);
+    static const char* getFieldName(const int index);
 
     // classes that need special access to s_rsrcBase
     friend class ResourceData;

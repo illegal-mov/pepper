@@ -86,23 +86,24 @@ public:
     FileHeader(const FileBytes &fbytes, const DosHeader &dos)
     : IHeader(fbytes, 0)
     {
-        uint16_t lfanew = *(uint16_t*)dos.getFieldPtr(DosHeader::E_LFANEW);
+        const uint16_t lfanew = *(uint16_t*)dos.getFieldPtr(DosHeader::E_LFANEW);
         m_baseOffset = static_cast<size_t>(lfanew) + 4; // NT signature is "PE\0\0"
 
-        int32_t sig = *(int32_t*)ntSig();
-        if (sig != 0x00004550 && sig != 0x50450000)
+        const int32_t sig = *(int32_t*)ntSig();
+        if (sig != 0x00004550 && sig != 0x50450000) {
             throw BadSignature("NT Header magic is not \"PE\"");
+        }
     }
 
     // member functions
     const IMAGE_FILE_HEADER* file() const { return (PIMAGE_FILE_HEADER)hdr(); }
-    const void* getFieldPtr(int index) const override;
+    const void* getFieldPtr(const int index) const override;
     const char* ntSig() const { return &((char*)hdr())[-4]; }
 
     // static functions
-    static const char* getFieldName(int index);
-    static const char* getMachineName(int id);
-    static const char* getCharacteristicName(int index);
+    static const char* getFieldName(const int index);
+    static const char* getMachineName(const int id);
+    static const char* getCharacteristicName(const int index);
 };
 } // namespace Pepper
 

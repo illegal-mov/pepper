@@ -42,7 +42,7 @@ public:
     DelayImportDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde);
 
     // member functions
-    const void* getFieldPtr(int index) const override;
+    const void* getFieldPtr(const int index) const override;
     const std::vector<DelayImportDescriptor>& descriptors() const
     {
         return m_descriptors;
@@ -51,7 +51,7 @@ public:
     size_t length() const { return m_descriptors.size(); }
 
     // static functions
-    static const char* getFieldName(int index);
+    static const char* getFieldName(const int index);
 
     // classes that need special access to s_diskToMemDiff
     friend class GenericImportDescriptor<IMAGE_DELAY_IMPORT_DESCRIPTOR>;

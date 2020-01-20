@@ -4,7 +4,7 @@
 
 using namespace Pepper;
 
-CodeIntegrity::CodeIntegrity(const FileBytes &fbytes, size_t raw)
+CodeIntegrity::CodeIntegrity(const FileBytes &fbytes, const size_t raw)
 : IHeader(fbytes, raw)
 {}
 
@@ -25,7 +25,7 @@ LoadConfigDir::LoadConfigDir(const PeFile &pe, const FileBytes &fbytes, const Da
     }
 }
 
-const char* CodeIntegrity::getFieldName(int index)
+const char* CodeIntegrity::getFieldName(const int index)
 {
     switch (index) {
         case FLAGS         : return "Flags";
@@ -36,7 +36,7 @@ const char* CodeIntegrity::getFieldName(int index)
     }
 }
 
-const void* CodeIntegrity::getFieldPtr(int index) const
+const void* CodeIntegrity::getFieldPtr(const int index) const
 {
     switch (index) {
         case FLAGS         : return &integrity()->Flags;
@@ -47,7 +47,7 @@ const void* CodeIntegrity::getFieldPtr(int index) const
     }
 }
 
-const char* LoadConfigDir::getFieldName(int index)
+const char* LoadConfigDir::getFieldName(const int index)
 {
     switch (index) {
         case SIZE                                          : return "Size";
@@ -108,7 +108,7 @@ const char* LoadConfigDir::getFieldName(int index)
     : (!is32bit && offsetof(IMAGE_LOAD_CONFIG_DIRECTORY64, FIELD) < size) \
     ? (void*)&ldcfg64()->FIELD : nullptr
 
-const void* LoadConfigDir::getFieldPtr(int index) const
+const void* LoadConfigDir::getFieldPtr(const int index) const
 {
     bool is32bit = Ident::is32bit(*m_pe);
     uint32_t size = ldcfg32()->Size;

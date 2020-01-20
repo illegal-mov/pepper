@@ -19,13 +19,13 @@ namespace Pepper { namespace Convert {
     };
 
     /* Use an RVA address to get the difference between RVAs and RAWs */
-    uint32_t getRvaToRawDiff(const PeFile &pe, uint64_t rva);
+    uint32_t getRvaToRawDiff(const PeFile &pe, const uint64_t rva);
 
     /* Use a RAW address to get the difference between RVAs and RAWs */
-    uint32_t getRawToRvaDiff(const PeFile &pe, uint64_t raw);
+    uint32_t getRawToRvaDiff(const PeFile &pe, const uint64_t raw);
 
     /* Convert an {AVA,RVA,RAW} to an {AVA,RVA,RAW} */
-    uint64_t convertAddr(const PeFile &pe, uint64_t addr, AddrType src, AddrType dst);
+    uint64_t convertAddr(const PeFile &pe, const uint64_t addr, AddrType src, AddrType dst);
 }}
 
 #endif

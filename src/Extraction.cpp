@@ -31,11 +31,7 @@ struct is_dumpable<CertificateEntry> {
 };
 
 template <typename T>
-<<<<<<< HEAD
-static bool genericDump(const std::string &path, const T &t, ExceptionFlag throwFlag)
-=======
 static bool genericDump(const std::string &path, const T &t, Extract::ExceptionFlag throwFlag)
->>>>>>> master
 {
     // `static_assert` knows at compile time when you've done a bad thing
     static_assert(is_dumpable<T>::value, "Cannot dump this type to disk");

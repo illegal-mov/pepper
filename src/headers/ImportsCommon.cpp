@@ -21,7 +21,7 @@ void GenericImportDescriptor<T>::readAddresses(size_t raw)
  */
 template <typename T> // for the class
 template <typename U> // for the function
-void GenericImportDescriptor<T>::readThunks(const FileBytes &fbytes, size_t raw)
+void GenericImportDescriptor<T>::readThunks(const FileBytes &fbytes, const size_t raw)
 {
     U *thunk = (U*)&mem()[raw];
     // count number of IMAGE_IMPORT_DESCRIPTORS up until the null descriptor
@@ -79,20 +79,20 @@ void GenericImportDescriptor<T>::makeDescriptor(const PeFile &pe, const FileByte
  * the implementations are practically the same.
  */
 template<>
-GenericImportDescriptor<IMAGE_IMPORT_DESCRIPTOR>::GenericImportDescriptor(const PeFile &pe, const FileBytes &fbytes, size_t raw)
+GenericImportDescriptor<IMAGE_IMPORT_DESCRIPTOR>::GenericImportDescriptor(const PeFile &pe, const FileBytes &fbytes, const size_t raw)
 : IHeader(fbytes, raw)
 {
     makeDescriptor<IMPORT_LOOKUP_TABLE_RVA, IMPORT_ADDRESS_TABLE_RVA, TIMESTAMP>(pe, fbytes);
 }
 
 template<>
-GenericImportDescriptor<IMAGE_DELAY_IMPORT_DESCRIPTOR>::GenericImportDescriptor(const PeFile &pe, const FileBytes &fbytes, size_t raw)
+GenericImportDescriptor<IMAGE_DELAY_IMPORT_DESCRIPTOR>::GenericImportDescriptor(const PeFile &pe, const FileBytes &fbytes, const size_t raw)
 : IHeader(fbytes, raw)
 {
     makeDescriptor<DELAY_IMPORT_NAME_TABLE_RVA, DELAY_IMPORT_ADDRESS_TABLE_RVA, TIMESTAMP>(pe, fbytes);
 }
 
-const char* ImportName::getFieldName(int index)
+const char* ImportName::getFieldName(const int index)
 {
     switch (index) {
         case HINT: return "Hint";
@@ -101,7 +101,7 @@ const char* ImportName::getFieldName(int index)
     }
 }
 
-const void* ImportName::getFieldPtr(int index) const
+const void* ImportName::getFieldPtr(const int index) const
 {
     switch (index) {
         case HINT: return &hintname()->Hint;
@@ -111,7 +111,7 @@ const void* ImportName::getFieldPtr(int index) const
 }
 
 template <typename T> // requires variant declaration in header to link
-const char* ImportThunk<T>::getFieldName(int index)
+const char* ImportThunk<T>::getFieldName(const int index)
 {
     switch (index) {
         case HINTNAMERVA: return "Pointer to Hint/Name Table";
@@ -120,7 +120,7 @@ const char* ImportThunk<T>::getFieldName(int index)
 }
 
 template <typename T> // requires variant declaration in header to link
-const void* ImportThunk<T>::getFieldPtr(int index) const
+const void* ImportThunk<T>::getFieldPtr(const int index) const
 {
     switch (index) {
         case HINTNAMERVA: return &thunk()->HintNameTableRVA;
@@ -129,7 +129,7 @@ const void* ImportThunk<T>::getFieldPtr(int index) const
 }
 
 template<>
-const char* GenericImportDescriptor<IMAGE_IMPORT_DESCRIPTOR>::getFieldName(int index)
+const char* GenericImportDescriptor<IMAGE_IMPORT_DESCRIPTOR>::getFieldName(const int index)
 {
     switch (index) {
         case IMPORT_LOOKUP_TABLE_RVA : return "Pointer to Import Lookup Table";
@@ -142,7 +142,7 @@ const char* GenericImportDescriptor<IMAGE_IMPORT_DESCRIPTOR>::getFieldName(int i
 }
 
 template<>
-const void* GenericImportDescriptor<IMAGE_IMPORT_DESCRIPTOR>::getFieldPtr(int index) const
+const void* GenericImportDescriptor<IMAGE_IMPORT_DESCRIPTOR>::getFieldPtr(const int index) const
 {
     switch (index) {
         case IMPORT_LOOKUP_TABLE_RVA : return &descriptor()->ImportLookupTableRVA;
@@ -162,7 +162,7 @@ const char* GenericImportDescriptor<IMAGE_IMPORT_DESCRIPTOR>::dllName() const
 }
 
 template<>
-const char* GenericImportDescriptor<IMAGE_DELAY_IMPORT_DESCRIPTOR>::getFieldName(int index)
+const char* GenericImportDescriptor<IMAGE_DELAY_IMPORT_DESCRIPTOR>::getFieldName(const int index)
 {
     switch (index) {
         case ATTRIBUTES                    : return "Attributes";
@@ -178,7 +178,7 @@ const char* GenericImportDescriptor<IMAGE_DELAY_IMPORT_DESCRIPTOR>::getFieldName
 }
 
 template<>
-const void* GenericImportDescriptor<IMAGE_DELAY_IMPORT_DESCRIPTOR>::getFieldPtr(int index) const
+const void* GenericImportDescriptor<IMAGE_DELAY_IMPORT_DESCRIPTOR>::getFieldPtr(const int index) const
 {
     switch (index) {
         case ATTRIBUTES                    : return &descriptor()->Attributes;

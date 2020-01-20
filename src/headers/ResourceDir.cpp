@@ -13,16 +13,16 @@ size_t *ResourceEntry::s_pRsrcBase = &ResourceDir::s_rsrcBase;
 size_t *ResourceData::s_pRsrcBase  = &ResourceDir::s_rsrcBase;
 
 template<>
-ResourceString::GenericResourceString(const FileBytes &fbytes, size_t raw)
+ResourceString::GenericResourceString(const FileBytes &fbytes, const size_t raw)
 : IHeader(fbytes, raw)
 , m_name((char*)getFieldPtr(NAME_STRING), length())
 {}
 
 template<>
-ResourceStringU::GenericResourceString(const FileBytes &fbytes, size_t raw)
+ResourceStringU::GenericResourceString(const FileBytes &fbytes, const size_t raw)
 : IHeader(fbytes, raw)
 {
-    uint16_t *strBytes = (uint16_t*)getFieldPtr(NAME_STRING);
+    const uint16_t *strBytes = (uint16_t*)getFieldPtr(NAME_STRING);
     m_name.resize(length());
     // I hate string encodings so much, so just hacky-copy each
     //  char16_t into a regular std::string and force ASCII range
@@ -31,17 +31,18 @@ ResourceStringU::GenericResourceString(const FileBytes &fbytes, size_t raw)
     }
 }
 
-ResourceData::ResourceData(const FileBytes &fbytes, size_t raw, const ResourceNode *parent)
+ResourceData::ResourceData(const FileBytes &fbytes, const size_t raw, const ResourceNode *parent)
 : IHeader(fbytes, raw)
 , m_parent(parent)
 {}
 
-ResourceEntry::ResourceEntry(const FileBytes &fbytes, size_t raw, const ResourceNode *parent, std::map<uint32_t, ResourceData*> &dataMap)
+ResourceEntry::ResourceEntry(const FileBytes &fbytes, const size_t raw, const ResourceNode *parent, std::map<uint32_t, ResourceData*> &dataMap)
 : IHeader(fbytes, raw)
 {
-    if (hasName())
+    if (hasName()) {
         m_rsrcName = new ResourceStringU(fbytes,
             *s_pRsrcBase + entry()->NameOffset);
+    }
 
     if (isDirectory()) {
         m_node = new ResourceNode(fbytes,
@@ -60,16 +61,17 @@ ResourceEntry::~ResourceEntry()
         m_rsrcName = nullptr;
     }
 
-    if (isDirectory())
+    if (isDirectory()) {
         delete m_node;
-    else
+    } else {
         delete m_data;
+    }
 
     // these members are union'd together, so only set one to nullptr
     m_node = nullptr;
 }
 
-ResourceNode::ResourceNode(const FileBytes &fbytes, size_t raw, const ResourceNode *parent, std::map<uint32_t, ResourceData*> &dataMap)
+ResourceNode::ResourceNode(const FileBytes &fbytes, const size_t raw, const ResourceNode *parent, std::map<uint32_t, ResourceData*> &dataMap)
 : IHeader(fbytes, raw)
 , m_parent(parent)
 {
@@ -79,12 +81,12 @@ ResourceNode::ResourceNode(const FileBytes &fbytes, size_t raw, const ResourceNo
     m_entries.reserve(numEntries);
 
     // construct each entry
-    size_t entriesBase = hdrOffset()
-                       + sizeof(IMAGE_RESOURCE_DIRECTORY);
-    for (size_t i=0; i < numEntries; i++)
+    size_t entriesBase = hdrOffset() + sizeof(IMAGE_RESOURCE_DIRECTORY);
+    for (size_t i=0; i < numEntries; i++) {
         m_entries.emplace_back(fbytes,
             entriesBase + (sizeof(IMAGE_RESOURCE_ENTRY) * i),
             this, dataMap);
+    }
 }
 
 ResourceDir::ResourceDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde)
@@ -98,7 +100,7 @@ ResourceDir::ResourceDir(const PeFile &pe, const FileBytes &fbytes, const DataDi
 }
 
 template <typename T> // requires variant declaration in header to link
-const char* GenericResourceString<T>::getFieldName(int index)
+const char* GenericResourceString<T>::getFieldName(const int index)
 {
     switch (index) {
         case LENGTH     : return "Length";
@@ -108,7 +110,7 @@ const char* GenericResourceString<T>::getFieldName(int index)
 }
 
 template <typename T> // requires variant declaration in header to link
-const void* GenericResourceString<T>::getFieldPtr(int index) const
+const void* GenericResourceString<T>::getFieldPtr(const int index) const
 {
     switch (index) {
         case LENGTH     : return &string()->Length;
@@ -117,7 +119,7 @@ const void* GenericResourceString<T>::getFieldPtr(int index) const
     }
 }
 
-const char* ResourceData::getFieldName(int index)
+const char* ResourceData::getFieldName(const int index)
 {
     switch (index) {
         case OFFSET_TO_DATA: return "Offset to Data";
@@ -128,7 +130,7 @@ const char* ResourceData::getFieldName(int index)
     }
 }
 
-const void* ResourceData::getFieldPtr(int index) const
+const void* ResourceData::getFieldPtr(const int index) const
 {
     switch (index) {
         case OFFSET_TO_DATA: return &data()->OffsetToData;
@@ -139,7 +141,7 @@ const void* ResourceData::getFieldPtr(int index) const
     }
 }
 
-const char* ResourceEntry::getFieldName(int index)
+const char* ResourceEntry::getFieldName(const int index)
 {
     switch (index) {
         case NAME          : return "Name";
@@ -148,7 +150,7 @@ const char* ResourceEntry::getFieldName(int index)
     }
 }
 
-const void* ResourceEntry::getFieldPtr(int index) const
+const void* ResourceEntry::getFieldPtr(const int index) const
 {
     switch (index) {
         case NAME          : return &entry()->Name;
@@ -157,7 +159,7 @@ const void* ResourceEntry::getFieldPtr(int index) const
     }
 }
 
-const char* ResourceNode::getFieldName(int index)
+const char* ResourceNode::getFieldName(const int index)
 {
     switch (index) {
         case CHARACTERISTICS        : return "Characteristics";
@@ -170,7 +172,7 @@ const char* ResourceNode::getFieldName(int index)
     }
 }
 
-const void* ResourceNode::getFieldPtr(int index) const
+const void* ResourceNode::getFieldPtr(const int index) const
 {
     switch (index) {
         case CHARACTERISTICS        : return &header()->Characteristics;
@@ -183,14 +185,14 @@ const void* ResourceNode::getFieldPtr(int index) const
     }
 }
 
-const char* ResourceDir::getFieldName(int index)
+const char* ResourceDir::getFieldName(const int index)
 {
     switch (index) {
         default: return "<UNKNOWN>";
     }
 }
 
-const void* ResourceDir::getFieldPtr(int index) const
+const void* ResourceDir::getFieldPtr(const int index) const
 {
     switch (index) {
         default: return nullptr;

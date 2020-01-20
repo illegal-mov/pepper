@@ -6,7 +6,7 @@
 
 using namespace Pepper;
 
-DebugEntry::DebugEntry(const FileBytes &fbytes, size_t raw)
+DebugEntry::DebugEntry(const FileBytes &fbytes, const size_t raw)
 : IHeader(fbytes, raw)
 , m_dbgRsds()
 {
@@ -17,15 +17,14 @@ DebugDir::DebugDir(const PeFile &pe, const FileBytes &fbytes, const DataDirector
 : IDirectory(pe, fbytes, dde)
 {
     if (Ident::dirExists(*this)) {
-        char null[sizeof(IMAGE_DEBUG_DIRECTORY)] = {0};
-        for (size_t i=0;
-        memcmp(&dir()[i*sizeof(null)], &null, sizeof(null));
-        i++)
+        const char null[sizeof(IMAGE_DEBUG_DIRECTORY)] = {0};
+        for (size_t i=0; memcmp(&dir()[i*sizeof(null)], &null, sizeof(null)); i++) {
             m_elements.emplace_back(fbytes, dirOffset() + i*sizeof(null));
+        }
     }
 }
 
-const char* DebugRsds::getFieldName(int index)
+const char* DebugRsds::getFieldName(const int index)
 {
     switch (index) {
         case SIGNATURE: return "Signature";
@@ -36,7 +35,7 @@ const char* DebugRsds::getFieldName(int index)
     }
 }
 
-const void* DebugRsds::getFieldPtr(int index) const
+const void* DebugRsds::getFieldPtr(const int index) const
 {
     switch (index) {
         case SIGNATURE: return &rsds()->Signature;
@@ -47,7 +46,7 @@ const void* DebugRsds::getFieldPtr(int index) const
     }
 }
 
-const char* DebugEntry::getFieldName(int index)
+const char* DebugEntry::getFieldName(const int index)
 {
     switch (index) {
         case CHARACTERISTICS    : return "Characteristics";
@@ -62,7 +61,7 @@ const char* DebugEntry::getFieldName(int index)
     }
 }
 
-const void* DebugEntry::getFieldPtr(int index) const
+const void* DebugEntry::getFieldPtr(const int index) const
 {
     switch (index) {
         case CHARACTERISTICS    : return &dbg()->Characteristics;
@@ -77,7 +76,7 @@ const void* DebugEntry::getFieldPtr(int index) const
     }
 }
 
-const char* DebugEntry::getDebugTypeName(int index)
+const char* DebugEntry::getDebugTypeName(const int index)
 {
     switch (index) {
         case UNKNOWN       : return "Unknown";
@@ -98,14 +97,14 @@ const char* DebugEntry::getDebugTypeName(int index)
     }
 }
 
-const char* DebugDir::getFieldName(int index)
+const char* DebugDir::getFieldName(const int index)
 {
     switch (index) {
         default: return "Debug Table";
     }
 }
 
-const void* DebugDir::getFieldPtr(int index) const
+const void* DebugDir::getFieldPtr(const int index) const
 {
     switch (index) {
         default: return nullptr;

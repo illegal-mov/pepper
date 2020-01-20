@@ -4,7 +4,7 @@
 
 using namespace Pepper;
 
-RelocationBlock::RelocationBlock(const FileBytes &fbytes, size_t raw)
+RelocationBlock::RelocationBlock(const FileBytes &fbytes, const size_t raw)
 : IHeader(fbytes, raw)
 , m_relocBase(fbytes, raw)
 , m_relocTable()
@@ -19,7 +19,7 @@ RelocationDir::RelocationDir(const PeFile &pe, const FileBytes &fbytes, const Da
 : IDirectory(pe, fbytes, dde)
 {
     if (Ident::dirExists(*this)) {
-        uint32_t bytesRead = 0;
+        size_t bytesRead = 0;
         while (bytesRead < dde.size()) {
             m_elements.emplace_back(fbytes, dirOffset() + bytesRead);
             PIMAGE_BASE_RELOCATION tmp = (PIMAGE_BASE_RELOCATION)&dir()[bytesRead];
@@ -36,7 +36,7 @@ RelocationDir::RelocationDir(const PeFile &pe, const FileBytes &fbytes, const Da
     }
 }
 
-const char* RelocationTable::getFieldName(int index)
+const char* RelocationTable::getFieldName(const int index)
 {
     switch (index) {
         case OFFSET: return "Offset";
@@ -45,7 +45,7 @@ const char* RelocationTable::getFieldName(int index)
     }
 }
 
-const char* RelocationTable::getRelocationTypeName(const PeFile &pe, int index)
+const char* RelocationTable::getRelocationTypeName(const PeFile &pe, const int index)
 {
     switch (index) {
         case ABSOLUTE      : return "Absolute";
@@ -73,14 +73,15 @@ const char* RelocationTable::getRelocationTypeName(const PeFile &pe, int index)
     return "<UNKNOWN>";
 }
 
-const void* RelocationTable::getFieldPtr(int index) const
+const void* RelocationTable::getFieldPtr(const int index) const
 {
-    return (0 <= index && index < length())
-    ? &relocations()[index]
+    size_t uindex = static_cast<size_t>(index);
+    return (uindex < length())
+    ? &relocations()[uindex]
     : nullptr;
 }
 
-const char* RelocationBase::getFieldName(int index)
+const char* RelocationBase::getFieldName(const int index)
 {
     switch (index) {
         case PAGE_RVA  : return "Pointer to Page";
@@ -89,7 +90,7 @@ const char* RelocationBase::getFieldName(int index)
     }
 }
 
-const void* RelocationBase::getFieldPtr(int index) const
+const void* RelocationBase::getFieldPtr(const int index) const
 {
     switch (index) {
         case PAGE_RVA  : return &base()->PageRVA;
@@ -98,7 +99,7 @@ const void* RelocationBase::getFieldPtr(int index) const
     }
 }
 
-const char* RelocationBlock::getFieldName(int index)
+const char* RelocationBlock::getFieldName(const int index)
 {
     switch (index) {
         case HEAD : return "Base Relocation";
@@ -107,7 +108,7 @@ const char* RelocationBlock::getFieldName(int index)
     }
 }
 
-const void* RelocationBlock::getFieldPtr(int index) const
+const void* RelocationBlock::getFieldPtr(const int index) const
 {
     switch (index) {
         case HEAD : return &m_relocBase;
@@ -116,14 +117,14 @@ const void* RelocationBlock::getFieldPtr(int index) const
     }
 }
 
-const char* RelocationDir::getFieldName(int index)
+const char* RelocationDir::getFieldName(const int index)
 {
     switch (index) {
         default: return "<UNKNOWN>";
     }
 }
 
-const void* RelocationDir::getFieldPtr(int index) const
+const void* RelocationDir::getFieldPtr(const int index) const
 {
     switch (index) {
         default: return nullptr;

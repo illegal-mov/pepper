@@ -12,14 +12,14 @@ BoundImportDir::BoundImportDir(const PeFile &pe, const FileBytes &fbytes, const 
     }
 }
 
-const char* BoundImportDir::getFieldName(int index)
+const char* BoundImportDir::getFieldName(const int index)
 {
     switch (index) {
         default: return "<UNKNOWN>";
     }
 }
 
-const void* BoundImportDir::getFieldPtr(int index) const
+const void* BoundImportDir::getFieldPtr(const int index) const
 {
     switch (index) {
         default: return nullptr;

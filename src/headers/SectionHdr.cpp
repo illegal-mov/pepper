@@ -6,16 +6,16 @@ using namespace Pepper;
 SectionHeaders::SectionHeaders(const FileBytes &fbytes, const FileHeader &file)
 {
     // find base of section headers
-    uint16_t optHdrSize = *(uint16_t*)file.getFieldPtr(FileHeader::SIZE_OF_OPTIONAL_HEADER);
-    size_t base = file.hdrOffset() + sizeof(IMAGE_FILE_HEADER) + optHdrSize;
+    const uint16_t optHdrSize = *(uint16_t*)file.getFieldPtr(FileHeader::SIZE_OF_OPTIONAL_HEADER);
+    const size_t base = file.hdrOffset() + sizeof(IMAGE_FILE_HEADER) + optHdrSize;
 
     // construct each section header
-    uint16_t length = *(uint16_t*)file.getFieldPtr(FileHeader::NUMBER_OF_SECTIONS);
+    const uint16_t length = *(uint16_t*)file.getFieldPtr(FileHeader::NUMBER_OF_SECTIONS);
     for (size_t i=0; i < length; i++)
         m_elements.emplace_back(fbytes, base + (i * sizeof(IMAGE_SECTION_HEADER)));
 }
 
-const char* SectionHeaderEntry::getFieldName(int index)
+const char* SectionHeaderEntry::getFieldName(const int index)
 {
     switch (index) {
         case NAME                   : return "Name";
@@ -32,7 +32,7 @@ const char* SectionHeaderEntry::getFieldName(int index)
     }
 }
 
-const void* SectionHeaderEntry::getFieldPtr(int index) const
+const void* SectionHeaderEntry::getFieldPtr(const int index) const
 {
     switch (index) {
         case NAME                   : return &entry()->Name;
@@ -49,7 +49,7 @@ const void* SectionHeaderEntry::getFieldPtr(int index) const
     }
 }
 
-const char* SectionHeaderEntry::getCharacteristicName(int index)
+const char* SectionHeaderEntry::getCharacteristicName(const int index)
 {
     // must cast to unsigned because of so many fields
     switch ((unsigned int)index) {
@@ -85,7 +85,7 @@ const char* SectionHeaderEntry::getCharacteristicName(int index)
     }
 }
 
-const char* SectionHeaderEntry::getCharacteristicAlignName(int alignNybble)
+const char* SectionHeaderEntry::getCharacteristicAlignName(const int alignNybble)
 {
     switch (alignNybble) {
         case ALIGN_1BYTES   : return "1-byte Alignment";
@@ -106,17 +106,17 @@ const char* SectionHeaderEntry::getCharacteristicAlignName(int alignNybble)
     }
 }
 
-const char* SectionHeaders::getFieldName(int index)
+const char* SectionHeaders::getFieldName(const int index)
 {
     return SectionHeaderEntry::getFieldName(index);
 }
 
-const char* SectionHeaders::getCharacteristicName(int index)
+const char* SectionHeaders::getCharacteristicName(const int index)
 {
     return SectionHeaderEntry::getCharacteristicName(index);
 }
 
-const char* SectionHeaders::getCharacteristicAlignName(int index)
+const char* SectionHeaders::getCharacteristicAlignName(const int index)
 {
     return SectionHeaderEntry::getCharacteristicAlignName(index);
 }

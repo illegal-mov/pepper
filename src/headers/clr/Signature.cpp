@@ -8,14 +8,14 @@ ClrSignature::ClrSignature(const PeFile &pe, const FileBytes &fbytes, const Data
 , m_length(dde.size())
 {}
 
-const char* ClrSignature::getFieldName(int index)
+const char* ClrSignature::getFieldName(const int index)
 {
     switch (index) {
         default: return "<UNKNOWN>";
     }
 }
 
-const void* ClrSignature::getFieldPtr(int index) const
+const void* ClrSignature::getFieldPtr(const int index) const
 {
     size_t uindex = static_cast<size_t>(index);
     return (uindex < length())
