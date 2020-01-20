@@ -12,11 +12,16 @@ namespace Pepper {
 }
 
 namespace Pepper { namespace Extract {
+    enum ExceptionFlag {
+        NO_THROW,
+        MAY_THROW,
+    };
+
     /* dump the resource data to disk */
-    bool dumpResource(const std::string &path, const ResourceData &rd, bool mayThrow=true);
+    bool dumpResource(const std::string &path, const ResourceData &rd, ExceptionFlag throwFlag);
 
     /* dump the certificate data disk */
-    bool dumpCertificate(const std::string &path, const CertificateEntry &ce, bool mayThrow=true);
+    bool dumpCertificate(const std::string &path, const CertificateEntry &ce, ExceptionFlag throwFlag);
 }}
 
 #endif
