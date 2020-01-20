@@ -93,8 +93,7 @@ ResourceDir::ResourceDir(const PeFile &pe, const FileBytes &fbytes, const DataDi
     if (Ident::dirExists(*this)) {
         s_diskToMemDiff = m_diffOfRvaRaw;
         s_rsrcBase = dirOffset();
-        std::unique_ptr<ResourceNode> tmp(new ResourceNode(fbytes, dirOffset(), nullptr, m_dataMap));
-        m_root = std::move(tmp);
+        m_root = std::make_unique<ResourceNode>(fbytes, dirOffset(), nullptr, m_dataMap);
     }
 }
 

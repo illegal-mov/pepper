@@ -24,8 +24,7 @@ FileBytes::FileBytes(const std::string &path)
     }
 
     // allocate memory, copy file bytes into memory
-    std::shared_ptr<char> tmp(new char [ m_fsize ]);
-    m_bytes = std::move(tmp);
+    m_bytes = std::shared_ptr<char>(new char [ m_fsize ], std::default_delete<char[]>());
     in.read(m_bytes.get(), static_cast<std::streamsize>(m_fsize));
     in.close();
 
