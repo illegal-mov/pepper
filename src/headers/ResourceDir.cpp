@@ -22,7 +22,7 @@ template<>
 ResourceStringU::GenericResourceString(const FileBytes &fbytes, const size_t raw)
 : IHeader(fbytes, raw)
 {
-    const uint16_t *strBytes = stringu()->NameString;
+    const uint16_t *strBytes = string()->NameString;
     m_name.resize(length());
     // I hate string encodings so much, so just hacky-copy each
     //  char16_t into a regular std::string and force ASCII range

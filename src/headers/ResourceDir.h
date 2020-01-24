@@ -68,11 +68,11 @@ class GenericResourceString;
 
 /* A 2-byte string length prefixing a non-null-terminated std::string
  */
-typedef GenericResourceString<char> ResourceString;
+typedef GenericResourceString<IMAGE_RESOURCE_DIRECTORY_STRING> ResourceString;
 
 /* A 2-byte string length prefixing a non-null-terminated std::u16string
  */
-typedef GenericResourceString<uint16_t> ResourceStringU;
+typedef GenericResourceString<IMAGE_RESOURCE_DIRECTORY_STRING_U> ResourceStringU;
 
 /* A 2-byte string length prefixing some kind of non-null-terminated string
  */
@@ -95,8 +95,7 @@ public:
 
     // member functions
     const void* getFieldPtr(const int index) const override;
-    const IMAGE_RESOURCE_DIRECTORY_STRING* string() const { return (PIMAGE_RESOURCE_DIRECTORY_STRING)hdr(); }
-    const IMAGE_RESOURCE_DIRECTORY_STRING_U* stringu() const { return (PIMAGE_RESOURCE_DIRECTORY_STRING_U)hdr(); }
+    const T* string() const { return (T*)hdr(); }
     uint16_t length() const { return string()->Length; }
     const std::string& name() const { return m_name; }
 
@@ -286,8 +285,8 @@ public:
 };
 
 // variant declarations
-template class GenericResourceString<char>;
-template class GenericResourceString<uint16_t>;
+template class GenericResourceString<IMAGE_RESOURCE_DIRECTORY_STRING>;
+template class GenericResourceString<IMAGE_RESOURCE_DIRECTORY_STRING_U>;
 
 } // namespace Pepper
 
