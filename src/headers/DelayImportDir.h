@@ -25,7 +25,7 @@ namespace Pepper {
 // forward declarations
 class DataDirectoryEntry;
 
-typedef GenericImportDescriptor<IMAGE_DELAY_IMPORT_DESCRIPTOR> DelayImportDescriptor;
+using DelayImportDescriptor = GenericImportDescriptor<IMAGE_DELAY_IMPORT_DESCRIPTOR>;
 
 /* Variable-length array of DelayImportDescriptors.
  * length is equal to number of modules being imported from.

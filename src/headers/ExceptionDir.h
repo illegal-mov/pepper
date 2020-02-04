@@ -39,9 +39,9 @@ class DataDirectoryEntry;
 template <typename T>
 class FunctionTableEntry;
 
-typedef FunctionTableEntry<IMAGE_EXCEPTION_ENTRY32>   FunctionTableEntry32;
-typedef FunctionTableEntry<IMAGE_EXCEPTION_ENTRY64>   FunctionTableEntry64;
-typedef FunctionTableEntry<IMAGE_EXCEPTION_ENTRY_ARM> FunctionTableEntryArm;
+using FunctionTableEntry32  = FunctionTableEntry<IMAGE_EXCEPTION_ENTRY32>;
+using FunctionTableEntry64  = FunctionTableEntry<IMAGE_EXCEPTION_ENTRY64>;
+using FunctionTableEntryArm = FunctionTableEntry<IMAGE_EXCEPTION_ENTRY_ARM>;
 
 /* An element of the variable-length array of any IMAGE_EXCEPTION_ENTRY data structure.
  */

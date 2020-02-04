@@ -22,7 +22,7 @@ namespace Pepper {
 // forward declarations
 class DataDirectoryEntry;
 
-typedef GenericImportDescriptor<IMAGE_IMPORT_DESCRIPTOR> ImportDescriptor;
+using ImportDescriptor = GenericImportDescriptor<IMAGE_IMPORT_DESCRIPTOR>;
 
 /* Variable-length array of ImportDescriptors.
  * length is equal to number of modules being imported from.

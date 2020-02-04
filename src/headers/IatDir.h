@@ -22,8 +22,8 @@ class AddressList;
  * in such a way that I can point the IAT dir to part of the ImportDir
  */
 
-typedef AddressList<int32_t> AddressList32;
-typedef AddressList<int64_t> AddressList64;
+using AddressList32 = AddressList<int32_t>;
+using AddressList64 = AddressList<int64_t>;
 
 /* A variable-length null-terminated array of import addresses
  */

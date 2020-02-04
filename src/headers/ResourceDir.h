@@ -68,11 +68,11 @@ class GenericResourceString;
 
 /* A 2-byte string length prefixing a non-null-terminated std::string
  */
-typedef GenericResourceString<IMAGE_RESOURCE_DIRECTORY_STRING> ResourceString;
+using ResourceString = GenericResourceString<IMAGE_RESOURCE_DIRECTORY_STRING>;
 
 /* A 2-byte string length prefixing a non-null-terminated std::u16string
  */
-typedef GenericResourceString<IMAGE_RESOURCE_DIRECTORY_STRING_U> ResourceStringU;
+using ResourceStringU = GenericResourceString<IMAGE_RESOURCE_DIRECTORY_STRING_U>;
 
 /* A 2-byte string length prefixing some kind of non-null-terminated string
  */

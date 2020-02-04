@@ -45,8 +45,8 @@ template <typename T>
 class ImportThunk;
 
 // typedefs that depend on the forward declaration
-typedef ImportThunk<IMAGE_THUNK_DATA32> ImportThunk32;
-typedef ImportThunk<IMAGE_THUNK_DATA64> ImportThunk64;
+using ImportThunk32 = ImportThunk<IMAGE_THUNK_DATA32>;
+using ImportThunk64 = ImportThunk<IMAGE_THUNK_DATA64>;
 
 /* A 2-byte hint and imported function name as an ASCII string
  */
