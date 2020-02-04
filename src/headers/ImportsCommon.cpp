@@ -56,10 +56,11 @@ void GenericImportDescriptor<T>::makeDescriptor(const PeFile &pe, const FileByte
     uint32_t iltRva = *static_cast<const uint32_t*>(getFieldPtr(ILT));
     uint32_t iatRva = *static_cast<const uint32_t*>(getFieldPtr(IAT));
     if (iltRva == 0) {
-        if (*static_cast<const int32_t*>(getFieldPtr(TIMESTAMP)) == -1)
+        if (*static_cast<const int32_t*>(getFieldPtr(TIMESTAMP)) == -1) {
             return; // it's bound, do nothing
-        else
+        } else {
             iltRva = *static_cast<const uint32_t*>(getFieldPtr(IAT));
+        }
     }
 
     iltRva = Convert::convertAddr(pe, iltRva, Convert::RVA, Convert::RAW);

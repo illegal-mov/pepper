@@ -35,10 +35,11 @@ IatDir::IatDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEnt
 : IDirectory(pe, fbytes, dde)
 {
     if (Ident::dirExists(*this)) {
-        if (Ident::is32bit(pe))
+        if (Ident::is32bit(pe)) {
             readAddrList<uint32_t>(fbytes, dde);
-        else
+        } else {
             readAddrList<uint64_t>(fbytes, dde);
+        }
     }
 }
 

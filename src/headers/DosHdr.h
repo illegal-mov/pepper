@@ -62,8 +62,9 @@ public:
     : IHeader(fbytes, 0)
     {
         const int16_t magic = *(int16_t*)hdr();
-        if (magic != 0x5A4D && magic != 0x4D5A)
+        if (magic != 0x5A4D && magic != 0x4D5A) {
             throw BadSignature("DOS Header magic is not \"MZ\"");
+        }
     }
 
     // member functions

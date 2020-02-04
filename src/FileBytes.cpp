@@ -13,8 +13,9 @@ FileBytes::FileBytes(const std::string &path)
 {
     // open the file
     std::ifstream in(path, std::ios_base::in | std::ios_base::binary);
-    if (!in.is_open())
+    if (!in.is_open()) {
         throw FailedOpen("Unable to open the file");
+    }
 
     // get file size
     m_fsize = getFileSize(in);

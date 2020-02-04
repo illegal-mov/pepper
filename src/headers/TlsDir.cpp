@@ -38,10 +38,11 @@ TlsDir::TlsDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEnt
                               : tls64()->AddressOfCallbacks;
         // convert AVA to RAW, use RAW to construct table
         callbacksPtr = Convert::convertAddr(pe, callbacksPtr, Convert::AVA, Convert::RAW);
-        if (Ident::is32bit(pe))
+        if (Ident::is32bit(pe)) {
             m_callbacks32 = CallbacksTable<uint32_t>(pe, fbytes, callbacksPtr);
-        else
+        } else {
             m_callbacks64 = CallbacksTable<uint64_t>(pe, fbytes, callbacksPtr);
+        }
     }
 }
 

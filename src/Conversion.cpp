@@ -62,8 +62,9 @@ uint64_t Convert::convertAddr(const PeFile &pe, const uint64_t addr, AddrType sr
     OptionalHeader *poh = (OptionalHeader*)pe.getHeaderPtr(PeFile::OPTIONAL);
     uint64_t diff = 0;
 
-    if (src == dst)
+    if (src == dst) {
         return addr;
+    }
 
     // RVA is middle ground; Add ImageBase or subtract DiskToMem diff
     if (src == RVA) {
