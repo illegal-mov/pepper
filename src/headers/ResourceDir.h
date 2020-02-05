@@ -155,10 +155,10 @@ public:
 class ResourceEntry : public IHeader {
 private:
     static size_t *s_pRsrcBase;
-    ResourceStringU *m_rsrcName{};
+    std::unique_ptr<ResourceStringU> m_name{};
     union {
-        ResourceNode *m_node{};
-        ResourceData *m_data;
+        std::unique_ptr<ResourceNode> m_node{};
+        std::unique_ptr<ResourceData> m_data;
     };
 public:
     enum Fields {
@@ -173,28 +173,24 @@ public:
 
     ResourceEntry(const FileBytes &fbytes, const size_t raw, const ResourceNode *parent, std::map<uint32_t, ResourceData*> &dataMap);
 
-    ResourceEntry(const ResourceEntry &re)
-    : IHeader(re)
-    , m_node(re.m_node)
+    ResourceEntry(ResourceEntry &&re)
+    : m_name(std::move(re.m_name))
+    , m_node(std::move(re.m_node))
     {}
 
     ~ResourceEntry();
 
-    const ResourceEntry& operator=(const ResourceEntry &re)
-    {
-        IHeader::operator=(re);
-        m_node = re.m_node;
-        return *this;
-    }
+    ResourceEntry(const ResourceEntry &re) = delete;
+    const ResourceEntry& operator=(const ResourceEntry &re) = delete;
 
     // member functions
     const void* getFieldPtr(const int index) const override;
     const IMAGE_RESOURCE_ENTRY* entry() const { return (PIMAGE_RESOURCE_ENTRY)hdr(); }
     bool isDirectory() const { return entry()->DataIsDirectory; }
     bool hasName() const { return entry()->NameIsString; }
-    const ResourceStringU* name() const { return m_rsrcName; }
-    const ResourceNode* node() const { return m_node; }
-    const ResourceData* data() const { return m_data; }
+    const ResourceStringU* name() const { return m_name.get(); }
+    const ResourceNode* node() const { return isDirectory() ? m_node.get() : nullptr; }
+    const ResourceData* data() const { return isDirectory() ? nullptr : m_data.get(); }
 
     // static functions
     static const char* getFieldName(const int index);
@@ -224,19 +220,8 @@ public:
 
     ResourceNode(const FileBytes &fbytes, const size_t raw, const ResourceNode *parent, std::map<uint32_t, ResourceData*> &dataMap);
 
-    ResourceNode(const ResourceNode &rn)
-    : IHeader(rn)
-    , m_parent(rn.m_parent)
-    , m_entries(rn.m_entries)
-    {}
-
-    const ResourceNode& operator=(const ResourceNode &rn)
-    {
-        IHeader::operator=(rn);
-        m_parent = rn.m_parent;
-        m_entries = rn.m_entries;
-        return *this;
-    }
+    ResourceNode(const ResourceNode &rn) = delete;
+    const ResourceNode& operator=(const ResourceNode &rn) = delete;
 
     // member functions
     const void* getFieldPtr(const int index) const override;

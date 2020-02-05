@@ -40,35 +40,27 @@ ResourceEntry::ResourceEntry(const FileBytes &fbytes, const size_t raw, const Re
 : IHeader(fbytes, raw)
 {
     if (hasName()) {
-        m_rsrcName = new ResourceStringU(fbytes,
+        m_name = std::make_unique<ResourceStringU>(fbytes,
             *s_pRsrcBase + entry()->NameOffset);
     }
 
     if (isDirectory()) {
-        m_node = new ResourceNode(fbytes,
+        m_node = std::make_unique<ResourceNode>(fbytes,
             *s_pRsrcBase + entry()->OffsetToDirectory, parent, dataMap);
     } else {
-        m_data = new ResourceData(fbytes,
+        m_data = std::make_unique<ResourceData>(fbytes,
             *s_pRsrcBase + entry()->OffsetToData, parent);
-        dataMap[entry()->OffsetToData] = m_data;
+        dataMap[entry()->OffsetToData] = m_data.get();
     }
 }
 
 ResourceEntry::~ResourceEntry()
 {
-    if (hasName()) {
-        delete m_rsrcName;
-        m_rsrcName = nullptr;
-    }
-
     if (isDirectory()) {
-        delete m_node;
+        m_node.~unique_ptr<ResourceNode>();
     } else {
-        delete m_data;
+        m_data.~unique_ptr<ResourceData>();
     }
-
-    // these members are union'd together, so only set one to nullptr
-    m_node = nullptr;
 }
 
 ResourceNode::ResourceNode(const FileBytes &fbytes, const size_t raw, const ResourceNode *parent, std::map<uint32_t, ResourceData*> &dataMap)
