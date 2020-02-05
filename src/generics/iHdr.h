@@ -12,7 +12,7 @@ namespace Pepper {
  */
 class IHeader {
 protected:
-    std::shared_ptr<const char> m_headerPtr{};
+    const char* m_headerPtr{};
     size_t m_baseOffset{};
 
     IHeader()
@@ -23,6 +23,18 @@ protected:
     , m_baseOffset(offset)
     {}
 
+    IHeader(const IHeader& ih)
+    : m_headerPtr(ih.m_headerPtr)
+    , m_baseOffset(ih.m_baseOffset)
+    {}
+
+    IHeader& operator=(const IHeader& ih)
+    {
+        m_headerPtr = ih.m_headerPtr;
+        m_baseOffset = ih.m_baseOffset;
+        return *this;
+    }
+
     virtual ~IHeader()
     {
         m_headerPtr = nullptr;
@@ -30,13 +42,13 @@ protected:
     }
 public:
     // get pointer to start of PE file content
-    const char* mem() const { return m_headerPtr.get(); }
+    const char* mem() const { return m_headerPtr; }
 
     // get offset into PE file content where header is located
     size_t hdrOffset() const { return m_baseOffset; };
 
     // pointer to base of header as char*
-    const char* hdr() const { return &m_headerPtr.get()[hdrOffset()]; }
+    const char* hdr() const { return &m_headerPtr[hdrOffset()]; }
 
     // only derived classes know how to return pointers to given header fields
     virtual const void* getFieldPtr(const int fieldIndex) const = 0;

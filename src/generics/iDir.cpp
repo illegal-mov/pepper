@@ -31,7 +31,7 @@ IDirectory::IDirectory(const PeFile &pe, const FileBytes &fbytes, const DataDire
 const char* IDirectory::dir() const
 {
     return (Ident::dirExists(*this))
-        ? &m_headerPtr.get()[dirOffset()]
+        ? &m_headerPtr[dirOffset()]
         : nullptr;
 }
 

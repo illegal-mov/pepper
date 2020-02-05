@@ -1,5 +1,6 @@
 #include <cstring>
 #include <fstream>
+#include <iterator>
 #include <memory>
 
 #include "Exceptions.h"
@@ -8,8 +9,6 @@
 using namespace Pepper;
 
 FileBytes::FileBytes(const std::string &path)
-: m_fsize(0)
-, m_bytes(nullptr)
 {
     // open the file
     std::ifstream in(path, std::ios_base::in | std::ios_base::binary);
@@ -25,11 +24,13 @@ FileBytes::FileBytes(const std::string &path)
     }
 
     // allocate memory, copy file bytes into memory
-    m_bytes = std::shared_ptr<char>(new char [ m_fsize ], std::default_delete<char[]>());
-    in.read(m_bytes.get(), static_cast<std::streamsize>(m_fsize));
+    m_bytes.reserve(m_fsize);
+    in >> std::noskipws;
+    std::istream_iterator<char> insit(in);
+    std::copy(insit, std::istream_iterator<char>(), m_bytes.begin());
     in.close();
 
-    if (in.fail()) {
+    if (in.fail() && (!in.eof())) {
         throw FailedRead("Unable to read the file");
     }
 }
@@ -43,7 +44,7 @@ void FileBytes::readBytes(const size_t pos, char *buf, const size_t bufLen) cons
         const size_t min = (pos + bufLen <= m_fsize)
             ? bufLen
             : m_fsize - pos;
-        memcpy(buf, &bytes().get()[pos], min);
+        memcpy(buf, &bytes()[pos], min);
     } else {
         memset(buf, 0, bufLen);
     }
