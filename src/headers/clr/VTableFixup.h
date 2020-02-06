@@ -26,7 +26,7 @@ public:
     ClrVTableFixup(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde);
 
     // member functions
-    const void* vtable() const { return (void*)dir(); }
+    const void* vtable() const { return static_cast<const void*>(dir()); }
     const void* getFieldPtr(const int index) const override;
 
     // static functions

@@ -97,7 +97,7 @@ public:
 
     // member functions
     const void* getFieldPtr(const int index) const override;
-    const IMAGE_SECTION_HEADER* entry() const { return (IMAGE_SECTION_HEADER*)hdr(); }
+    const IMAGE_SECTION_HEADER* entry() const { return static_cast<const IMAGE_SECTION_HEADER*>(hdr()); }
 
     // static functions
     static const char* getFieldName(const int index);

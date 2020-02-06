@@ -33,7 +33,7 @@ public:
 
     // member functions
     const void* getFieldPtr(const int index) const override;
-    const IMAGE_DATA_DIRECTORY* entry() const { return (IMAGE_DATA_DIRECTORY*)hdr(); }
+    const IMAGE_DATA_DIRECTORY* entry() const { return static_cast<const IMAGE_DATA_DIRECTORY*>(hdr()); }
     uint32_t rva() const { return entry()->VirtualAddress; }
     uint32_t size() const { return entry()->Size; }
 

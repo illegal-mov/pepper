@@ -13,7 +13,7 @@ AddressList<T>::AddressList(const FileBytes &fbytes, const size_t raw, const siz
 template <typename T>
 void IatDir::readAddrList(const FileBytes &fbytes, const DataDirectoryEntry &dde)
 {
-    T *addrs = (T*)dir();
+    const T *addrs = static_cast<const T*>(dir());
     size_t i=0;
     uint32_t bytesRead = 0;
     while (bytesRead < dde.size()) {

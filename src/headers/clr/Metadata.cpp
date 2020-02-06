@@ -79,8 +79,8 @@ const void* ClrMetadata::getFieldPtr(const int index) const
         case LENGTH           : return &metadata()->Length;
         case VERSION          : return &metadata()->Version;
         // the length-prefixed string makes this part weird
-        case FLAGS            : return &dir()[offsetof(IMAGE_COR20_METADATA_HEADER, Version) + metadata()->Length];
-        case NUMBER_OF_STREAMS: return &dir()[offsetof(IMAGE_COR20_METADATA_HEADER, Version) + metadata()->Length + 2];
+        case FLAGS            : return &static_cast<const char*>(dir())[offsetof(IMAGE_COR20_METADATA_HEADER, Version) + metadata()->Length];
+        case NUMBER_OF_STREAMS: return &static_cast<const char*>(dir())[offsetof(IMAGE_COR20_METADATA_HEADER, Version) + metadata()->Length + 2];
         default               : return nullptr;
     }
 }

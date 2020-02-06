@@ -89,16 +89,16 @@ public:
         const uint16_t lfanew = dos.dos()->e_lfanew;
         m_baseOffset = static_cast<size_t>(lfanew) + 4; // NT signature is "PE\0\0"
 
-        const int32_t sig = *(int32_t*)ntSig();
+        const int32_t sig = *reinterpret_cast<const int32_t*>(ntSig());
         if (sig != 0x00004550 && sig != 0x50450000) {
             throw BadSignature("NT Header magic is not \"PE\"");
         }
     }
 
     // member functions
-    const IMAGE_FILE_HEADER* file() const { return (PIMAGE_FILE_HEADER)hdr(); }
+    const IMAGE_FILE_HEADER* file() const { return static_cast<const IMAGE_FILE_HEADER*>(hdr()); }
     const void* getFieldPtr(const int index) const override;
-    const char* ntSig() const { return &((char*)hdr())[-4]; }
+    const char* ntSig() const { return &static_cast<const char*>(hdr())[-4]; }
 
     // static functions
     static const char* getFieldName(const int index);

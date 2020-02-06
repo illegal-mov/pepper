@@ -53,7 +53,7 @@ const void* SectionHeaderEntry::getFieldPtr(const int index) const
 const char* SectionHeaderEntry::getCharacteristicName(const int index)
 {
     // must cast to unsigned because of so many fields
-    switch ((unsigned int)index) {
+    switch (static_cast<unsigned int>(index)) {
         case RESERVED_1     : return "<Reserved>";
         case RESERVED_2     : return "<Reserved>";
         case RESERVED_4     : return "<Reserved>";

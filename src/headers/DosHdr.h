@@ -61,14 +61,14 @@ public:
     DosHeader(const FileBytes &fbytes)
     : IHeader(fbytes, 0)
     {
-        const int16_t magic = *(int16_t*)hdr();
+        const int16_t magic = *static_cast<const int16_t*>(hdr());
         if (magic != 0x5A4D && magic != 0x4D5A) {
             throw BadSignature("DOS Header magic is not \"MZ\"");
         }
     }
 
     // member functions
-    const IMAGE_DOS_HEADER* dos() const { return (PIMAGE_DOS_HEADER)hdr(); }
+    const IMAGE_DOS_HEADER* dos() const { return static_cast<const IMAGE_DOS_HEADER*>(hdr()); }
     const void* getFieldPtr(const int index) const override;
 
     // static functions

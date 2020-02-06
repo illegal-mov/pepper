@@ -27,7 +27,7 @@ public:
     ClrSignature(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde);
 
     // member functions
-    const char* sig() const { return (char*)dir(); }
+    const char* sig() const { return static_cast<const char*>(dir()); }
     const void* getFieldPtr(const int index) const override;
     size_t length() const { return m_length; }
 

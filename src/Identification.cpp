@@ -11,14 +11,14 @@ using namespace Pepper;
 
 bool Ident::isDll(const PeFile &pe)
 {
-    const FileHeader *pfh = (FileHeader*)pe.getHeaderPtr(PeFile::Headers::FILE);
+    const FileHeader *pfh = static_cast<const FileHeader*>(pe.getHeaderPtr(PeFile::Headers::FILE));
     const uint16_t charact = pfh->file()->Characteristics;
     return charact & FileHeader::Characteristics::DLL;
 }
 
 static uint16_t getOptionalHeaderMagic(const PeFile &pe)
 {
-    const OptionalHeader *poh = (OptionalHeader*)pe.getHeaderPtr(PeFile::Headers::OPTIONAL);
+    const OptionalHeader *poh = static_cast<const OptionalHeader*>(pe.getHeaderPtr(PeFile::Headers::OPTIONAL));
     return poh->optional32()->Magic;
 }
 
@@ -50,15 +50,15 @@ bool Ident::dirExists(const IDirectory &id)
 bool Ident::isAllSigsValid(const PeFile &pe)
 {
     // check DOS signature
-    const DosHeader *dos = (DosHeader*)pe.getHeaderPtr(PeFile::DOS);
-    const uint16_t dosMagic = *(uint16_t*)dos->dos()->e_magic;
+    const DosHeader *dos = static_cast<const DosHeader*>(pe.getHeaderPtr(PeFile::DOS));
+    const uint16_t dosMagic = *reinterpret_cast<const uint16_t*>(dos->dos()->e_magic);
     if (dosMagic != 0x4D5A && dosMagic != 0x5A4D) {
         return false;
     }
 
     // check NT signature
-    const FileHeader *file = (FileHeader*)pe.getHeaderPtr(PeFile::FILE);
-    const int32_t ntSig = *(int32_t*)file->ntSig();
+    const FileHeader *file = static_cast<const FileHeader*>(pe.getHeaderPtr(PeFile::FILE));
+    const int32_t ntSig = *reinterpret_cast<const int32_t*>(file->ntSig());
     if (ntSig != 0x00004550 && ntSig != 0x50450000) {
         return false;
     }
@@ -68,7 +68,7 @@ bool Ident::isAllSigsValid(const PeFile &pe)
 
 static uint16_t getFileHeaderMachine(const PeFile &pe)
 {
-    const FileHeader *pfh = (FileHeader*)pe.getHeaderPtr(PeFile::Headers::FILE);
+    const FileHeader *pfh = static_cast<const FileHeader*>(pe.getHeaderPtr(PeFile::Headers::FILE));
     return pfh->file()->Machine;
 }
 

@@ -58,7 +58,7 @@ public:
     {}
 
     // member functions
-    const T* entry() const { return (T*)hdr(); }
+    const T* entry() const { return static_cast<const T*>(hdr()); }
     const void* getFieldPtr(const int index) const override;
 
     uint32_t     beginRaw() const { return entry()->BeginAddress - *s_pCodeDiff; }

@@ -142,7 +142,7 @@ public:
     const void* getFieldPtr(const int index) const override;
     const IMAGE_LOAD_CONFIG_CODE_INTEGRITY* integrity() const
     {
-        return (PIMAGE_LOAD_CONFIG_CODE_INTEGRITY)hdr();
+        return static_cast<const IMAGE_LOAD_CONFIG_CODE_INTEGRITY*>(hdr());
     }
 
     // static functions

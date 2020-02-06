@@ -58,7 +58,7 @@ public:
     size_t dirOffset() const { return hdrOffset() - m_diffOfRvaRaw; }
 
     /* pointer to base of directory as char* only if the directory exists */
-    const char* dir() const;
+    const void* dir() const;
 
     /* get size of directory */
     uint32_t size() const;

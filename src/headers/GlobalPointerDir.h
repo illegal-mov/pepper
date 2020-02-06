@@ -20,7 +20,7 @@ public:
     GlobalPointerDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde);
 
     // member functions
-//  const IMAGE_* NAME() const { return (PIMAGE_)dir(); }
+//  const IMAGE_* NAME() const { return static_cast<const IMAGE_*>(dir()); }
     const void* getFieldPtr(const int index) const override;
 
     // static functions

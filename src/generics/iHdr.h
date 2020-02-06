@@ -48,7 +48,7 @@ public:
     size_t hdrOffset() const { return m_baseOffset; };
 
     // pointer to base of header as char*
-    const char* hdr() const { return &m_headerPtr[hdrOffset()]; }
+    const void* hdr() const { return &m_headerPtr[hdrOffset()]; }
 
     // only derived classes know how to return pointers to given header fields
     virtual const void* getFieldPtr(const int fieldIndex) const = 0;

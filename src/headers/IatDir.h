@@ -31,7 +31,7 @@ template <typename T>
 class AddressList final : public IHeader {
 private:
     size_t m_length{};
-    const T* addresses() const { return (T*)hdr(); }
+    const T* addresses() const { return static_cast<const T*>(hdr()); }
 public:
     AddressList()
     : IHeader()
@@ -44,7 +44,7 @@ public:
 
     T address(const int index) const
     {
-        T *ret = (T*)getFieldPtr(index);
+        const T *ret = static_cast<const T*>(getFieldPtr(index));
         return (ret == nullptr) ? -1 : *ret;
     }
 

@@ -95,7 +95,7 @@ public:
 
     // member functions
     const void* getFieldPtr(const int index) const override;
-    const T* string() const { return (T*)hdr(); }
+    const T* string() const { return static_cast<const T*>(hdr()); }
     uint16_t length() const { return string()->Length; }
     const std::string& name() const { return m_name; }
 
@@ -140,7 +140,7 @@ public:
 
     // member functions
     const void* getFieldPtr(const int index) const override;
-    const IMAGE_RESOURCE_DATA* data() const { return (PIMAGE_RESOURCE_DATA)hdr(); }
+    const IMAGE_RESOURCE_DATA* data() const { return static_cast<const IMAGE_RESOURCE_DATA*>(hdr()); }
     const char* bytes() const { return &mem()[data()->OffsetToData - *s_pDiskToMemDiff]; }
     uint32_t size() const { return data()->Size; }
 
@@ -185,7 +185,7 @@ public:
 
     // member functions
     const void* getFieldPtr(const int index) const override;
-    const IMAGE_RESOURCE_ENTRY* entry() const { return (PIMAGE_RESOURCE_ENTRY)hdr(); }
+    const IMAGE_RESOURCE_ENTRY* entry() const { return static_cast<const IMAGE_RESOURCE_ENTRY*>(hdr()); }
     bool isDirectory() const { return entry()->DataIsDirectory; }
     bool hasName() const { return entry()->NameIsString; }
     const ResourceStringU* name() const { return m_name.get(); }
@@ -225,7 +225,7 @@ public:
 
     // member functions
     const void* getFieldPtr(const int index) const override;
-    const IMAGE_RESOURCE_DIRECTORY* header() const { return (PIMAGE_RESOURCE_DIRECTORY)hdr(); }
+    const IMAGE_RESOURCE_DIRECTORY* header() const { return static_cast<const IMAGE_RESOURCE_DIRECTORY*>(hdr()); }
     const std::vector<ResourceEntry>& entries() const { return m_entries; }
 
     // static functions

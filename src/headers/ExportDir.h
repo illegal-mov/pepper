@@ -34,7 +34,7 @@ class ExportAddressTable final : public IHeader {
 private:
     size_t m_length{};
     static size_t s_diskToMemDiff; // RVAs in .edata point to .text
-    const uint32_t* addresses() const { return (uint32_t*)hdr(); }
+    const uint32_t* addresses() const { return static_cast<const uint32_t*>(hdr()); }
 public:
     enum Fields {
         _NUM_FIELDS,
@@ -51,13 +51,13 @@ public:
 
     uint32_t codeRva(size_t index) const
     {
-        uint32_t* ret = (uint32_t*)getFieldPtr(index);
+        const uint32_t* ret = static_cast<const uint32_t*>(getFieldPtr(index));
         return (ret == nullptr) ? 0 : *ret;
     }
 
     uint32_t codeRaw(size_t index) const
     {
-        uint32_t* ret = (uint32_t*)getFieldPtr(index);
+        const uint32_t* ret = static_cast<const uint32_t*>(getFieldPtr(index));
         return (ret == nullptr) ? 0 : (*ret) - s_diskToMemDiff;
     }
 
@@ -73,7 +73,7 @@ class ExportNameTable final : public IHeader {
 private:
     size_t m_length{};
     static size_t s_diskToMemDiff;
-    const uint32_t* addresses() const { return (uint32_t*)hdr(); }
+    const uint32_t* addresses() const { return static_cast<const uint32_t*>(hdr()); }
 public:
     enum Fields {
         _NUM_FIELDS,
@@ -114,7 +114,7 @@ public:
 class ExportOrdinalTable final : public IHeader {
 private:
     size_t m_length{};
-    const int16_t* ordinals() const { return (int16_t*)hdr(); }
+    const int16_t* ordinals() const { return static_cast<const int16_t*>(hdr()); }
 public:
     enum Fields {
         _NUM_FIELDS,
@@ -132,7 +132,7 @@ public:
     // get array element or -1 if out of range
     int16_t ordinal(size_t index) const
     {
-        int16_t *ret = (int16_t*)getFieldPtr(index);
+        const int16_t *ret = static_cast<const int16_t*>(getFieldPtr(index));
         return (ret == nullptr) ? -1 : *ret;
     }
 
@@ -177,7 +177,7 @@ public:
 
     // member functions
     const void* getFieldPtr(const int index) const override;
-    const IMAGE_EXPORT_DIRECTORY* xport() const { return (PIMAGE_EXPORT_DIRECTORY)dir(); }
+    const IMAGE_EXPORT_DIRECTORY* xport() const { return static_cast<const IMAGE_EXPORT_DIRECTORY*>(dir()); }
 
     const ExportAddressTable* eat() const { return Ident::dirExists(*this) ? &m_addrTable : nullptr; }
     const ExportNameTable*    ent() const { return Ident::dirExists(*this) ? &m_nameTable : nullptr; }

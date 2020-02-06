@@ -19,7 +19,7 @@ ImportDir::ImportDir(const PeFile &pe, const FileBytes &fbytes, const DataDirect
         s_diskToMemDiff = m_diffOfRvaRaw;
         // append non-null IMPORT_DESCRIPTOR to m_descriptors vector
         constexpr char null[sizeof(IMAGE_IMPORT_DESCRIPTOR)] = {0};
-        const IMAGE_IMPORT_DESCRIPTOR *pid = (PIMAGE_IMPORT_DESCRIPTOR)dir();
+        const IMAGE_IMPORT_DESCRIPTOR *pid = static_cast<const IMAGE_IMPORT_DESCRIPTOR*>(dir());
         size_t i=0;
         while (memcmp(&pid[i], &null, sizeof(null))) {
             m_descriptors.emplace_back(pe, fbytes, dirOffset() + (i * sizeof(null)));

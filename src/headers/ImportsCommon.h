@@ -70,7 +70,7 @@ public:
     const void* getFieldPtr(const int index) const override;
     const IMAGE_IMPORT_BY_NAME* hintname() const
     {
-        return (PIMAGE_IMPORT_BY_NAME)hdr();
+        return static_cast<const IMAGE_IMPORT_BY_NAME*>(hdr());
     }
 
     // static functions
@@ -108,7 +108,7 @@ public:
 
     // member functions
     const void* getFieldPtr(const int index) const override;
-    const T* thunk() const { return (T*)hdr(); }
+    const T* thunk() const { return static_cast<const T*>(hdr()); }
 
     const ImportName* importname() const
     {
@@ -183,7 +183,7 @@ public:
 
     // member functions
     const void* getFieldPtr(const int index) const override;
-    const T* descriptor() const { return (T*)hdr(); }
+    const T* descriptor() const { return static_cast<const T*>(hdr()); }
 
     const char* dllName() const;
 

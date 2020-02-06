@@ -41,7 +41,7 @@ private:
     size_t m_length{};
     static size_t s_codeDiff; // AVAs in the Callbacks array point to .text
 
-    const T* callbacks() const { return (T*)hdr(); }
+    const T* callbacks() const { return static_cast<const T*>(hdr()); }
 public:
     CallbacksTable()
     : IHeader()
@@ -55,14 +55,14 @@ public:
     // get array element or 0 if out of range
     T callbackAva(const int index) const
     {
-        T *ret = (T*)getFieldPtr(index);
+        const T *ret = static_cast<const T*>(getFieldPtr(index));
         return (ret == nullptr) ? 0 : *ret;
     }
 
     // get array element or 0 if out of range
     T callbackRaw(const int index) const
     {
-        T *ret = (T*)getFieldPtr(index);
+        const T *ret = static_cast<const T*>(getFieldPtr(index));
         return (ret == nullptr) ? 0 : *ret - s_codeDiff;
     }
 

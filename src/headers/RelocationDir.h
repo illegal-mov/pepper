@@ -30,7 +30,7 @@ class DataDirectoryEntry;
 class RelocationTable final : public IHeader {
 private:
     size_t m_length{};
-    const IMAGE_BASE_RELOCATION_ENTRY* relocations() const { return (IMAGE_BASE_RELOCATION_ENTRY*)hdr(); }
+    const IMAGE_BASE_RELOCATION_ENTRY* relocations() const { return static_cast<const IMAGE_BASE_RELOCATION_ENTRY*>(hdr()); }
 public:
     enum Fields {
         OFFSET,
@@ -67,9 +67,9 @@ public:
     // member functions
     const void* getFieldPtr(const int index) const override;
 
-    PIMAGE_BASE_RELOCATION_ENTRY entry(const int index) const
+    const IMAGE_BASE_RELOCATION_ENTRY* entry(const int index) const
     {
-        return (PIMAGE_BASE_RELOCATION_ENTRY)getFieldPtr(index);
+        return static_cast<const IMAGE_BASE_RELOCATION_ENTRY*>(getFieldPtr(index));
     }
 
     int16_t type(const int index) const { return relocations()[index].Type & 0xF; }
@@ -101,7 +101,7 @@ public:
 
     // member functions
     const void* getFieldPtr(const int index) const override;
-    const IMAGE_BASE_RELOCATION* base() const { return (IMAGE_BASE_RELOCATION*)hdr(); }
+    const IMAGE_BASE_RELOCATION* base() const { return static_cast<const IMAGE_BASE_RELOCATION*>(hdr()); }
 
     // static functions
     static const char* getFieldName(const int index);

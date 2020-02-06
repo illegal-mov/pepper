@@ -60,7 +60,7 @@ public:
     BoundImportDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde);
 
     // member functions
-//  const IMAGE_BOUND_IMPORT_DIRECTORY* imports() const { return (PIMAGE_)dir(); }
+//  const IMAGE_BOUND_IMPORT_DIRECTORY* imports() const { return static_cast<const IMAGE_*>(dir()); }
     const void* getFieldPtr(const int index) const override;
 
     // static functions

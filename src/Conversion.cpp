@@ -27,7 +27,7 @@ static uint32_t getDiffRvaRaw(const PeFile &pe, const uint32_t addr, Convert::Ad
     }
 
     // linear search for containing section
-    SectionHeaders *sctns = (SectionHeaders*)pe.getHeaderPtr(PeFile::SECTION);
+    const SectionHeaders *sctns = static_cast<const SectionHeaders*>(pe.getHeaderPtr(PeFile::SECTION));
     for (const auto &section : sctns->sections()) {
         const uint32_t sctnBase = *static_cast<const uint32_t*>(section.getFieldPtr(base));
         const uint32_t sctnSize = *static_cast<const uint32_t*>(section.getFieldPtr(size));
@@ -59,7 +59,7 @@ uint32_t Convert::getRawToRvaDiff(const PeFile &pe, const uint64_t raw)
  */
 uint64_t Convert::convertAddr(const PeFile &pe, const uint64_t addr, AddrType src, AddrType dst)
 {
-    OptionalHeader *poh = (OptionalHeader*)pe.getHeaderPtr(PeFile::OPTIONAL);
+    const OptionalHeader *poh = static_cast<const OptionalHeader*>(pe.getHeaderPtr(PeFile::OPTIONAL));
     uint64_t diff = 0;
 
     if (src == dst) {
