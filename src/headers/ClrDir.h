@@ -99,7 +99,15 @@ public:
     }
 
     const IMAGE_COR20_HEADER* clr() const { return (PIMAGE_COR20_HEADER)dir(); }
-    const void* getHeaderPtr(const int index) const;
+
+    const ClrMetadata&     metadataHdr()    const { return m_Meta; }
+    const ClrResource&     resourceHdr()    const { return m_Rsrc; }
+    const ClrSignature&    signatureHdr()   const { return m_Signtr; }
+    const ClrCodeManager&  codeManagerHdr() const { return m_CodeMan; }
+    const ClrVTableFixup&  vTableFixupHdr() const { return m_VTabFix; }
+    const ClrExportJump&   exportJumpHdr()  const { return m_XprtJmp; }
+    const ClrNativeHeader& nativeHdr()      const { return m_NatHead; }
+
     const void* getFieldPtr(const int index) const override;
 
     // static functions

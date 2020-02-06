@@ -14,8 +14,8 @@ IDirectory::IDirectory(const PeFile &pe, const FileBytes &fbytes, const DataDire
 , m_diffOfRvaRaw(0)
 {
     // linear search for containing section
-    const SectionHeaders *sctns = static_cast<const SectionHeaders*>(pe.getHeaderPtr(PeFile::SECTION));
-    for (const auto &section : sctns->sections()) {
+    const SectionHeaders &sctns = pe.sectionHdrs();
+    for (const auto &section : sctns.sections()) {
         const uint32_t sctnBase = section.entry()->VirtualAddress;
         const uint32_t sctnSize = section.entry()->VirtualSize;
         const uint32_t sctnRaw  = section.entry()->PointerToRawData;

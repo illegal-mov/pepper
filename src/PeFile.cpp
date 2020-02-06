@@ -28,33 +28,6 @@ PeFile::PeFile(std::string path)
 , m_Clr   (*this, m_Bytes, m_DDir.directories()[DataDirectory::CLR])
 {}
 
-const void* PeFile::getHeaderPtr(const int index) const
-{
-    switch (index) {
-        case DOS           : return &m_Dos;
-        case FILE          : return &m_File;
-        case OPTIONAL      : return &m_Opt;
-        case DATA_DIR      : return &m_DDir;
-        case SECTION       : return &m_Sctns;
-        case EXPORT        : return &m_Xprt;
-        case IMPORT        : return &m_Mprt;
-        case RESOURCE      : return &m_Rsrc;
-        case EXCEPTION     : return &m_Xcpt;
-        case CERTIFICATE   : return &m_Cert;
-        case RELOCATION    : return &m_Reloc;
-        case DEBUG         : return &m_Dbg ;
-        case ARCHITECTURE  : return &m_Rchtr; // not used
-        case GLOBAL_POINTER: return &m_Gptr;
-        case TLS           : return &m_Tls;
-        case LOAD_CONFIG   : return &m_Ldcfg;
-        case BOUND_IMPORT  : return &m_Bmprt;
-        case IAT           : return &m_Iat;
-        case DELAY_IMPORT  : return &m_Dmprt;
-        case CLR           : return &m_Clr;
-        default            : return nullptr;
-    }
-}
-
 const char* PeFile::getHeaderName(const int index)
 {
     switch (index) {

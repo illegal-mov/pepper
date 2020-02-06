@@ -23,8 +23,8 @@ CallbacksTable<T>::CallbacksTable(const PeFile &pe, const FileBytes &fbytes, con
 
     // Since these are AVAs, add ImageBase to
     //  s_codeDiff to more easily convert to RAW
-    const OptionalHeader *poh = static_cast<const OptionalHeader*>(pe.getHeaderPtr(PeFile::OPTIONAL));
-    s_codeDiff += poh->imageBase();
+    const OptionalHeader &poh = pe.optionalHdr();
+    s_codeDiff += poh.imageBase();
 }
 
 TlsDir::TlsDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde)

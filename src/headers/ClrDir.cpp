@@ -58,20 +58,6 @@ const char* ClrDir::getHeaderName(const int index)
     }
 }
 
-const void* ClrDir::getHeaderPtr(const int index) const
-{
-    switch (index) {
-        case CLR_METADATA     : return &m_Meta;
-        case CLR_RESOURCES    : return &m_Rsrc;
-        case CLR_SIGNATURE    : return &m_Signtr;
-        case CLR_CODE_MANAGER : return &m_CodeMan;
-        case CLR_VTABLE_FIXUPS: return &m_VTabFix;
-        case CLR_EXPORT_JUMP  : return &m_XprtJmp;
-        case CLR_NATIVE_HEADER: return &m_NatHead;
-        default               : return nullptr;
-    }
-}
-
 const char* ClrDir::getFieldName(const int index)
 {
     switch (index) {

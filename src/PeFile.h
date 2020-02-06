@@ -89,7 +89,26 @@ public:
     PeFile(std::string path);
 
     // member functions
-    const void* getHeaderPtr(const int index) const;
+    const DosHeader&        dosHdr()           const { return m_Dos;   }
+    const FileHeader&       fileHdr()          const { return m_File;  }
+    const OptionalHeader&   optionalHdr()      const { return m_Opt;   }
+    const DataDirectory&    dataDir()          const { return m_DDir;  }
+    const SectionHeaders&   sectionHdrs()      const { return m_Sctns; }
+    const ExportDir&        exportDir()        const { return m_Xprt;  }
+    const ImportDir&        importDir()        const { return m_Mprt;  }
+    const ResourceDir&      resourceDir()      const { return m_Rsrc;  }
+    const ExceptionDir&     exceptionDir()     const { return m_Xcpt;  }
+    const CertificateDir&   certificateDir()   const { return m_Cert;  }
+    const RelocationDir&    relocationDir()    const { return m_Reloc; }
+    const DebugDir&         debugDir()         const { return m_Dbg;   }
+    const ArchitectureDir&  architectureDir()  const { return m_Rchtr; }
+    const GlobalPointerDir& globalPointerDir() const { return m_Gptr;  }
+    const TlsDir&           tlsDir()           const { return m_Tls;   }
+    const LoadConfigDir&    loadConfigDir()    const { return m_Ldcfg; }
+    const BoundImportDir&   boundImportDir()   const { return m_Bmprt; }
+    const IatDir&           iatDir()           const { return m_Iat;   }
+    const DelayImportDir&   delayImportDir()   const { return m_Dmprt; }
+    const ClrDir&           clrDir()           const { return m_Clr;   }
     void readBytes(const size_t pos, char *buf, const size_t bufLen) const;
     const std::string& path() const { return m_fname; }
 
