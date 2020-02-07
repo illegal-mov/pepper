@@ -36,7 +36,7 @@ namespace Pepper {
 class PeFile;
 class FileBytes;
 class DataDirectoryEntry;
-template <typename T>
+template <typename EntryType>
 class FunctionTableEntry;
 
 using FunctionTableEntry32  = FunctionTableEntry<IMAGE_EXCEPTION_ENTRY32>;
@@ -45,7 +45,7 @@ using FunctionTableEntryArm = FunctionTableEntry<IMAGE_EXCEPTION_ENTRY_ARM>;
 
 /* An element of the variable-length array of any IMAGE_EXCEPTION_ENTRY data structure.
  */
-template <typename T>
+template <typename EntryType>
 class FunctionTableEntry final : public IHeader {
 private:
     static size_t *s_pCodeDiff;
@@ -58,7 +58,7 @@ public:
     {}
 
     // member functions
-    const T* entry() const { return static_cast<const T*>(hdr()); }
+    const EntryType* entry() const { return static_cast<const EntryType*>(hdr()); }
     const void* getFieldPtr(const int index) const override;
 
     uint32_t     beginRaw() const { return entry()->BeginAddress - *s_pCodeDiff; }
@@ -84,7 +84,7 @@ private:
 
     // Append entries to the vector. Works for any type of FunctionTable because
     // entrySize is chosen by the caller when it knows the architecture.
-    template <typename T>
+    template <typename EntryType>
     void appendEntries(const FileBytes &fbytes, uint32_t totalSize);
 public:
     ExceptionDir()

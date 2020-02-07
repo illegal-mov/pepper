@@ -91,8 +91,8 @@ ResourceDir::ResourceDir(const PeFile &pe, const FileBytes &fbytes, const DataDi
     }
 }
 
-template <typename T> // requires variant declaration in header to link
-const char* GenericResourceString<T>::getFieldName(const int index)
+template <typename StringStruct> // requires variant declaration in header to link
+const char* GenericResourceString<StringStruct>::getFieldName(const int index)
 {
     switch (index) {
         case LENGTH     : return "Length";
@@ -101,8 +101,8 @@ const char* GenericResourceString<T>::getFieldName(const int index)
     }
 }
 
-template <typename T> // requires variant declaration in header to link
-const void* GenericResourceString<T>::getFieldPtr(const int index) const
+template <typename StringStruct> // requires variant declaration in header to link
+const void* GenericResourceString<StringStruct>::getFieldPtr(const int index) const
 {
     switch (index) {
         case LENGTH     : return &string()->Length;

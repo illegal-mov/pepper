@@ -35,13 +35,13 @@ class DataDirectoryEntry;
 /* The CallbacksTable is a variable-length null-terimated array
  * of 32bit or 64bit AVAs to callback functions.
  */
-template <typename T>
+template <typename ArchType>
 class CallbacksTable final : public IHeader {
 private:
     size_t m_length{};
     static size_t s_codeDiff; // AVAs in the Callbacks array point to .text
 
-    const T* callbacks() const { return static_cast<const T*>(hdr()); }
+    const ArchType* callbacks() const { return static_cast<const ArchType*>(hdr()); }
 public:
     CallbacksTable()
     : IHeader()
@@ -53,16 +53,16 @@ public:
     const void* getFieldPtr(const int index) const override;
 
     // get array element or 0 if out of range
-    T callbackAva(const int index) const
+    ArchType callbackAva(const int index) const
     {
-        const T *ret = static_cast<const T*>(getFieldPtr(index));
+        const ArchType *ret = static_cast<const ArchType*>(getFieldPtr(index));
         return (ret == nullptr) ? 0 : *ret;
     }
 
     // get array element or 0 if out of range
-    T callbackRaw(const int index) const
+    ArchType callbackRaw(const int index) const
     {
-        const T *ret = static_cast<const T*>(getFieldPtr(index));
+        const ArchType *ret = static_cast<const ArchType*>(getFieldPtr(index));
         return (ret == nullptr) ? 0 : *ret - s_codeDiff;
     }
 
@@ -110,8 +110,8 @@ public:
 
     // member functions
     const void* getFieldPtr(const int index) const override;
-    const IMAGE_TLS_DIRECTORY32*   tls32() const { return (PIMAGE_TLS_DIRECTORY32)dir(); }
-    const IMAGE_TLS_DIRECTORY64*   tls64() const { return (PIMAGE_TLS_DIRECTORY64)dir(); }
+    const IMAGE_TLS_DIRECTORY32*    tls32() const { return (PIMAGE_TLS_DIRECTORY32)dir(); }
+    const IMAGE_TLS_DIRECTORY64*    tls64() const { return (PIMAGE_TLS_DIRECTORY64)dir(); }
     const CallbacksTable<uint32_t>* cbt32() const { return Ident::dirExists(*this) ? &m_callbacks32 : nullptr; }
     const CallbacksTable<uint64_t>* cbt64() const { return Ident::dirExists(*this) ? &m_callbacks64 : nullptr; }
 

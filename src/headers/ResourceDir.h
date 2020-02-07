@@ -61,7 +61,7 @@ class PeFile;
 class FileBytes;
 class DataDirectoryEntry;
 class ResourceNode;
-template <typename T>
+template <typename StringStruct>
 class GenericResourceString;
 
 // typedefs that depend on the forward declaration
@@ -76,7 +76,7 @@ using ResourceStringU = GenericResourceString<IMAGE_RESOURCE_DIRECTORY_STRING_U>
 
 /* A 2-byte string length prefixing some kind of non-null-terminated string
  */
-template <typename T>
+template <typename StringStruct>
 class GenericResourceString : public IHeader {
 private:
     std::string m_name{};
@@ -95,7 +95,7 @@ public:
 
     // member functions
     const void* getFieldPtr(const int index) const override;
-    const T* string() const { return static_cast<const T*>(hdr()); }
+    const StringStruct* string() const { return static_cast<const StringStruct*>(hdr()); }
     uint16_t length() const { return string()->Length; }
     const std::string& name() const { return m_name; }
 

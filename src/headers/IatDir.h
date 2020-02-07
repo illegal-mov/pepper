@@ -14,7 +14,7 @@ namespace Pepper {
 class PeFile;
 class FileBytes;
 class DataDirectoryEntry;
-template <typename T>
+template <typename ArchType>
 class AddressList;
 
 /* TODO: `DataDir[IAT].rva()` is the same address as that of the first
@@ -27,11 +27,11 @@ using AddressList64 = AddressList<int64_t>;
 
 /* A variable-length null-terminated array of import addresses
  */
-template <typename T>
+template <typename ArchType>
 class AddressList final : public IHeader {
 private:
     size_t m_length{};
-    const T* addresses() const { return static_cast<const T*>(hdr()); }
+    const ArchType* addresses() const { return static_cast<const ArchType*>(hdr()); }
 public:
     AddressList()
     : IHeader()
@@ -42,9 +42,9 @@ public:
     // member functions
     const void* getFieldPtr(const int index) const override;
 
-    T address(const int index) const
+    ArchType address(const int index) const
     {
-        const T *ret = static_cast<const T*>(getFieldPtr(index));
+        const ArchType *ret = static_cast<const ArchType*>(getFieldPtr(index));
         return (ret == nullptr) ? -1 : *ret;
     }
 
@@ -64,7 +64,7 @@ private:
         std::vector<AddressList64> m_list64;
     };
 
-    template <typename T>
+    template <typename ArchType>
     void readAddrList(const FileBytes &fbytes, const DataDirectoryEntry &dde);
 public:
     IatDir()

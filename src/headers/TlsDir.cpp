@@ -6,18 +6,18 @@
 
 using namespace Pepper;
 
-template <typename T>
-size_t CallbacksTable<T>::s_codeDiff = 0;
+template <typename ArchType>
+size_t CallbacksTable<ArchType>::s_codeDiff = 0;
 
-template <typename T>
-CallbacksTable<T>::CallbacksTable(const PeFile &pe, const FileBytes &fbytes, const size_t raw)
+template <typename ArchType>
+CallbacksTable<ArchType>::CallbacksTable(const PeFile &pe, const FileBytes &fbytes, const size_t raw)
 : IHeader(fbytes, raw)
 {
-    const T *cbArray = callbacks();
+    const ArchType *cbArray = callbacks();
     while (cbArray[m_length] != 0)
         m_length++;
 
-    T codeRva = cbArray[0]; // AVAs in the table point to .text
+    ArchType codeRva = cbArray[0]; // AVAs in the table point to .text
     codeRva = Convert::convertAddr(pe, codeRva, Convert::AVA, Convert::RVA);
     s_codeDiff = Convert::getRvaToRawDiff(pe, codeRva);
 
@@ -46,16 +46,16 @@ TlsDir::TlsDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEnt
     }
 }
 
-template <typename T> // requires variant declaration in header to link
-const char* CallbacksTable<T>::getFieldName(const int index)
+template <typename ArchType> // requires variant declaration in header to link
+const char* CallbacksTable<ArchType>::getFieldName(const int index)
 {
     switch (index) {
         default: return "Callback Address";
     }
 }
 
-template <typename T> // requires variant declaration in header to link
-const void* CallbacksTable<T>::getFieldPtr(const int index) const
+template <typename ArchType> // requires variant declaration in header to link
+const void* CallbacksTable<ArchType>::getFieldPtr(const int index) const
 {
     size_t uindex = static_cast<size_t>(index);
     return (uindex < length())

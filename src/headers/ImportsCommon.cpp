@@ -5,11 +5,11 @@ using namespace Pepper;
 
 /* Load up the vector with data from the ImportAddressTable
  */
-template <typename T> // for the class
-template <typename U> // for the function
-void GenericImportDescriptor<T>::readAddresses(size_t raw)
+template <typename DescriptorType> // for the class
+template <typename ArchType> // for the function
+void GenericImportDescriptor<DescriptorType>::readAddresses(size_t raw)
 {
-    U *addr = (U*)&mem()[raw];
+    ArchType *addr = (ArchType*)&mem()[raw];
     size_t i=0;
     while (addr[i] != 0) {
         m_addresses32.push_back(addr[i]);
@@ -19,11 +19,11 @@ void GenericImportDescriptor<T>::readAddresses(size_t raw)
 
 /* Load up the vector with data from the ImportLookupTable
  */
-template <typename T> // for the class
-template <typename U> // for the function
-void GenericImportDescriptor<T>::readThunks(const FileBytes &fbytes, const size_t raw)
+template <typename DescriptorType> // for the class
+template <typename ArchType> // for the function
+void GenericImportDescriptor<DescriptorType>::readThunks(const FileBytes &fbytes, const size_t raw)
 {
-    U *thunk = (U*)&mem()[raw];
+    ArchType *thunk = (ArchType*)&mem()[raw];
     // count number of IMAGE_IMPORT_DESCRIPTORS up until the null descriptor
     size_t i=0;
     while (thunk[i].HintNameTableRVA != 0) {
@@ -32,21 +32,21 @@ void GenericImportDescriptor<T>::readThunks(const FileBytes &fbytes, const size_
             std::stringstream ss;
             ss << std::hex << "[Ordinal: 0x";
             ss.fill('0');
-            ss.width(sizeof(U)<<1); // 2 hex digits per byte
+            ss.width(sizeof(ArchType)<<1); // 2 hex digits per byte
             ss << thunk[i].OrdinalNumber << ']';
 
-            m_thunks32.emplace_back(fbytes, raw + (i * sizeof(U)), ss.str());
+            m_thunks32.emplace_back(fbytes, raw + (i * sizeof(ArchType)), ss.str());
         } else {
-            m_thunks32.emplace_back(fbytes, raw + (i * sizeof(U)));
+            m_thunks32.emplace_back(fbytes, raw + (i * sizeof(ArchType)));
         }
 
         i++;
     }
 }
 
-template <typename T>
+template <typename DescriptorType>
 template <int ILT, int IAT, int TIMESTAMP>
-void GenericImportDescriptor<T>::makeDescriptor(const PeFile &pe, const FileBytes &fbytes)
+void GenericImportDescriptor<DescriptorType>::makeDescriptor(const PeFile &pe, const FileBytes &fbytes)
 {
     /* `ImportLookupTableRVA` may be zero, especially for install files.
      * Switch to `ImportAddressTableRVA` if so, and check if IAT is bound
@@ -111,8 +111,8 @@ const void* ImportName::getFieldPtr(const int index) const
     }
 }
 
-template <typename T> // requires variant declaration in header to link
-const char* ImportThunk<T>::getFieldName(const int index)
+template <typename ArchType> // requires variant declaration in header to link
+const char* ImportThunk<ArchType>::getFieldName(const int index)
 {
     switch (index) {
         case HINTNAMERVA: return "Pointer to Hint/Name Table";
@@ -120,8 +120,8 @@ const char* ImportThunk<T>::getFieldName(const int index)
     }
 }
 
-template <typename T> // requires variant declaration in header to link
-const void* ImportThunk<T>::getFieldPtr(const int index) const
+template <typename ArchType> // requires variant declaration in header to link
+const void* ImportThunk<ArchType>::getFieldPtr(const int index) const
 {
     switch (index) {
         case HINTNAMERVA: return &thunk()->HintNameTableRVA;

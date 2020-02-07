@@ -41,7 +41,7 @@ namespace Pepper {
 
 // forward declarations
 class FileBytes;
-template <typename T>
+template <typename ArchType>
 class ImportThunk;
 
 // typedefs that depend on the forward declaration
@@ -80,7 +80,7 @@ public:
 /* An IMAGE_THUNK_DATA struct
  * RVA to ImportName as int32_t or int64_t
  */
-template <typename T>
+template <typename ArchType>
 class ImportThunk final : public IHeader {
 private:
     ImportName m_hintname;
@@ -108,7 +108,7 @@ public:
 
     // member functions
     const void* getFieldPtr(const int index) const override;
-    const T* thunk() const { return static_cast<const T*>(hdr()); }
+    const ArchType* thunk() const { return static_cast<const ArchType*>(hdr()); }
 
     const ImportName* importname() const
     {
@@ -128,7 +128,7 @@ public:
  * and another variable-length array of ImportAddresses.
  * Length is equal to number of functions imported from the module.
  */
-template <typename T>
+template <typename DescriptorType>
 class GenericImportDescriptor final : public IHeader {
 private:
     // for data at ImportLookupTableRVA
@@ -153,10 +153,10 @@ private:
     template <int ILT, int IAT, int TIMESTAMP>
     void makeDescriptor(const PeFile &pe, const FileBytes &fbytes);
 
-    template <typename U>
+    template <typename ArchType>
     void readThunks(const FileBytes &fbytes, const size_t raw);
 
-    template <typename U>
+    template <typename ArchType>
     void readAddresses(size_t raw);
 public:
     // this enum is defined in template specializations
@@ -183,7 +183,7 @@ public:
 
     // member functions
     const void* getFieldPtr(const int index) const override;
-    const T* descriptor() const { return static_cast<const T*>(hdr()); }
+    const DescriptorType* descriptor() const { return static_cast<const DescriptorType*>(hdr()); }
 
     const char* dllName() const;
 

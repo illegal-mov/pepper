@@ -15,7 +15,7 @@ using namespace Pepper;
  *  type passed to `genericDump` must have the `char* bytes()`
  *  and `size_t size()` methods.
  */
-template <typename T>
+template <typename DirectoryType>
 struct is_dumpable {
     static constexpr bool value = false;
 };
@@ -30,11 +30,11 @@ struct is_dumpable<CertificateEntry> {
     static constexpr bool value = true;
 };
 
-template <typename T>
-static bool genericDump(const std::string &path, const T &t, Extract::ExceptionFlag throwFlag)
+template <typename DirectoryType>
+static bool genericDump(const std::string &path, const DirectoryType &t, Extract::ExceptionFlag throwFlag)
 {
     // `static_assert` knows at compile time when you've done a bad thing
-    static_assert(is_dumpable<T>::value, "Cannot dump this type to disk");
+    static_assert(is_dumpable<DirectoryType>::value, "Cannot dump this type to disk");
     std::ofstream out(path, std::ios_base::out | std::ios_base::binary);
     if (out.is_open()) {
         out.write(t.bytes(), t.size());

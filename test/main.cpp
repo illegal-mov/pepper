@@ -24,7 +24,7 @@ void printFileHeader(const Pepper::PeFile &pe)
         printf("%-40s0x%04x\n", file.getFieldName(i), *static_cast<const int16_t*>(file.getFieldPtr(i)));
 }
 
-template <typename T, const char *fmt>
+template <typename ArchType, const char *fmt>
 void printOptHdrStruct(const Pepper::OptionalHeader &oh)
 {
     using namespace Pepper;
@@ -42,7 +42,7 @@ void printOptHdrStruct(const Pepper::OptionalHeader &oh)
     for (; i < OptionalHeader::IMAGE_BASE; i++)
         printf("%-40s0x%08x\n", oh.getFieldName(i), *static_cast<const int32_t*>(oh.getFieldPtr(i)));
     for (; i < OptionalHeader::SECTION_ALIGNMENT; i++)
-        printf(fmt, oh.getFieldName(i), *static_cast<const T*>(oh.getFieldPtr(i)));
+        printf(fmt, oh.getFieldName(i), *static_cast<const ArchType*>(oh.getFieldPtr(i)));
     for (; i < OptionalHeader::MAJOR_OPERATING_SYSTEM_VERSION; i++)
         printf("%-40s0x%08x\n", oh.getFieldName(i), *static_cast<const int32_t*>(oh.getFieldPtr(i)));
     for (; i < OptionalHeader::WIN32_VERSION_VALUE; i++)
@@ -52,7 +52,7 @@ void printOptHdrStruct(const Pepper::OptionalHeader &oh)
     for (; i < OptionalHeader::SIZE_OF_STACK_RESERVE; i++)
         printf("%-40s0x%04x\n", oh.getFieldName(i), *static_cast<const int16_t*>(oh.getFieldPtr(i)));
     for (; i < OptionalHeader::LOADER_FLAGS; i++)
-        printf(fmt, oh.getFieldName(i), *static_cast<const T*>(oh.getFieldPtr(i)));
+        printf(fmt, oh.getFieldName(i), *static_cast<const ArchType*>(oh.getFieldPtr(i)));
     for (; i < OptionalHeader::DATA_DIRECTORY; i++)
         printf("%-40s0x%08x\n", oh.getFieldName(i), *static_cast<const int32_t*>(oh.getFieldPtr(i)));
 }
@@ -121,11 +121,11 @@ void printExport(const Pepper::PeFile &pe)
     }
 }
 
-template <typename T, typename U, T (U::*V)() const>
-void printImportThunks(const U &id)
+template <typename RetType, typename DescriptorType, RetType (DescriptorType::*ThunkGetter)() const>
+void printImportThunks(const DescriptorType &id)
 {
     using namespace Pepper;
-    for (const auto &thunk : (id.*V)()) {
+    for (const auto &thunk : (id.*ThunkGetter)()) {
         const ImportName *pin = thunk.importname();
         if (pin != nullptr)
             std::cout << "    " << static_cast<const char*>(pin->getFieldPtr(ImportName::NAME)) << '\n';
@@ -134,15 +134,15 @@ void printImportThunks(const U &id)
     }
 }
 
-template <typename T, typename U, const T& (Pepper::PeFile::*V)() const>
+template <typename DirType, typename DescriptorType, const DirType& (Pepper::PeFile::*HeaderGetter)() const>
 void printImportDescriptors(const Pepper::PeFile &pe)
 {
     using namespace Pepper;
-    const T &mport = (pe.*V)();
+    const DirType &mport = (pe.*HeaderGetter)();
     if (Ident::dirExists(mport)) {
         for (const auto &descriptor : mport.descriptors()) {
             std::cout << "DLL Name: " << descriptor.dllName() << '\n';
-            for (int i=0; i < U::_NUM_FIELDS; i++) {
+            for (int i=0; i < DescriptorType::_NUM_FIELDS; i++) {
                 printf("    %-40s0x%08x\n", descriptor.getFieldName(i), *static_cast<const int32_t*>(descriptor.getFieldPtr(i)));
             }
             printf("\n");
@@ -150,13 +150,13 @@ void printImportDescriptors(const Pepper::PeFile &pe)
             if (Ident::is32bit(pe))
                 printImportThunks<
                     decltype(descriptor.thunks32()),
-                    U,
-                    &U::thunks32>(descriptor);
+                    DescriptorType,
+                    &DescriptorType::thunks32>(descriptor);
             else
                 printImportThunks<
                     decltype(descriptor.thunks64()),
-                    U,
-                    &U::thunks64>(descriptor);
+                    DescriptorType,
+                    &DescriptorType::thunks64>(descriptor);
 
             printf("\n");
         }
@@ -231,10 +231,10 @@ void printResource(const Pepper::PeFile &pe)
     }
 }
 
-template <typename T, int _NUM_FIELDS, const T& (Pepper::ExceptionDir::*U)() const>
+template <typename RetType, int _NUM_FIELDS, const RetType& (Pepper::ExceptionDir::*HeaderGetter)() const>
 void printExceptionTable(const Pepper::ExceptionDir &exception)
 {
-    for (const auto &entry : (exception.*U)()) {
+    for (const auto &entry : (exception.*HeaderGetter)()) {
         for (int i=0; i < _NUM_FIELDS; i++) {
             printf("%-40s0x%08x\n", entry.getFieldName(i), *static_cast<const int32_t*>(entry.getFieldPtr(i)));
         }
@@ -353,18 +353,18 @@ void printGlobalPointer(const Pepper::PeFile &pe)
     }
 }
 
-template <typename T, const char *fmt, const Pepper::CallbacksTable<T>* (Pepper::TlsDir::*U)() const>
+template <typename ArchType, const char *fmt, const Pepper::CallbacksTable<ArchType>* (Pepper::TlsDir::*HeaderGetter)() const>
 void printTlsStruct(const Pepper::TlsDir& tls)
 {
     using namespace Pepper;
     int i=0;
     for (; i < TlsDir::SIZE_OF_ZERO_FILL; i++)
-        printf(fmt, tls.getFieldName(i), *static_cast<const T*>(tls.getFieldPtr(i)));
+        printf(fmt, tls.getFieldName(i), *static_cast<const ArchType*>(tls.getFieldPtr(i)));
     for (; i < TlsDir::_NUM_FIELDS; i++)
         printf("%-40s0x%08x\n", tls.getFieldName(i), *static_cast<const int32_t*>(tls.getFieldPtr(i)));
 
     printf("Callbacks Table\n");
-    const CallbacksTable<T> *pct = (tls.*U)();
+    const CallbacksTable<ArchType> *pct = (tls.*HeaderGetter)();
     for (size_t i=0; i < pct->length(); i++) {
         printf(fmt, "", pct->callbackRaw(i));
     }
@@ -382,7 +382,7 @@ void printTls(const Pepper::PeFile &pe)
     }
 }
 
-template <typename T, const char *fmt>
+template <typename ArchType, const char *fmt>
 void printLdCfgStruct(const Pepper::LoadConfigDir &ldcfg)
 {
     using namespace Pepper;
@@ -395,13 +395,13 @@ void printLdCfgStruct(const Pepper::LoadConfigDir &ldcfg)
     while ((arg = ldcfg.getFieldPtr(i)) != nullptr && i < LoadConfigDir::DECOMMIT_FREE_BLOCK_THRESHOLD)
         printf("%-40s0x%08x\n", ldcfg.getFieldName(i++), *static_cast<const int32_t*>(arg));
     while ((arg = ldcfg.getFieldPtr(i)) != nullptr && i < LoadConfigDir::PROCESS_HEAP_FLAGS)
-        printf(fmt, ldcfg.getFieldName(i++), *static_cast<const T*>(arg));
+        printf(fmt, ldcfg.getFieldName(i++), *static_cast<const ArchType*>(arg));
     while ((arg = ldcfg.getFieldPtr(i)) != nullptr && i < LoadConfigDir::CSD_VERSION)
         printf("%-40s0x%08x\n", ldcfg.getFieldName(i++), *static_cast<const int32_t*>(arg));
     while ((arg = ldcfg.getFieldPtr(i)) != nullptr && i < LoadConfigDir::EDIT_LIST)
         printf("%-40s0x%04x\n", ldcfg.getFieldName(i++), *static_cast<const int16_t*>(arg));
     while ((arg = ldcfg.getFieldPtr(i)) != nullptr && i < LoadConfigDir::GUARD_FLAGS)
-        printf(fmt, ldcfg.getFieldName(i++), *static_cast<const T*>(arg));
+        printf(fmt, ldcfg.getFieldName(i++), *static_cast<const ArchType*>(arg));
     while ((arg = ldcfg.getFieldPtr(i)) != nullptr && i < LoadConfigDir::CODE_INTEGRITY)
         printf("%-40s0x%08x\n", ldcfg.getFieldName(i++), *static_cast<const int32_t*>(arg));
 
@@ -417,17 +417,17 @@ void printLdCfgStruct(const Pepper::LoadConfigDir &ldcfg)
     }
 
     while ((arg = ldcfg.getFieldPtr(i)) != nullptr && i < LoadConfigDir::DYNAMIC_VALUE_RELOC_TABLE_OFFSET)
-        printf(fmt, ldcfg.getFieldName(i++), *static_cast<const T*>(arg));
+        printf(fmt, ldcfg.getFieldName(i++), *static_cast<const ArchType*>(arg));
     while ((arg = ldcfg.getFieldPtr(i)) != nullptr && i < LoadConfigDir::DYNAMIC_VALUE_RELOC_TABLE_SECTION)
         printf("%-40s0x%08x\n", ldcfg.getFieldName(i++), *static_cast<const int32_t*>(arg));
     while ((arg = ldcfg.getFieldPtr(i)) != nullptr && i < LoadConfigDir::GUARD_RF_VERIFY_STACK_POINTER_FUNCTION_POINTER)
         printf("%-40s0x%04x\n", ldcfg.getFieldName(i++), *static_cast<const int16_t*>(arg));
     while ((arg = ldcfg.getFieldPtr(i)) != nullptr && i < LoadConfigDir::HOT_PATCH_TABLE_OFFSET)
-        printf(fmt, ldcfg.getFieldName(i++), *static_cast<const T*>(arg));
+        printf(fmt, ldcfg.getFieldName(i++), *static_cast<const ArchType*>(arg));
     while ((arg = ldcfg.getFieldPtr(i)) != nullptr && i < LoadConfigDir::ENCLAVE_CONFIG_POINTER)
         printf("%-40s0x%08x\n", ldcfg.getFieldName(i++), *static_cast<const int32_t*>(arg));
     while ((arg = ldcfg.getFieldPtr(i)) != nullptr && i < LoadConfigDir::_NUM_FIELDS)
-        printf(fmt, ldcfg.getFieldName(i++), *static_cast<const T*>(arg));
+        printf(fmt, ldcfg.getFieldName(i++), *static_cast<const ArchType*>(arg));
 }
 
 void printLoadConfig(const Pepper::PeFile &pe)
@@ -451,11 +451,11 @@ void printBoundImport(const Pepper::PeFile &pe)
     }
 }
 
-template <typename T, T (Pepper::IatDir::*U)() const>
+template <typename ArchType, ArchType (Pepper::IatDir::*HeaderGetter)() const>
 void printAddressesList(const Pepper::IatDir &id)
 {
     using namespace Pepper;
-    for (const auto &list : (id.*U)()) {
+    for (const auto &list : (id.*HeaderGetter)()) {
         for (size_t i=0; i < list.length(); i++) {
             std::cout << std::hex << "0x" << list.address(i) << '\n';
         }
