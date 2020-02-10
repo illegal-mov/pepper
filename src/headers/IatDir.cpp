@@ -14,7 +14,7 @@ template <typename ArchType>
 void IatDir::readAddrList(const FileBytes &fbytes, const DataDirectoryEntry &dde)
 {
     const ArchType *addrs = static_cast<const ArchType*>(dir());
-    size_t i=0;
+    size_t i = 0;
     uint32_t bytesRead = 0;
     while (bytesRead < dde.size()) {
         // get current addrs list len

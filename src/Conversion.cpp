@@ -4,7 +4,7 @@
 #include "generics/iDir.h"
 #include "headers/OptionalHdr.h"
 
-/* Non-member non-friend functions to addresses from one type to another */
+/* Non-member non-friend functions to convert addresses between types */
 
 using namespace Pepper;
 

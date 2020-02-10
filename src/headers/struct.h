@@ -199,8 +199,8 @@ enum res_dir_res_types {
 };
 
 enum cert_dir_cert_ver {
-    PE_CV1=0x100,
-    PE_CV2=0x200,
+    PE_CV1 = 0x100,
+    PE_CV2 = 0x200,
 };
 
 enum cert_dir_cert_types {

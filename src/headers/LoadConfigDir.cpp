@@ -13,8 +13,8 @@ LoadConfigDir::LoadConfigDir(const PeFile &pe, const FileBytes &fbytes, const Da
 , m_codeInteg()
 {
     if (Ident::dirExists(*this)) {
-        bool is32bit = Ident::is32bit(*m_pe);
-        uint32_t size = ldcfg32()->Size;
+        const bool is32bit = Ident::is32bit(*m_pe);
+        const uint32_t size = ldcfg32()->Size;
         if (is32bit && offsetof(IMAGE_LOAD_CONFIG_DIRECTORY32, CodeIntegrity) < size) {
             m_codeInteg = CodeIntegrity(fbytes, dirOffset()
                 + offsetof(IMAGE_LOAD_CONFIG_DIRECTORY32, CodeIntegrity));
@@ -110,8 +110,8 @@ const char* LoadConfigDir::getFieldName(const int index)
 
 const void* LoadConfigDir::getFieldPtr(const int index) const
 {
-    bool is32bit = Ident::is32bit(*m_pe);
-    uint32_t size = ldcfg32()->Size;
+    const bool is32bit = Ident::is32bit(*m_pe);
+    const uint32_t size = ldcfg32()->Size;
     switch (index) {
         case SIZE                                          : return LDCFG_RET_FIELD(Size);
         case TIMESTAMP                                     : return LDCFG_RET_FIELD(TimeDateStamp);

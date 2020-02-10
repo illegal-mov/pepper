@@ -9,7 +9,7 @@ RelocationBlock::RelocationBlock(const FileBytes &fbytes, const size_t raw)
 , m_relocBase(fbytes, raw)
 , m_relocTable()
 {
-    uint32_t size = m_relocBase.base()->BlockSize;
+    const uint32_t size = m_relocBase.base()->BlockSize;
     m_relocTable = RelocationTable(fbytes,
         raw + sizeof(IMAGE_BASE_RELOCATION),
         (size - sizeof(IMAGE_BASE_RELOCATION)) / sizeof(IMAGE_BASE_RELOCATION_ENTRY));

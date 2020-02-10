@@ -10,7 +10,7 @@ template <typename ArchType> // for the function
 void GenericImportDescriptor<DescriptorType>::readAddresses(size_t raw)
 {
     ArchType *addr = (ArchType*)&mem()[raw];
-    size_t i=0;
+    size_t i = 0;
     while (addr[i] != 0) {
         m_addresses32.push_back(addr[i]);
         i++;
@@ -25,7 +25,7 @@ void GenericImportDescriptor<DescriptorType>::readThunks(const FileBytes &fbytes
 {
     ArchType *thunk = (ArchType*)&mem()[raw];
     // count number of IMAGE_IMPORT_DESCRIPTORS up until the null descriptor
-    size_t i=0;
+    size_t i = 0;
     while (thunk[i].HintNameTableRVA != 0) {
         if (thunk[i].OrdinalFlag) {
             // make ordinal string

@@ -14,8 +14,9 @@ CallbacksTable<ArchType>::CallbacksTable(const PeFile &pe, const FileBytes &fbyt
 : IHeader(fbytes, raw)
 {
     const ArchType *cbArray = callbacks();
-    while (cbArray[m_length] != 0)
+    while (cbArray[m_length] != 0) {
         m_length++;
+    }
 
     ArchType codeRva = cbArray[0]; // AVAs in the table point to .text
     codeRva = Convert::convertAddr(pe, codeRva, Convert::AVA, Convert::RVA);
@@ -33,12 +34,13 @@ TlsDir::TlsDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEnt
 {
     if (Ident::dirExists(*this)) {
         // get AVA to array of callback function pointers
-        uint64_t callbacksPtr = (Ident::is32bit(pe))
+        const bool is32bit = Ident::is32bit(pe);
+        uint64_t callbacksPtr = (is32bit)
                               ? tls32()->AddressOfCallbacks
                               : tls64()->AddressOfCallbacks;
         // convert AVA to RAW, use RAW to construct table
         callbacksPtr = Convert::convertAddr(pe, callbacksPtr, Convert::AVA, Convert::RAW);
-        if (Ident::is32bit(pe)) {
+        if (is32bit) {
             m_callbacks32 = CallbacksTable<uint32_t>(pe, fbytes, callbacksPtr);
         } else {
             m_callbacks64 = CallbacksTable<uint64_t>(pe, fbytes, callbacksPtr);
@@ -78,7 +80,7 @@ const char* TlsDir::getFieldName(const int index)
 
 const void* TlsDir::getFieldPtr(const int index) const
 {
-    bool is32bit = Ident::is32bit(*m_pe);
+    const bool is32bit = Ident::is32bit(*m_pe);
     switch (index) {
         case RAW_DATA_START_VA   : return (is32bit) ? (void*)&tls32()->RawDataStartVA     : (void*)&tls64()->RawDataStartVA;
         case RAW_DATA_END_VA     : return (is32bit) ? (void*)&tls32()->RawDataEndVA       : (void*)&tls64()->RawDataEndVA;
