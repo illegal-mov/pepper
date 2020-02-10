@@ -17,15 +17,11 @@ public:
         _NUM_FIELDS,
     };
 
-    ArchitectureDir()
-    : IDirectory()
-    {}
-
     ArchitectureDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde);
 
     // member functions
     const void* getFieldPtr(const int index) const override;
-//  const IMAGE_ARCHITECTURE_DIRECTORY* arch() const { return (PIMAGE_ARCHITECTURE_DIRECTORY)dir(); }
+//  const IMAGE_ARCHITECTURE_DIRECTORY* arch() const { return static_cast<const IMAGE_ARCHITECTURE_DIRECTORY*>(dir()); }
 
     // static functions
     static const char* getFieldName(const int index);

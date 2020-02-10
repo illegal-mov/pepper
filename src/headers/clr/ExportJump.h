@@ -24,9 +24,7 @@ public:
         _NUM_FIELDS,
     };
 
-    ClrExportJump()
-    : IDirectory()
-    {}
+    ClrExportJump() = default;
 
     ClrExportJump(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde);
 

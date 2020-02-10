@@ -22,19 +22,7 @@ protected:
     const SectionHeaderEntry *m_she{};
     size_t m_diffOfRvaRaw{};
 
-    const IDirectory& operator=(const IDirectory &id)
-    {
-        IHeader::operator=(id);
-        m_pe = id.m_pe;
-        m_dde = id.m_dde;
-        m_she = id.m_she;
-        m_diffOfRvaRaw = id.m_diffOfRvaRaw;
-        return *this;
-    }
-
-    IDirectory()
-    : IHeader()
-    {}
+    IDirectory() = default;
 
     IDirectory(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde);
 
@@ -45,6 +33,16 @@ protected:
     , m_she(id.m_she)
     , m_diffOfRvaRaw(id.m_diffOfRvaRaw)
     {}
+
+    const IDirectory& operator=(const IDirectory &id)
+    {
+        IHeader::operator=(id);
+        m_pe = id.m_pe;
+        m_dde = id.m_dde;
+        m_she = id.m_she;
+        m_diffOfRvaRaw = id.m_diffOfRvaRaw;
+        return *this;
+    }
 
     virtual ~IDirectory()
     {

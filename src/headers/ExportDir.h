@@ -40,9 +40,7 @@ public:
         _NUM_FIELDS,
     };
 
-    ExportAddressTable()
-    : IHeader()
-    {}
+    ExportAddressTable() = default;
 
     ExportAddressTable(const PeFile &pe, const FileBytes &fbytes, const size_t raw, const size_t len);
 
@@ -79,9 +77,7 @@ public:
         _NUM_FIELDS,
     };
 
-    ExportNameTable()
-    : IHeader()
-    {}
+    ExportNameTable() = default;
 
     ExportNameTable(const PeFile &pe, const FileBytes &fbytes, const size_t raw, const size_t len);
 
@@ -120,9 +116,7 @@ public:
         _NUM_FIELDS,
     };
 
-    ExportOrdinalTable()
-    : IHeader()
-    {}
+    ExportOrdinalTable() = default;
 
     ExportOrdinalTable(const FileBytes &fbytes, const size_t raw, const size_t len);
 
@@ -165,13 +159,6 @@ public:
         ORDINAL_TABLE_RVA,
         _NUM_FIELDS,
     };
-
-    ExportDir()
-    : IDirectory()
-    , m_addrTable()
-    , m_nameTable()
-    , m_ordTable()
-    {}
 
     ExportDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde);
 

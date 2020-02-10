@@ -55,9 +55,7 @@ public:
         DIR64          = 0xA,
     };
 
-    RelocationTable()
-    : IHeader()
-    {}
+    RelocationTable() = default;
 
     RelocationTable(const FileBytes &fbytes, const size_t raw, const size_t len)
     : IHeader(fbytes, raw)
@@ -95,10 +93,6 @@ public:
     : IHeader(fbytes, raw)
     {}
 
-    RelocationBase()
-    : IHeader()
-    {}
-
     // member functions
     const void* getFieldPtr(const int index) const override;
     const IMAGE_BASE_RELOCATION* base() const { return static_cast<const IMAGE_BASE_RELOCATION*>(hdr()); }
@@ -123,12 +117,6 @@ public:
         _NUM_FIELDS,
     };
 
-    RelocationBlock()
-    : IHeader()
-    , m_relocBase()
-    , m_relocTable()
-    {}
-
     RelocationBlock(const FileBytes &fbytes, const size_t raw);
 
     // member functions
@@ -146,10 +134,6 @@ class RelocationDir final : public IDirectory {
 private:
     std::vector<RelocationBlock> m_elements{};
 public:
-    RelocationDir()
-    : IDirectory()
-    {}
-
     RelocationDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde);
 
     // member functions

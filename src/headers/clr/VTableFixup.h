@@ -19,9 +19,7 @@ public:
         _NUM_FIELDS,
     };
 
-    ClrVTableFixup()
-    : IDirectory()
-    {}
+    ClrVTableFixup() = default;
 
     ClrVTableFixup(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde);
 

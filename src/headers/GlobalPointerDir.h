@@ -13,15 +13,15 @@ class DataDirectoryEntry;
 
 class GlobalPointerDir final : public IDirectory {
 public:
-    GlobalPointerDir()
-    : IDirectory()
-    {}
+    enum Fields {
+        _NUM_FIELDS,
+    };
 
     GlobalPointerDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde);
 
     // member functions
-//  const IMAGE_* NAME() const { return static_cast<const IMAGE_*>(dir()); }
     const void* getFieldPtr(const int index) const override;
+//  const IMAGE_GLOBAL_POINTER_DIRECTORY* gptr() const { return static_cast<const IMAGE_GLOBAL_POINTER_DIRECTORY*>(dir()); }
 
     // static functions
     static const char* getFieldName(const int index);

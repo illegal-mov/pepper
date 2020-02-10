@@ -32,10 +32,6 @@ private:
     std::vector<ImportDescriptor> m_descriptors{};
     static size_t s_diskToMemDiff;
 public:
-    ImportDir()
-    : IDirectory()
-    {}
-
     ImportDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde);
 
     // member functions

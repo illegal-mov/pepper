@@ -16,7 +16,7 @@ private:
     std::vector<char> m_bytes{};
 public:
     FileBytes(const FileBytes& fb) = delete;
-    FileBytes& operator=(const FileBytes& fb) = delete;
+    const FileBytes& operator=(const FileBytes& fb) = delete;
 
     FileBytes(const std::string &path);
 

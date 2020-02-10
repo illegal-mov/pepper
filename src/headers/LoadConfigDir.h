@@ -132,9 +132,7 @@ public:
         _NUM_FIELDS,
     };
 
-    CodeIntegrity()
-    : IHeader()
-    {}
+    CodeIntegrity() = default;
 
     CodeIntegrity(const FileBytes &fbytes, const size_t raw);
 
@@ -200,11 +198,6 @@ public:
         VOLATILE_METADATA_POINTER,
         _NUM_FIELDS,
     };
-
-    LoadConfigDir()
-    : IDirectory()
-    , m_codeInteg()
-    {}
 
     LoadConfigDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde);
 

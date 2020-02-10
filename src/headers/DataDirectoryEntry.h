@@ -23,9 +23,7 @@ public:
         _NUM_FIELDS,
     };
 
-    DataDirectoryEntry()
-    : IHeader()
-    {}
+    DataDirectoryEntry() = default;
 
     DataDirectoryEntry(const FileBytes &fbytes, const size_t raw)
     : IHeader(fbytes, raw)

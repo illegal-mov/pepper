@@ -58,9 +58,7 @@ public:
         _NUM_FIELDS,
     };
 
-    ImportName()
-    : IHeader()
-    {}
+    ImportName() = default;
 
     ImportName(const FileBytes &fbytes, const size_t raw)
     : IHeader(fbytes, raw)

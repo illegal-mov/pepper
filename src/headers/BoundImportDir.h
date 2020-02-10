@@ -53,10 +53,6 @@ class DataDirectoryEntry;
 
 class BoundImportDir final : public IDirectory {
 public:
-    BoundImportDir()
-    : IDirectory()
-    {}
-
     BoundImportDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde);
 
     // member functions

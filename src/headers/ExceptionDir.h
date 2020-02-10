@@ -87,10 +87,6 @@ private:
     template <typename EntryType>
     void appendEntries(const FileBytes &fbytes, uint32_t totalSize);
 public:
-    ExceptionDir()
-    : IDirectory()
-    {}
-
     ExceptionDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde);
 
     ~ExceptionDir() {}

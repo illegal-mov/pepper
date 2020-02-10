@@ -46,10 +46,6 @@ public:
         _NUM_FIELDS,
     };
 
-    ClrStream()
-    : IHeader()
-    {}
-
     ClrStream(const FileBytes &fbytes, const size_t raw)
     : IHeader(fbytes, raw)
     {}
@@ -89,9 +85,7 @@ public:
         _NUM_FIELDS,
     };
 
-    ClrMetadata()
-    : IDirectory()
-    {}
+    ClrMetadata() = default;
 
     ClrMetadata(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde);
 

@@ -38,9 +38,7 @@ public:
         _NUM_FIELDS,
     };
 
-    ClrResource()
-    : IDirectory()
-    {}
+    ClrResource() = default;
 
     ClrResource(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde);
 

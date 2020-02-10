@@ -24,9 +24,7 @@ public:
         _NUM_FIELDS,
     };
 
-    ClrNativeHeader()
-    : IDirectory()
-    {}
+    ClrNativeHeader() = default;
 
     ClrNativeHeader(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde);
 

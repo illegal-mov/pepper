@@ -35,10 +35,6 @@ private:
     std::vector<DelayImportDescriptor> m_descriptors{};
     static size_t s_diskToMemDiff;
 public:
-    DelayImportDir()
-    : IDirectory()
-    {}
-
     DelayImportDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde);
 
     // member functions

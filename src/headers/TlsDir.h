@@ -43,9 +43,7 @@ private:
 
     const ArchType* callbacks() const { return static_cast<const ArchType*>(hdr()); }
 public:
-    CallbacksTable()
-    : IHeader()
-    {}
+    CallbacksTable() = default;
 
     CallbacksTable(const PeFile &pe, const FileBytes &fbytes, const size_t raw);
 
@@ -91,22 +89,9 @@ public:
         _NUM_FIELDS,
     };
 
-    TlsDir()
-    : IDirectory()
-    , m_callbacks32()
-    {}
-
     TlsDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde);
 
     ~TlsDir() {}
-
-    // overloaded operators
-    const TlsDir& operator=(const TlsDir &td)
-    {
-        IDirectory::operator=(td);
-        m_callbacks32 = td.m_callbacks32;
-        return *this;
-    }
 
     // member functions
     const void* getFieldPtr(const int index) const override;

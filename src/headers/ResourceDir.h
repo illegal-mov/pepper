@@ -87,10 +87,6 @@ public:
         _NUM_FIELDS,
     };
 
-    GenericResourceString()
-    : IHeader()
-    {}
-
     GenericResourceString(const FileBytes &fbytes, const size_t raw);
 
     // member functions
@@ -119,10 +115,6 @@ public:
         RESERVED,
         _NUM_FIELDS,
     };
-
-    ResourceData()
-    : IHeader()
-    {}
 
     ResourceData(const FileBytes &fbytes, const size_t raw, const ResourceNode *parent);
 
@@ -167,10 +159,6 @@ public:
         _NUM_FIELDS,
     };
 
-    ResourceEntry()
-    : IHeader()
-    {}
-
     ResourceEntry(const FileBytes &fbytes, const size_t raw, const ResourceNode *parent, std::map<uint32_t, ResourceData*> &dataMap);
 
     ResourceEntry(ResourceEntry &&re)
@@ -214,10 +202,6 @@ public:
         _NUM_FIELDS,
     };
 
-    ResourceNode()
-    : IHeader()
-    {}
-
     ResourceNode(const FileBytes &fbytes, const size_t raw, const ResourceNode *parent, std::map<uint32_t, ResourceData*> &dataMap);
 
     ResourceNode(const ResourceNode &rn) = delete;
@@ -245,10 +229,6 @@ public:
     enum Fields {
         _NUM_FIELDS,
     };
-
-    ResourceDir()
-    : IDirectory()
-    {}
 
     ResourceDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde);
 

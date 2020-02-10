@@ -32,10 +32,6 @@ public:
         _NUM_FIELDS,
     };
 
-    CertificateEntry()
-    : IHeader()
-    {}
-
     CertificateEntry(const FileBytes &fbytes, const size_t raw)
     : IHeader(fbytes, raw)
     {}
@@ -57,10 +53,6 @@ public:
     enum Fields {
         _NUM_FIELDS,
     };
-
-    CertificateDir()
-    : IDirectory()
-    {}
 
     CertificateDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde);
 

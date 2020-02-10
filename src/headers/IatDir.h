@@ -33,10 +33,6 @@ private:
     size_t m_length{};
     const ArchType* addresses() const { return static_cast<const ArchType*>(hdr()); }
 public:
-    AddressList()
-    : IHeader()
-    {}
-
     AddressList(const FileBytes &fbytes, const size_t raw, const size_t len);
 
     // member functions
@@ -67,10 +63,6 @@ private:
     template <typename ArchType>
     void readAddrList(const FileBytes &fbytes, const DataDirectoryEntry &dde);
 public:
-    IatDir()
-    : IDirectory()
-    {}
-
     IatDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry& dde);
 
     IatDir(const IatDir &id)

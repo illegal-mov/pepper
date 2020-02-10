@@ -20,9 +20,7 @@ public:
         _NUM_FIELDS,
     };
 
-    ClrSignature()
-    : IDirectory()
-    {}
+    ClrSignature() = default;
 
     ClrSignature(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde);
 

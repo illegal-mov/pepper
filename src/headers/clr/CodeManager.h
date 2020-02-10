@@ -24,9 +24,7 @@ public:
         _NUM_FIELDS,
     };
 
-    ClrCodeManager()
-    : IDirectory()
-    {}
+    ClrCodeManager() = default;
 
     ClrCodeManager(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde);
 

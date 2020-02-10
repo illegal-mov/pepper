@@ -46,9 +46,7 @@ public:
         _NUM_FIELDS,
     };
 
-    DebugRsds()
-    : IHeader()
-    {}
+    DebugRsds() = default;
 
     DebugRsds(const FileBytes &fbytes, const size_t raw)
     : IHeader(fbytes, raw)
@@ -98,11 +96,6 @@ public:
         EX_DLL_CHARACT = 20,
     };
 
-    DebugEntry()
-    : IHeader()
-    , m_dbgRsds()
-    {}
-
     DebugEntry(const FileBytes &fbytes, const size_t raw);
 
     // member functions
@@ -124,10 +117,6 @@ public:
     enum Fields {
         _NUM_FIELDS,
     };
-
-    DebugDir()
-    : IDirectory()
-    {}
 
     DebugDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde);
 

@@ -15,8 +15,7 @@ protected:
     const char* m_headerPtr{};
     size_t m_baseOffset{};
 
-    IHeader()
-    {}
+    IHeader() = default;
 
     IHeader(const FileBytes &fbytes, const size_t offset)
     : m_headerPtr(fbytes.bytes())
@@ -28,7 +27,7 @@ protected:
     , m_baseOffset(ih.m_baseOffset)
     {}
 
-    IHeader& operator=(const IHeader& ih)
+    const IHeader& operator=(const IHeader& ih)
     {
         m_headerPtr = ih.m_headerPtr;
         m_baseOffset = ih.m_baseOffset;

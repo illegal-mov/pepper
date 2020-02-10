@@ -79,17 +79,6 @@ public:
         _NUM_FIELDS,
     };
 
-    ClrDir()
-    : IDirectory()
-    , m_Meta()
-    , m_Rsrc()
-    , m_Signtr()
-    , m_CodeMan()
-    , m_VTabFix()
-    , m_XprtJmp()
-    , m_NatHead()
-    {}
-
     ClrDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde);
 
     // member functions
