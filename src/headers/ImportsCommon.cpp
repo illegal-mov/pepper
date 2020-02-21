@@ -1,4 +1,5 @@
 #include "../Conversion.h"
+#include "../Types.h"
 #include "ImportsCommon.h"
 
 using namespace Pepper;
@@ -21,7 +22,7 @@ void GenericImportDescriptor<DescriptorType>::readAddresses(size_t raw)
  */
 template <typename DescriptorType> // for the class
 template <typename ArchType> // for the function
-void GenericImportDescriptor<DescriptorType>::readThunks(const FileBytes &fbytes, const size_t raw)
+void GenericImportDescriptor<DescriptorType>::readThunks(const FileBytes &fbytes, const offset_t raw)
 {
     ArchType *thunk = (ArchType*)&mem()[raw];
     // count number of IMAGE_IMPORT_DESCRIPTORS up until the null descriptor
@@ -53,25 +54,25 @@ void GenericImportDescriptor<DescriptorType>::makeDescriptor(const PeFile &pe, c
      * (contains AVAs) by seeing if TimeDateStamp == -1 (don't ask).
      * Nothing to parse if ImportLookupTableRVA is zero and IAT is bound.
      */
-    uint32_t iltRva = *static_cast<const uint32_t*>(getFieldPtr(ILT));
-    uint32_t iatRva = *static_cast<const uint32_t*>(getFieldPtr(IAT));
+    ptr32_t iltRva = *static_cast<const ptr32_t*>(getFieldPtr(ILT));
+    ptr32_t iatRva = *static_cast<const ptr32_t*>(getFieldPtr(IAT));
     if (iltRva == 0) {
         if (*static_cast<const int32_t*>(getFieldPtr(TIMESTAMP)) == -1) {
             return; // it's bound, do nothing
         } else {
-            iltRva = *static_cast<const uint32_t*>(getFieldPtr(IAT));
+            iltRva = *static_cast<const ptr32_t*>(getFieldPtr(IAT));
         }
     }
 
-    iltRva = Convert::convertAddr(pe, iltRva, Convert::RVA, Convert::RAW);
-    iatRva = Convert::convertAddr(pe, iatRva, Convert::RVA, Convert::RAW);
+    iltRva = Convert::convertAddr(pe, iltRva, Convert::AddrType::RVA, Convert::AddrType::RAW);
+    iatRva = Convert::convertAddr(pe, iatRva, Convert::AddrType::RVA, Convert::AddrType::RAW);
 
     if (Ident::is32bit(pe)) {
         readThunks<IMAGE_THUNK_DATA32>(fbytes, iltRva);
-        readAddresses<uint32_t>(iatRva);
+        readAddresses<ptr32_t>(iatRva);
     } else {
         readThunks<IMAGE_THUNK_DATA64>(fbytes, iltRva);
-        readAddresses<uint64_t>(iatRva);
+        readAddresses<ptr64_t>(iatRva);
     }
 }
 
@@ -80,14 +81,14 @@ void GenericImportDescriptor<DescriptorType>::makeDescriptor(const PeFile &pe, c
  * the implementations are practically the same.
  */
 template<>
-GenericImportDescriptor<IMAGE_IMPORT_DESCRIPTOR>::GenericImportDescriptor(const PeFile &pe, const FileBytes &fbytes, const size_t raw)
+GenericImportDescriptor<IMAGE_IMPORT_DESCRIPTOR>::GenericImportDescriptor(const PeFile &pe, const FileBytes &fbytes, const offset_t raw)
 : IHeader(fbytes, raw)
 {
     makeDescriptor<IMPORT_LOOKUP_TABLE_RVA, IMPORT_ADDRESS_TABLE_RVA, TIMESTAMP>(pe, fbytes);
 }
 
 template<>
-GenericImportDescriptor<IMAGE_DELAY_IMPORT_DESCRIPTOR>::GenericImportDescriptor(const PeFile &pe, const FileBytes &fbytes, const size_t raw)
+GenericImportDescriptor<IMAGE_DELAY_IMPORT_DESCRIPTOR>::GenericImportDescriptor(const PeFile &pe, const FileBytes &fbytes, const offset_t raw)
 : IHeader(fbytes, raw)
 {
     makeDescriptor<DELAY_IMPORT_NAME_TABLE_RVA, DELAY_IMPORT_ADDRESS_TABLE_RVA, TIMESTAMP>(pe, fbytes);
@@ -158,7 +159,7 @@ const void* GenericImportDescriptor<IMAGE_IMPORT_DESCRIPTOR>::getFieldPtr(const 
 template<>
 const char* GenericImportDescriptor<IMAGE_IMPORT_DESCRIPTOR>::dllName() const
 {
-    uint32_t nameRva = descriptor()->NameRVA;
+    ptr32_t nameRva = descriptor()->NameRVA;
     return &mem()[nameRva - *s_pDiskToMemDiff];
 }
 
@@ -197,7 +198,7 @@ const void* GenericImportDescriptor<IMAGE_DELAY_IMPORT_DESCRIPTOR>::getFieldPtr(
 template<>
 const char* GenericImportDescriptor<IMAGE_DELAY_IMPORT_DESCRIPTOR>::dllName() const
 {
-    uint32_t nameRva = descriptor()->NameRVA;
+    ptr32_t nameRva = descriptor()->NameRVA;
     return &mem()[nameRva - *s_pDiskToMemDiff];
 }
 

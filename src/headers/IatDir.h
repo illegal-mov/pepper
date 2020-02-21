@@ -4,6 +4,7 @@
 #include <sstream>
 #include <vector>
 
+#include "../Types.h"
 #include "../generics/iDir.h"
 #include "ImportsCommon.h"
 #include "struct.h"
@@ -33,7 +34,7 @@ private:
     size_t m_length{};
     const ArchType* addresses() const { return static_cast<const ArchType*>(hdr()); }
 public:
-    AddressList(const FileBytes &fbytes, const size_t raw, const size_t len);
+    AddressList(const FileBytes &fbytes, const offset_t raw, const size_t len);
 
     // member functions
     const void* getFieldPtr(const int index) const override;

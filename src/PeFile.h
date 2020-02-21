@@ -86,7 +86,7 @@ public:
     PeFile(const PeFile &pe) = delete;
     const PeFile& operator=(const PeFile &pe) = delete;
 
-    PeFile(std::string path);
+    PeFile(const std::string& path);
 
     // member functions
     const DosHeader&        dosHdr()           const { return m_Dos;   }
@@ -109,7 +109,7 @@ public:
     const IatDir&           iatDir()           const { return m_Iat;   }
     const DelayImportDir&   delayImportDir()   const { return m_Dmprt; }
     const ClrDir&           clrDir()           const { return m_Clr;   }
-    void readBytes(const size_t pos, char *buf, const size_t bufLen) const;
+    void readBytes(const offset_t pos, char *buf, const size_t bufLen) const;
     const std::string& path() const { return m_fname; }
 
     // static functions

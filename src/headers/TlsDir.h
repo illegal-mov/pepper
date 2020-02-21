@@ -2,6 +2,7 @@
 #define TLS_H
 
 #include "../Conversion.h"
+#include "../Types.h"
 #include "../generics/iDir.h"
 #include "struct.h"
 
@@ -45,7 +46,7 @@ private:
 public:
     CallbacksTable() = default;
 
-    CallbacksTable(const PeFile &pe, const FileBytes &fbytes, const size_t raw);
+    CallbacksTable(const PeFile &pe, const FileBytes &fbytes, const offset_t raw);
 
     // member functions
     const void* getFieldPtr(const int index) const override;
@@ -75,8 +76,8 @@ public:
 class TlsDir final : public IDirectory {
 private:
     union {
-        CallbacksTable<uint32_t> m_callbacks32;
-        CallbacksTable<uint64_t> m_callbacks64;
+        CallbacksTable<ptr32_t> m_callbacks32;
+        CallbacksTable<ptr64_t> m_callbacks64;
     };
 public:
     enum Fields {
@@ -97,16 +98,16 @@ public:
     const void* getFieldPtr(const int index) const override;
     const IMAGE_TLS_DIRECTORY32*    tls32() const { return (PIMAGE_TLS_DIRECTORY32)dir(); }
     const IMAGE_TLS_DIRECTORY64*    tls64() const { return (PIMAGE_TLS_DIRECTORY64)dir(); }
-    const CallbacksTable<uint32_t>* cbt32() const { return Ident::dirExists(*this) ? &m_callbacks32 : nullptr; }
-    const CallbacksTable<uint64_t>* cbt64() const { return Ident::dirExists(*this) ? &m_callbacks64 : nullptr; }
+    const CallbacksTable<ptr32_t>* cbt32() const { return Ident::dirExists(*this) ? &m_callbacks32 : nullptr; }
+    const CallbacksTable<ptr64_t>* cbt64() const { return Ident::dirExists(*this) ? &m_callbacks64 : nullptr; }
 
     // static functions
     static const char* getFieldName(const int index);
 };
 
 // variant declarations
-template class CallbacksTable<uint32_t>;
-template class CallbacksTable<uint64_t>;
+template class CallbacksTable<ptr32_t>;
+template class CallbacksTable<ptr64_t>;
 
 } // namespace Pepper
 

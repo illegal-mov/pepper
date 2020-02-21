@@ -6,9 +6,11 @@
 #include <string>
 #include <vector>
 
-static constexpr int MAX_FSIZE = 512*1024*1024; // 512 MB
+#include "Types.h"
 
 namespace Pepper {
+
+static constexpr offset_t MAX_FSIZE = 512*1024*1024; // 512 MB
 
 class FileBytes final {
 private:
@@ -22,7 +24,7 @@ public:
 
     // member functions
     const char* bytes() const { return m_bytes.data(); }
-    void readBytes(const size_t pos, char *buf, const size_t bufLen) const;
+    void readBytes(const offset_t pos, char *buf, const size_t bufLen) const;
 
     // static functions
     static size_t getFileSize(std::ifstream &in);

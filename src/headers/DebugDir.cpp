@@ -1,12 +1,13 @@
 #include <cstring>
 
+#include "../Types.h"
 #include "../Identification.h"
 #include "DataDirectoryEntry.h"
 #include "DebugDir.h"
 
 using namespace Pepper;
 
-DebugEntry::DebugEntry(const FileBytes &fbytes, const size_t raw)
+DebugEntry::DebugEntry(const FileBytes &fbytes, const offset_t raw)
 : IHeader(fbytes, raw)
 , m_dbgRsds()
 {

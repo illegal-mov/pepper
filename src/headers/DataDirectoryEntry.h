@@ -1,6 +1,7 @@
 #ifndef DATADIRECTORYENTRY_H
 #define DATADIRECTORYENTRY_H
 
+#include "../Types.h"
 #include "../generics/iHdr.h"
 #include "struct.h"
 
@@ -25,7 +26,7 @@ public:
 
     DataDirectoryEntry() = default;
 
-    DataDirectoryEntry(const FileBytes &fbytes, const size_t raw)
+    DataDirectoryEntry(const FileBytes &fbytes, const offset_t raw)
     : IHeader(fbytes, raw)
     {}
 

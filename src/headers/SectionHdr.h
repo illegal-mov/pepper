@@ -3,6 +3,7 @@
 
 #include <vector>
 
+#include "../Types.h"
 #include "../generics/iHdr.h"
 #include "struct.h"
 
@@ -91,7 +92,7 @@ public:
         MEM_WRITE       = 0x80000000,
     };
 
-    SectionHeaderEntry(const FileBytes &fbytes, const size_t raw)
+    SectionHeaderEntry(const FileBytes &fbytes, const offset_t raw)
     : IHeader(fbytes, raw)
     {}
 

@@ -1,9 +1,11 @@
 #include <string>
+
 #include "PeFile.h"
+#include "Types.h"
 
 using namespace Pepper;
 
-PeFile::PeFile(std::string path)
+PeFile::PeFile(const std::string& path)
 : m_fname (path)
 , m_Bytes (path)
 , m_Dos   (m_Bytes)
@@ -55,7 +57,7 @@ const char* PeFile::getHeaderName(const int index)
     }
 }
 
-void PeFile::readBytes(const size_t pos, char *buf, const size_t bufLen) const
+void PeFile::readBytes(const offset_t pos, char *buf, const size_t bufLen) const
 {
     m_Bytes.readBytes(pos, buf, bufLen);
 }

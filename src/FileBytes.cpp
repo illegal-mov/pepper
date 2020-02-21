@@ -5,6 +5,7 @@
 
 #include "Exceptions.h"
 #include "FileBytes.h"
+#include "Types.h"
 
 using namespace Pepper;
 
@@ -38,7 +39,7 @@ FileBytes::FileBytes(const std::string &path)
 /* Copy `bufLen` file bytes starting from `pos`
  * into the memory space pointed to by `buf`
  */
-void FileBytes::readBytes(const size_t pos, char *buf, const size_t bufLen) const
+void FileBytes::readBytes(const offset_t pos, char *buf, const size_t bufLen) const
 {
     if (pos < m_fsize) {
         const size_t min = (pos + bufLen <= m_fsize)

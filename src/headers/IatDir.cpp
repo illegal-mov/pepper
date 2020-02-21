@@ -1,11 +1,12 @@
 #include "../Identification.h"
+#include "../Types.h"
 #include "DataDirectoryEntry.h"
 #include "IatDir.h"
 
 using namespace Pepper;
 
 template <typename ArchType>
-AddressList<ArchType>::AddressList(const FileBytes &fbytes, const size_t raw, const size_t len)
+AddressList<ArchType>::AddressList(const FileBytes &fbytes, const offset_t raw, const size_t len)
 : IHeader(fbytes, raw)
 , m_length(len)
 {}
@@ -15,7 +16,7 @@ void IatDir::readAddrList(const FileBytes &fbytes, const DataDirectoryEntry &dde
 {
     const ArchType *addrs = static_cast<const ArchType*>(dir());
     size_t i = 0;
-    uint32_t bytesRead = 0;
+    size_t bytesRead = 0;
     while (bytesRead < dde.size()) {
         // get current addrs list len
         size_t len = 0;
@@ -36,9 +37,9 @@ IatDir::IatDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEnt
 {
     if (Ident::dirExists(*this)) {
         if (Ident::is32bit(pe)) {
-            readAddrList<uint32_t>(fbytes, dde);
+            readAddrList<ptr32_t>(fbytes, dde);
         } else {
-            readAddrList<uint64_t>(fbytes, dde);
+            readAddrList<ptr64_t>(fbytes, dde);
         }
     }
 }

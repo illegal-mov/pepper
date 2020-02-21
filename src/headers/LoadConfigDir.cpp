@@ -1,10 +1,11 @@
+#include "../Types.h"
 #include "../Identification.h"
 #include "DataDirectoryEntry.h"
 #include "LoadConfigDir.h"
 
 using namespace Pepper;
 
-CodeIntegrity::CodeIntegrity(const FileBytes &fbytes, const size_t raw)
+CodeIntegrity::CodeIntegrity(const FileBytes &fbytes, const offset_t raw)
 : IHeader(fbytes, raw)
 {}
 

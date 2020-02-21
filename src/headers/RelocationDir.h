@@ -3,6 +3,7 @@
 
 #include <vector>
 
+#include "../Types.h"
 #include "../generics/iDir.h"
 #include "struct.h"
 
@@ -57,7 +58,7 @@ public:
 
     RelocationTable() = default;
 
-    RelocationTable(const FileBytes &fbytes, const size_t raw, const size_t len)
+    RelocationTable(const FileBytes &fbytes, const offset_t raw, const size_t len)
     : IHeader(fbytes, raw)
     , m_length(len)
     {}
@@ -89,7 +90,7 @@ public:
         _NUM_FIELDS,
     };
 
-    RelocationBase(const FileBytes &fbytes, const size_t raw)
+    RelocationBase(const FileBytes &fbytes, const offset_t raw)
     : IHeader(fbytes, raw)
     {}
 
@@ -117,7 +118,7 @@ public:
         _NUM_FIELDS,
     };
 
-    RelocationBlock(const FileBytes &fbytes, const size_t raw);
+    RelocationBlock(const FileBytes &fbytes, const offset_t raw);
 
     // member functions
     const void* getFieldPtr(const int index) const override;

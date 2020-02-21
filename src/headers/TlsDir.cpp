@@ -1,5 +1,6 @@
 #include "../Identification.h"
 #include "../PeFile.h"
+#include "../Types.h"
 #include "DataDirectoryEntry.h"
 #include "OptionalHdr.h"
 #include "TlsDir.h"
@@ -10,7 +11,7 @@ template <typename ArchType>
 size_t CallbacksTable<ArchType>::s_codeDiff = 0;
 
 template <typename ArchType>
-CallbacksTable<ArchType>::CallbacksTable(const PeFile &pe, const FileBytes &fbytes, const size_t raw)
+CallbacksTable<ArchType>::CallbacksTable(const PeFile &pe, const FileBytes &fbytes, const offset_t raw)
 : IHeader(fbytes, raw)
 {
     const ArchType *cbArray = callbacks();
@@ -19,7 +20,7 @@ CallbacksTable<ArchType>::CallbacksTable(const PeFile &pe, const FileBytes &fbyt
     }
 
     ArchType codeRva = cbArray[0]; // AVAs in the table point to .text
-    codeRva = Convert::convertAddr(pe, codeRva, Convert::AVA, Convert::RVA);
+    codeRva = Convert::convertAddr(pe, codeRva, Convert::AddrType::AVA, Convert::AddrType::RVA);
     s_codeDiff = Convert::getRvaToRawDiff(pe, codeRva);
 
     // Since these are AVAs, add ImageBase to
@@ -35,15 +36,15 @@ TlsDir::TlsDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEnt
     if (Ident::dirExists(*this)) {
         // get AVA to array of callback function pointers
         const bool is32bit = Ident::is32bit(pe);
-        uint64_t callbacksPtr = (is32bit)
+        addr_t callbacksPtr = (is32bit)
                               ? tls32()->AddressOfCallbacks
                               : tls64()->AddressOfCallbacks;
         // convert AVA to RAW, use RAW to construct table
-        callbacksPtr = Convert::convertAddr(pe, callbacksPtr, Convert::AVA, Convert::RAW);
+        callbacksPtr = Convert::convertAddr(pe, callbacksPtr, Convert::AddrType::AVA, Convert::AddrType::RAW);
         if (is32bit) {
-            m_callbacks32 = CallbacksTable<uint32_t>(pe, fbytes, callbacksPtr);
+            m_callbacks32 = CallbacksTable<ptr32_t>(pe, fbytes, callbacksPtr);
         } else {
-            m_callbacks64 = CallbacksTable<uint64_t>(pe, fbytes, callbacksPtr);
+            m_callbacks64 = CallbacksTable<ptr64_t>(pe, fbytes, callbacksPtr);
         }
     }
 }

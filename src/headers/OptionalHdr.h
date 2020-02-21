@@ -3,6 +3,7 @@
 
 #include <array>
 
+#include "../Types.h"
 #include "../generics/iHdr.h"
 #include "DataDirectoryEntry.h"
 #include "FileHdr.h"
@@ -153,7 +154,7 @@ public:
     const IMAGE_OPTIONAL_HEADER64* optional64() const { return (PIMAGE_OPTIONAL_HEADER64)hdr(); }
     // the `ImageBase` is important for address conversions,
     // so this gets to be its own special little function
-    uint64_t imageBase() const;
+    addr_t imageBase() const;
 
     // static functions
     static const char* getFieldName(const int index);

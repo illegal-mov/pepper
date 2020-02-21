@@ -1,3 +1,4 @@
+#include "../Types.h"
 #include "OptionalHdr.h"
 
 using namespace Pepper;
@@ -24,7 +25,7 @@ DataDirectory::DataDirectory(const FileBytes &fbytes, const OptionalHeader &opt)
     }
 }
 
-uint64_t OptionalHeader::imageBase() const
+addr_t OptionalHeader::imageBase() const
 {
     return (optional32()->Magic == BIT32)
         ? optional32()->ImageBase

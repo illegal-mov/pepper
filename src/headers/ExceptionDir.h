@@ -3,6 +3,7 @@
 
 #include <vector>
 
+#include "../Types.h"
 #include "../generics/iDir.h"
 #include "struct.h"
 
@@ -53,7 +54,7 @@ public:
     // defined in template specializations
     enum Fields : int {};
 
-    FunctionTableEntry(const FileBytes &fbytes, const size_t raw)
+    FunctionTableEntry(const FileBytes &fbytes, const offset_t raw)
     : IHeader(fbytes, raw)
     {}
 

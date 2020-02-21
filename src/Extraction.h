@@ -12,7 +12,7 @@ namespace Pepper {
 }
 
 namespace Pepper { namespace Extract {
-    enum ExceptionFlag {
+    enum class ExceptionFlag {
         NO_THROW,
         MAY_THROW,
     };

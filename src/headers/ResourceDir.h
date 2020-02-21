@@ -5,6 +5,7 @@
 #include <memory>
 #include <vector>
 
+#include "../Types.h"
 #include "../generics/iDir.h"
 #include "struct.h"
 
@@ -87,7 +88,7 @@ public:
         _NUM_FIELDS,
     };
 
-    GenericResourceString(const FileBytes &fbytes, const size_t raw);
+    GenericResourceString(const FileBytes &fbytes, const offset_t raw);
 
     // member functions
     const void* getFieldPtr(const int index) const override;
@@ -116,7 +117,7 @@ public:
         _NUM_FIELDS,
     };
 
-    ResourceData(const FileBytes &fbytes, const size_t raw, const ResourceNode *parent);
+    ResourceData(const FileBytes &fbytes, const offset_t raw, const ResourceNode *parent);
 
     ResourceData(const ResourceData &rd)
     : IHeader(rd)
@@ -159,7 +160,7 @@ public:
         _NUM_FIELDS,
     };
 
-    ResourceEntry(const FileBytes &fbytes, const size_t raw, const ResourceNode *parent, std::map<uint32_t, ResourceData*> &dataMap);
+    ResourceEntry(const FileBytes &fbytes, const offset_t raw, const ResourceNode *parent, std::map<uint32_t, ResourceData*> &dataMap);
 
     ResourceEntry(ResourceEntry &&re)
     : m_name(std::move(re.m_name))
@@ -202,7 +203,7 @@ public:
         _NUM_FIELDS,
     };
 
-    ResourceNode(const FileBytes &fbytes, const size_t raw, const ResourceNode *parent, std::map<uint32_t, ResourceData*> &dataMap);
+    ResourceNode(const FileBytes &fbytes, const offset_t raw, const ResourceNode *parent, std::map<uint32_t, ResourceData*> &dataMap);
 
     ResourceNode(const ResourceNode &rn) = delete;
     const ResourceNode& operator=(const ResourceNode &rn) = delete;

@@ -1,10 +1,11 @@
 #include "../Identification.h"
+#include "../Types.h"
 #include "DataDirectoryEntry.h"
 #include "RelocationDir.h"
 
 using namespace Pepper;
 
-RelocationBlock::RelocationBlock(const FileBytes &fbytes, const size_t raw)
+RelocationBlock::RelocationBlock(const FileBytes &fbytes, const offset_t raw)
 : IHeader(fbytes, raw)
 , m_relocBase(fbytes, raw)
 , m_relocTable()

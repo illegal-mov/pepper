@@ -39,7 +39,7 @@ static bool genericDump(const std::string &path, const DirectoryType &t, Extract
     if (out.is_open()) {
         out.write(t.bytes(), t.size());
     } else {
-        if (throwFlag) {
+        if (throwFlag == Extract::ExceptionFlag::MAY_THROW) {
             throw FailedOpen("Unable to open the file for writing");
         }
         return false;

@@ -1,6 +1,7 @@
 #ifndef LOADCONFIG_H
 #define LOADCONFIG_H
 
+#include "../Types.h"
 #include "../generics/iDir.h"
 #include "struct.h"
 
@@ -134,7 +135,7 @@ public:
 
     CodeIntegrity() = default;
 
-    CodeIntegrity(const FileBytes &fbytes, const size_t raw);
+    CodeIntegrity(const FileBytes &fbytes, const offset_t raw);
 
     // member functions
     const void* getFieldPtr(const int index) const override;

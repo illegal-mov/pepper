@@ -3,6 +3,7 @@
 
 #include <vector>
 
+#include "../Types.h"
 #include "../generics/iDir.h"
 #include "struct.h"
 
@@ -32,7 +33,7 @@ public:
         _NUM_FIELDS,
     };
 
-    CertificateEntry(const FileBytes &fbytes, const size_t raw)
+    CertificateEntry(const FileBytes &fbytes, const offset_t raw)
     : IHeader(fbytes, raw)
     {}
 

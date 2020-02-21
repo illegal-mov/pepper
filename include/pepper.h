@@ -6,5 +6,6 @@
 #include "../src/Exceptions.h"
 #include "../src/Identification.h"
 #include "../src/Extraction.h"
+#include "../src/Types.h"
 
 #endif

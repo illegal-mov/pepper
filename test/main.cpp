@@ -62,9 +62,9 @@ void printOptionalHeader(const Pepper::PeFile &pe)
     using namespace Pepper;
     const OptionalHeader &optional = pe.optionalHdr();
     if (Ident::is32bit(pe))
-        printOptHdrStruct<int32_t, fmt32>(optional);
+        printOptHdrStruct<ptr32_t, fmt32>(optional);
     else
-        printOptHdrStruct<int64_t, fmt64>(optional);
+        printOptHdrStruct<ptr64_t, fmt64>(optional);
 }
 
 void printDataDirectory(const Pepper::PeFile &pe)
@@ -376,9 +376,9 @@ void printTls(const Pepper::PeFile &pe)
     const TlsDir &tls = pe.tlsDir();
     if (Ident::dirExists(tls)) {
         if (Ident::is32bit(pe))
-            printTlsStruct<uint32_t, fmt32, &TlsDir::cbt32>(tls);
+            printTlsStruct<ptr32_t, fmt32, &TlsDir::cbt32>(tls);
         else
-            printTlsStruct<uint64_t, fmt64, &TlsDir::cbt64>(tls);
+            printTlsStruct<ptr64_t, fmt64, &TlsDir::cbt64>(tls);
     }
 }
 
@@ -436,9 +436,9 @@ void printLoadConfig(const Pepper::PeFile &pe)
     const LoadConfigDir &loadConfig = pe.loadConfigDir();
     if (Ident::dirExists(loadConfig)) {
         if (Ident::is32bit(pe))
-            printLdCfgStruct<int32_t, fmt32>(loadConfig);
+            printLdCfgStruct<ptr32_t, fmt32>(loadConfig);
         else
-            printLdCfgStruct<int64_t, fmt64>(loadConfig);
+            printLdCfgStruct<ptr64_t, fmt64>(loadConfig);
     }
 }
 
