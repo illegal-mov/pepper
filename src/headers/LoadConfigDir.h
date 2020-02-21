@@ -17,14 +17,14 @@
 
 /*
 typedef struct _IMAGE_LOAD_CONFIG_CODE_INTEGRITY {
-    int16_t Flags;
-    int16_t Catalog;
-    int32_t CatalogOffset;
-    int32_t Reserved;
+    int16_t  Flags;
+    int16_t  Catalog;
+    uint32_t CatalogOffset;
+    int32_t  Reserved;
 } IMAGE_LOAD_CONFIG_CODE_INTEGRITY, *PIMAGE_LOAD_CONFIG_CODE_INTEGRITY;
 
 typedef struct _IMAGE_LOAD_CONFIG_DIRECTORY32 {
-    int32_t                          Size;
+    uint32_t                         Size;
     int32_t                          TimeDateStamp;
     int16_t                          MajorVersion;
     int16_t                          MinorVersion;
@@ -34,7 +34,7 @@ typedef struct _IMAGE_LOAD_CONFIG_DIRECTORY32 {
     int32_t                          DeCommitFreeBlockThreshold;
     int32_t                          DeCommitTotalFreeThreshold;
     int32_t                          LockPrefixTable;
-    int32_t                          MaximumAllocationSize;
+    uint32_t                         MaximumAllocationSize;
     int32_t                          VirtualMemoryThreshold;
     int32_t                          ProcessAffinityMask;
     int32_t                          ProcessHeapFlags;
@@ -44,32 +44,32 @@ typedef struct _IMAGE_LOAD_CONFIG_DIRECTORY32 {
     int32_t                          SecurityCookie;
     int32_t                          SEHandlerTable;
     int32_t                          SEHandlerCount;
-    int32_t                          GuardCFCheckFunctionPointer;
-    int32_t                          GuardCFDispatchFunctionPointer;
+    uint32_t                         GuardCFCheckFunctionPointer;
+    uint32_t                         GuardCFDispatchFunctionPointer;
     int32_t                          GuardCFFunctionTable;
     int32_t                          GuardCFFunctionCount;
     int32_t                          GuardFlags;
     IMAGE_LOAD_CONFIG_CODE_INTEGRITY CodeIntegrity;
-    int32_t                          GuardAddressTakenIatEntryTable;
-    int32_t                          GuardAddressTakenIatEntryCount;
+    uint32_t                         GuardAddressTakenIatEntryTable;
+    uint32_t                         GuardAddressTakenIatEntryCount;
     int32_t                          GuardLongJumpTargetTable;
     int32_t                          GuardLongJumpTargetCount;
     int32_t                          DynamicValueRelocTable;
-    int32_t                          CHPEMetadataPointer;
+    uint32_t                         CHPEMetadataPointer;
     int32_t                          GuardRFFailureRoutine;
-    int32_t                          GuardRFFailureRoutineFunctionPointer;
-    int32_t                          DynamicValueRelocTableOffset;
+    uint32_t                         GuardRFFailureRoutineFunctionPointer;
+    uint32_t                         DynamicValueRelocTableOffset;
     int16_t                          DynamicValueRelocTableSection;
     int16_t                          Reserved2;
-    int32_t                          GuardRFVerifyStackPointerFunctionPointer;
-    int32_t                          HotPatchTableOffset;
+    uint32_t                         GuardRFVerifyStackPointerFunctionPointer;
+    uint32_t                         HotPatchTableOffset;
     int32_t                          Reserved3;
-    int32_t                          EnclaveConfigurationPointer;
-    int32_t                          VolatileMetadataPointer;
+    uint32_t                         EnclaveConfigurationPointer;
+    uint32_t                         VolatileMetadataPointer;
 } IMAGE_LOAD_CONFIG_DIRECTORY32, *PIMAGE_LOAD_CONFIG_DIRECTORY32;
 
 typedef struct _IMAGE_LOAD_CONFIG_DIRECTORY64 {
-    int32_t                          Size;
+    uint32_t                         Size;
     int32_t                          TimeDateStamp;
     int16_t                          MajorVersion;
     int16_t                          MinorVersion;
@@ -79,7 +79,7 @@ typedef struct _IMAGE_LOAD_CONFIG_DIRECTORY64 {
     int64_t                          DeCommitFreeBlockThreshold;
     int64_t                          DeCommitTotalFreeThreshold;
     int64_t                          LockPrefixTable;
-    int64_t                          MaximumAllocationSize;
+    uint64_t                         MaximumAllocationSize;
     int64_t                          VirtualMemoryThreshold;
     int64_t                          ProcessAffinityMask;
     int32_t                          ProcessHeapFlags;
@@ -89,28 +89,28 @@ typedef struct _IMAGE_LOAD_CONFIG_DIRECTORY64 {
     int64_t                          SecurityCookie;
     int64_t                          SEHandlerTable;
     int64_t                          SEHandlerCount;
-    int64_t                          GuardCFCheckFunctionPointer;
-    int64_t                          GuardCFDispatchFunctionPointer;
+    uint64_t                         GuardCFCheckFunctionPointer;
+    uint64_t                         GuardCFDispatchFunctionPointer;
     int64_t                          GuardCFFunctionTable;
     int64_t                          GuardCFFunctionCount;
     int32_t                          GuardFlags;
     IMAGE_LOAD_CONFIG_CODE_INTEGRITY CodeIntegrity;
-    int64_t                          GuardAddressTakenIatEntryTable;
-    int64_t                          GuardAddressTakenIatEntryCount;
+    uint64_t                         GuardAddressTakenIatEntryTable;
+    uint64_t                         GuardAddressTakenIatEntryCount;
     int64_t                          GuardLongJumpTargetTable;
     int64_t                          GuardLongJumpTargetCount;
     int64_t                          DynamicValueRelocTable;
-    int64_t                          CHPEMetadataPointer;
+    uint64_t                         CHPEMetadataPointer;
     int64_t                          GuardRFFailureRoutine;
-    int64_t                          GuardRFFailureRoutineFunctionPointer;
-    int32_t                          DynamicValueRelocTableOffset;
+    uint64_t                         GuardRFFailureRoutineFunctionPointer;
+    uint32_t                         DynamicValueRelocTableOffset;
     int16_t                          DynamicValueRelocTableSection;
     int16_t                          Reserved2;
-    int64_t                          GuardRFVerifyStackPointerFunctionPointer;
-    int32_t                          HotPatchTableOffset;
+    uint64_t                         GuardRFVerifyStackPointerFunctionPointer;
+    uint32_t                         HotPatchTableOffset;
     int32_t                          Reserved3;
-    int64_t                          EnclaveConfigurationPointer;
-    int64_t                          VolatileMetadataPointer;
+    uint64_t                         EnclaveConfigurationPointer;
+    uint64_t                         VolatileMetadataPointer;
 } IMAGE_LOAD_CONFIG_DIRECTORY64, *PIMAGE_LOAD_CONFIG_DIRECTORY64;
 */
 

@@ -580,7 +580,7 @@ typedef struct _IMAGE_RESOURCE_DIRECTORY_STRING {
 	char     NameString[];
 } IMAGE_RESOURCE_DIRECTORY_STRING, *PIMAGE_RESOURCE_DIRECTORY_STRING;
 
-typedef struct _IMAGE_RESOURCE_DIR_STRING_U {
+typedef struct _IMAGE_RESOURCE_DIRECTORY_STRING_U {
 	uint16_t Length;
 	uint16_t NameString[]; // TODO: maybe char16_t
 } IMAGE_RESOURCE_DIRECTORY_STRING_U, *PIMAGE_RESOURCE_DIRECTORY_STRING_U;
@@ -619,12 +619,12 @@ typedef struct _IMAGE_EXCEPTION_ENTRY_ARM {
 /* CERTIFICATE / SECURITY DIRECTORY */
 
 typedef struct _IMAGE_ATTRIBUTE_CERTIFICATE {
-    uint32_t Length;           // certificate size in bytes
-    int16_t  Revision;         // certificate version
+    uint32_t Length;            // certificate size in bytes
+    int16_t  Revision;          // certificate version
     /* 0x0100 WIN_CERT_REVISION_1_0
      * 0x0200 WIN_CERT_REVISION_2_0
      */
-    int16_t CertificateType;  // certificate type
+    int16_t CertificateType;    // certificate type
     /* 0x0001 WIN_CERT_TYPE_X509
      * 0x0002 WIN_CERT_TYPE_PKCS_SIGNED_DATA
      * 0x0003 WIN_CERT_TYPE_RESERVED_1

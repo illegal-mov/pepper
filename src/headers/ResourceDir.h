@@ -11,28 +11,28 @@
 
 /*
 typedef struct _IMAGE_RESOURCE_DIRECTORY {
-    int32_t Characteristics;      // reserved, must be zero
-    int32_t TimeDateStamp;        // resource data creation time
-    int16_t MajorVersion;
-    int16_t MinorVersion;
-    int16_t NumberOfNamedEntries;
-    int16_t NumberOfIdEntries;
+    int32_t  Characteristics;      // reserved, must be zero
+    int32_t  TimeDateStamp;        // resource data creation time
+    int16_t  MajorVersion;
+    int16_t  MinorVersion;
+    uint16_t NumberOfNamedEntries;
+    uint16_t NumberOfIdEntries;
 } IMAGE_RESOURCE_DIRECTORY, *PIMAGE_RESOURCE_DIRECTORY;
 
 typedef struct _IMAGE_RESOURCE_ENTRY {
     union { // string or ID
         struct {
-            int32_t NameOffset   : 31;
-            int32_t NameIsString : 1;
+            uint32_t NameOffset   : 31;
+            int32_t  NameIsString : 1;
         };
         int32_t Name;
         int16_t ID; // TODO: this ID identifies resource type only at root level
     };
     union { // dir ptr or data ptr
-        int32_t OffsetToData;
+        uint32_t OffsetToData;
         struct {
-            int32_t OffsetToDirectory : 31;
-            int32_t DataIsDirectory   : 1;
+            uint32_t OffsetToDirectory : 31;
+            int32_t  DataIsDirectory   : 1;
         };
     };
 } IMAGE_RESOURCE_ENTRY, *PIMAGE_RESOURCE_ENTRY;
@@ -48,10 +48,10 @@ typedef struct _IMAGE_RESOURCE_DIRECTORY_STRING_U {
 } IMAGE_RESOURCE_DIRECTORY_STRING_U, *PIMAGE_RESOURCE_DIRECTORY_STRING_U;
 
 typedef struct _IMAGE_RESOURCE_DATA {
-    int32_t OffsetToData;
-    int32_t Size;
-    int32_t CodePage;
-    int32_t Reserved;     // must be zero
+    uint32_t OffsetToData;
+    uint32_t Size;
+    int32_t  CodePage;
+    int32_t  Reserved; // reserved, must be zero
 } IMAGE_RESOURCE_DATA, *PIMAGE_RESOURCE_DATA;
 */
 

@@ -7,17 +7,17 @@
 
 /*
 typedef struct _IMAGE_EXPORT_DIRECTORY {
-    int32_t ExportFlags;           // reserved, must be zero
-    int32_t TimeDateStamp;         // export data creation time
-    int16_t MajorVersion;          // major version number
-    int16_t MinorVersion;          // minor version number
-    int32_t NameRVA;               // pointer to dll name
-    int32_t OrdinalBase;           // ordinal starting index
-    int32_t AddressTableEntries;   // number of export table entries
-    int32_t NumberOfNamePointers;  // number of ordinal table entries
-    int32_t ExportAddressTableRVA; // pointer to export table
-    int32_t NamePointerRVA;        // pointer to name table
-    int32_t OrdinalTableRVA;       // pointer to ordinal table
+    int32_t  ExportFlags;           // reserved, must be zero
+    int32_t  TimeDateStamp;         // export data creation time
+    int16_t  MajorVersion;          // major version number
+    int16_t  MinorVersion;          // minor version number
+    uint32_t NameRVA;               // pointer to dll name
+    uint32_t OrdinalBase;           // ordinal starting index
+    uint32_t AddressTableEntries;   // number of export table entries
+    uint32_t NumberOfNamePointers;  // number of ordinal table entries
+    uint32_t ExportAddressTableRVA; // pointer to export table
+    uint32_t NamePointerRVA;        // pointer to name table
+    uint32_t OrdinalTableRVA;       // pointer to ordinal table
 } IMAGE_EXPORT_DIRECTORY, *PIMAGE_EXPORT_DIRECTORY;
 */
 

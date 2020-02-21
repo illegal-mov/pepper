@@ -9,25 +9,25 @@
 
 /*
 typedef struct _IMAGE_EXCEPTION_ENTRY32 {
-    int32_t BeginAddress;     // AVA to start of exception-handling code
-    int32_t EndAddress;       // AVA to end of exception-handling code
-    int32_t ExceptionHandler; // RVA to exception handler to execute
-    int32_t HandlerData;      // RVA to extra exception handler data
-    int32_t PrologEndAddress; // AVA to end of function prolog
+    uint32_t BeginAddress;     // AVA to start of exception-handling code
+    uint32_t EndAddress;       // AVA to end of exception-handling code
+    uint32_t ExceptionHandler; // RVA to exception handler to execute
+    uint32_t HandlerData;      // RVA to extra exception handler data
+    uint32_t PrologEndAddress; // AVA to end of function prolog
 } IMAGE_EXCEPTION_ENTRY32, *PIMAGE_EXCEPTION_ENTRY32;
 
 typedef struct _IMAGE_EXCEPTION_ENTRY64 {
-    int32_t BeginAddress;      // RVA to start of exception-handling code
-    int32_t EndAddress;        // RVA to end of exception-handling code
-    int32_t UnwindInformation; // RVA to unwind information
+    uint32_t BeginAddress;      // RVA to start of exception-handling code
+    uint32_t EndAddress;        // RVA to end of exception-handling code
+    uint32_t UnwindInformation; // RVA to unwind information
 } IMAGE_EXCEPTION_ENTRY64, *PIMAGE_EXCEPTION_ENTRY64;
 
 typedef struct _IMAGE_EXCEPTION_ENTRY_ARM {
-    int32_t BeginAddress;        // AVA to start of exception-handling code
-    int32_t PrologLength   : 8;  // Number of instructions in prolog
-    int32_t FunctionLength : 22; // number of instructions in function
-    int32_t Is32BitCode    : 1;  // (==1) ? 32bit insns : 16bit insn
-    int32_t ExceptionFlag  : 1;  // (==1) ? handler exists : no handler
+    uint32_t BeginAddress;        // AVA to start of exception-handling code
+    uint32_t PrologLength   : 8;  // Number of instructions in prolog
+    uint32_t FunctionLength : 22; // number of instructions in function
+    int32_t  Is32BitCode    : 1;  // (==1) ? 32bit insns : 16bit insn
+    int32_t  ExceptionFlag  : 1;  // (==1) ? handler exists : no handler
 } IMAGE_EXCEPTION_ENTRY_ARM, *PIMAGE_EXCEPTION_ENTRY_ARM;
 */
 

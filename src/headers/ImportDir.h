@@ -9,11 +9,11 @@
 
 /*
 typedef struct _IMAGE_IMPORT_DESCRIPTOR {
-    int32_t ImportLookupTableRVA;  // pointer to array of thunk data
-    int32_t TimeDateStamp;         // dll timestamp after binding
-    int32_t ForwarderChain;        // index of first forwarder reference
-    int32_t NameRVA;               // pointer to module name
-    int32_t ImportAddressTableRVA; // pointer to import address table
+    uint32_t ImportLookupTableRVA;  // pointer to array of thunk data
+    int32_t  TimeDateStamp;         // dll timestamp after binding
+    int32_t  ForwarderChain;        // index of first forwarder reference
+    uint32_t NameRVA;               // pointer to module name
+    uint32_t ImportAddressTableRVA; // pointer to import address table
 } IMAGE_IMPORT_DESCRIPTOR, *PIMAGE_IMPORT_DESCRIPTOR;
 */
 

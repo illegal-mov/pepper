@@ -9,14 +9,14 @@
 
 /*
 typedef struct _IMAGE_DELAY_IMPORT_DESCRIPTOR {
-    int32_t Attributes;                 // reserved, must be zero
-    int32_t NameRVA;                    // pointer to DLL's name
-    int32_t ModuleHandleRVA;            // pointer to DLL's module handle
-    int32_t DelayImportAddressTableRVA; // pointer to delay-load import address table
-    int32_t DelayImportNameTableRVA;    // pointer to delay-load import name table
-    int32_t BoundDelayImportTableRVA;   // pointer to bound delay-load address table
-    int32_t UnloadDelayImportTableRVA;  // pointer to unload delay-load address table
-    int32_t Timestamp;                  // dll timestamp after binding
+    int32_t  Attributes;                 // reserved, must be zero
+    uint32_t NameRVA;                    // pointer to DLL's name
+    uint32_t ModuleHandleRVA;            // pointer to DLL's module handle
+    uint32_t DelayImportAddressTableRVA; // pointer to delay-load import address table
+    uint32_t DelayImportNameTableRVA;    // pointer to delay-load import name table
+    uint32_t BoundDelayImportTableRVA;   // pointer to bound delay-load address table
+    uint32_t UnloadDelayImportTableRVA;  // pointer to unload delay-load address table
+    int32_t  Timestamp;                  // dll timestamp after binding
 } IMAGE_DELAY_IMPORT_DESCRIPTOR, *PIMAGE_DELAY_IMPORT_DESCRIPTOR;
 */
 

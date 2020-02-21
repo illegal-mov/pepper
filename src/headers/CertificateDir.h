@@ -9,8 +9,8 @@
 
 /*
 typedef struct _IMAGE_ATTRIBUTE_CERTIFICATE {
-    int32_t Length;             // certificate size in bytes
-    int16_t Revision;           // certificate version
+    uint32_t Length;            // certificate size in bytes
+    int16_t  Revision;          // certificate version
     int16_t CertificateType;    // certificate type
     char    CertificateBytes[]; // certificate data
 } IMAGE_ATTRIBUTE_CERTIFICATE, *PIMAGE_ATTRIBUTE_CERTIFICATE;

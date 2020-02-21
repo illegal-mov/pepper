@@ -9,14 +9,14 @@
 
 /*
 typedef struct _IMAGE_DEBUG_DIRECTORY {
-    int32_t Characteristics;  // reserved, must be zero
-    int32_t TimeDateStamp;    // debug data creation time
-    int16_t MajorVersion;     // debug format major version
-    int16_t MinorVersion;     // debug format minor version
-    int32_t Type;             // debug info format
-    int32_t SizeOfData;       // debug data size
-    int32_t AddressOfRawData; // virtual address to debug data
-    int32_t PointerToRawData; // file pointer to debug data
+    int32_t  Characteristics;  // reserved, must be zero
+    int32_t  TimeDateStamp;    // debug data creation time
+    int16_t  MajorVersion;     // debug format major version number
+    int16_t  MinorVersion;     // debug format minor version
+    int32_t  Type;             // debug info format
+    uint32_t SizeOfData;       // debug data size
+    uint32_t AddressOfRawData; // virtual address to debug data
+    uint32_t PointerToRawData; // file pointer to debug data
 } IMAGE_DEBUG_DIRECTORY, *PIMAGE_DEBUG_DIRECTORY;
 
 typedef struct _RSDSI {

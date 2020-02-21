@@ -8,21 +8,21 @@
 
 /*
 typedef struct _IMAGE_TLS_DIRECTORY32 {
-    int32_t RawDataStartVA;
-    int32_t RawDataEndVA;
-    int32_t AddressOfIndex;
-    int32_t AddressOfCallbacks;
-    int32_t SizeOfZeroFill;
-    int32_t Characteristics;
+    int32_t  RawDataStartVA;
+    int32_t  RawDataEndVA;
+    uint32_t AddressOfIndex;
+    uint32_t AddressOfCallbacks;
+    uint32_t SizeOfZeroFill;
+    int32_t  Characteristics;
 } IMAGE_TLS_DIRECTORY32, *PIMAGE_TLS_DIRECTORY32;
 
 typedef struct _IMAGE_TLS_DIRECTORY64 {
-    int64_t RawDataStartVA;
-    int64_t RawDataEndVA;
-    int64_t AddressOfIndex;
-    int64_t AddressOfCallbacks;
-    int32_t SizeOfZeroFill;
-    int32_t Characteristics;
+    int64_t  RawDataStartVA;
+    int64_t  RawDataEndVA;
+    uint64_t AddressOfIndex;
+    uint64_t AddressOfCallbacks;
+    uint32_t SizeOfZeroFill;
+    int32_t  Characteristics;
 } IMAGE_TLS_DIRECTORY64, *PIMAGE_TLS_DIRECTORY64;
 */
 

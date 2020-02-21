@@ -9,13 +9,13 @@
 
 /*
 typedef struct _IMAGE_BASE_RELOCATION {
-    int32_t PageRVA;
-    int32_t BlockSize;
+    uint32_t PageRVA;
+    uint32_t BlockSize;
 } IMAGE_BASE_RELOCATION, *PIMAGE_BASE_RELOCATION;
 
 typedef struct _IMAGE_BASE_RELOCATION_ENTRY {
-    int16_t Offset : 12;
-    int16_t Type   : 4;
+    uint16_t Offset : 12;
+    uint16_t Type   : 4;
 } IMAGE_BASE_RELOCATION_ENTRY, *PIMAGE_BASE_RELOCATION_ENTRY;
 */
 

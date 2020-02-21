@@ -9,21 +9,22 @@
 /*
 // one for each imported module
 typedef struct _IMAGE_IMPORT_DESCRIPTOR {
-    int32_t ImportLookupTableRVA;  // pointer to array of thunk data
-    int32_t TimeDateStamp;         // dll timestamp after binding
-    int32_t ForwarderChain;        // index of first forwarder reference
-    int32_t NameRVA;               // pointer to module name
-    int32_t ImportAddressTableRVA; // pointer to import address table
+    uint32_t ImportLookupTableRVA;  // pointer to array of thunk data
+    int32_t  TimeDateStamp;         // dll timestamp after binding
+    int32_t  ForwarderChain;        // index of first forwarder reference
+    uint32_t NameRVA;               // pointer to module name
+    uint32_t ImportAddressTableRVA; // pointer to import address table
 } IMAGE_IMPORT_DESCRIPTOR, *PIMAGE_IMPORT_DESCRIPTOR;
 
 // one for each imported function per module
 typedef struct _IMAGE_THUNK_DATA32 {
     union {
         struct {
-            int32_t OrdinalNumber : 31;
+            int32_t OrdinalNumber : 16;
+            int32_t Null          : 15; // must be zero
             int32_t OrdinalFlag   : 1;
         };
-        int32_t HintNameTableRVA; // RVA to IMAGE_IMPORT_BY_NAME
+        uint32_t HintNameTableRVA; // RVA to IMAGE_IMPORT_BY_NAME
     };
 } IMAGE_THUNK_DATA32, *PIMAGE_THUNK_DATA32;
 
@@ -31,16 +32,17 @@ typedef struct _IMAGE_THUNK_DATA32 {
 typedef struct _IMAGE_THUNK_DATA64 {
     union {
         struct {
-            int64_t OrdinalNumber : 63;
+            int64_t OrdinalNumber : 16;
+            int64_t Null          : 47; // must be zero
             int64_t OrdinalFlag   : 1;
         };
-        int64_t HintNameTableRVA; // RVA to IMAGE_IMPORT_BY_NAME
+        uint64_t HintNameTableRVA; // RVA to IMAGE_IMPORT_BY_NAME
     };
 } IMAGE_THUNK_DATA64, *PIMAGE_THUNK_DATA64;
 
 typedef struct _IMAGE_IMPORT_BY_NAME {
-    int16_t Hint; // Index into export name table pointer
-    char    Name; // Imported function name as null-terminated ASCII string
+    uint16_t Hint;   // Index into export name table pointer
+    char     Name[]; // Imported function name as null-terminated ASCII string
 } IMAGE_IMPORT_BY_NAME, *PIMAGE_IMPORT_BY_NAME;
 */
 

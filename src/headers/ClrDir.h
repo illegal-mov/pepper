@@ -14,14 +14,14 @@
 
 /*
 typedef struct _IMAGE_COR20_HEADER {
-    int32_t              Size;                // size of this header
+    uint32_t             Size;                // size of this header
     int16_t              MajorRuntimeVersion; // CLR major version number
     int16_t              MinorRuntimeVersion; // CLR minor version number
     IMAGE_DATA_DIRECTORY MetaData;
     int32_t              Flags;
     union {
         int32_t          EntryPointToken;
-        int32_t          EntryPointRVA;
+        uint32_t         EntryPointRVA;
     };
     IMAGE_DATA_DIRECTORY Resources;
     IMAGE_DATA_DIRECTORY StrongNameSignature;
