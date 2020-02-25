@@ -109,7 +109,8 @@ public:
     static const char* getDebugTypeName(const int index);
 };
 
-/* Null-terminated array of IMAGE_DEBUG_DIRECTORY structs.
+/* Array of IMAGE_DEBUG_DIRECTORY structs.
+ * Array length is given by (totalDirectorySize / sizeof(debugStruct))
  */
 class DebugDir final : public IDirectory {
 private:

@@ -18,9 +18,9 @@ DebugDir::DebugDir(const PeFile &pe, const FileBytes &fbytes, const DataDirector
 : IDirectory(pe, fbytes, dde)
 {
     if (Ident::dirExists(*this)) {
-        constexpr char null[sizeof(IMAGE_DEBUG_DIRECTORY)] = {0};
-        for (size_t i=0; memcmp(&static_cast<const char*>(dir())[i*sizeof(null)], &null, sizeof(null)); i++) {
-            m_elements.emplace_back(fbytes, dirOffset() + i*sizeof(null));
+        const size_t len = dde.size() / sizeof(IMAGE_DEBUG_DIRECTORY);
+        for (size_t i=0; i < len; i++) {
+            m_elements.emplace_back(fbytes, dirOffset() + i*sizeof(IMAGE_DEBUG_DIRECTORY));
         }
     }
 }
