@@ -38,17 +38,21 @@ ExportDir::ExportDir(const PeFile &pe, const FileBytes &fbytes, const DataDirect
         const IMAGE_EXPORT_DIRECTORY *pExpDir = xport();
 
         // construct each of the three export tables by copy assignment
-        ExportAddressTable eat(pe, fbytes, pExpDir->ExportAddressTableRVA - m_diffOfRvaRaw,
-            pExpDir->AddressTableEntries);
-        m_addrTable = eat;
+        if (xport()->AddressTableEntries > 0) {
+            ExportAddressTable eat(pe, fbytes, pExpDir->ExportAddressTableRVA - m_diffOfRvaRaw,
+                pExpDir->AddressTableEntries);
+            m_addrTable = eat;
+        }
 
-        ExportNameTable ent(pe, fbytes, pExpDir->NamePointerRVA - m_diffOfRvaRaw,
-            pExpDir->NumberOfNamePointers);
-        m_nameTable = ent;
+        if (xport()->NumberOfNamePointers > 0) {
+            ExportNameTable ent(pe, fbytes, pExpDir->NamePointerRVA - m_diffOfRvaRaw,
+                pExpDir->NumberOfNamePointers);
+            m_nameTable = ent;
 
-        ExportOrdinalTable eot(fbytes, pExpDir->OrdinalTableRVA - m_diffOfRvaRaw,
-            pExpDir->NumberOfNamePointers);
-        m_ordTable = eot;
+            ExportOrdinalTable eot(fbytes, pExpDir->OrdinalTableRVA - m_diffOfRvaRaw,
+                pExpDir->NumberOfNamePointers);
+            m_ordTable = eot;
+        }
     }
 }
 
