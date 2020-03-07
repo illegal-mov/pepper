@@ -124,7 +124,7 @@ public:
     , m_parent(rd.m_parent)
     {}
 
-    const ResourceData& operator=(const ResourceData &rd)
+    ResourceData& operator=(const ResourceData &rd)
     {
         IHeader::operator=(rd);
         m_parent = rd.m_parent;
@@ -170,7 +170,7 @@ public:
     ~ResourceEntry();
 
     ResourceEntry(const ResourceEntry &re) = delete;
-    const ResourceEntry& operator=(const ResourceEntry &re) = delete;
+    ResourceEntry& operator=(const ResourceEntry &re) = delete;
 
     // member functions
     const void* getFieldPtr(const int index) const override;
@@ -206,7 +206,7 @@ public:
     ResourceNode(const FileBytes &fbytes, const offset_t raw, const ResourceNode *parent, std::map<uint32_t, ResourceData*> &dataMap);
 
     ResourceNode(const ResourceNode &rn) = delete;
-    const ResourceNode& operator=(const ResourceNode &rn) = delete;
+    ResourceNode& operator=(const ResourceNode &rn) = delete;
 
     // member functions
     const void* getFieldPtr(const int index) const override;
@@ -234,7 +234,7 @@ public:
     ResourceDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde);
 
     ResourceDir(const ResourceDir &rd) = delete;
-    const ResourceDir& operator=(const ResourceDir &rd) = delete;
+    ResourceDir& operator=(const ResourceDir &rd) = delete;
 
     // member functions
     const void* getFieldPtr(const int index) const override;

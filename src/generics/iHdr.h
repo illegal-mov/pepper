@@ -27,7 +27,7 @@ protected:
     , m_baseOffset(ih.m_baseOffset)
     {}
 
-    const IHeader& operator=(const IHeader& ih)
+    IHeader& operator=(const IHeader& ih)
     {
         m_headerPtr = ih.m_headerPtr;
         m_baseOffset = ih.m_baseOffset;

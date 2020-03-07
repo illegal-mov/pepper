@@ -93,7 +93,7 @@ public:
     ~ExceptionDir() {}
 
     // overloaded operators
-    const ExceptionDir& operator=(const ExceptionDir &ed)
+    ExceptionDir& operator=(const ExceptionDir &ed)
     {
         IDirectory::operator=(ed);
         m_entries32 = ed.m_entries32;

@@ -73,7 +73,7 @@ public:
 
     ~IatDir() {}
 
-    const IatDir& operator=(const IatDir &id)
+    IatDir& operator=(const IatDir &id)
     {
         IDirectory::operator=(id);
         m_list32 = id.m_list32;

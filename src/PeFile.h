@@ -84,7 +84,7 @@ public:
     };
 
     PeFile(const PeFile &pe) = delete;
-    const PeFile& operator=(const PeFile &pe) = delete;
+    PeFile& operator=(const PeFile &pe) = delete;
 
     PeFile(const std::string& path);
 

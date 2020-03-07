@@ -34,7 +34,7 @@ protected:
     , m_diffOfRvaRaw(id.m_diffOfRvaRaw)
     {}
 
-    const IDirectory& operator=(const IDirectory &id)
+    IDirectory& operator=(const IDirectory &id)
     {
         IHeader::operator=(id);
         m_pe = id.m_pe;

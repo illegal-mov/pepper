@@ -172,7 +172,7 @@ public:
     ~GenericImportDescriptor() {}
 
     // overloaded operators
-    const GenericImportDescriptor& operator=(const GenericImportDescriptor &id)
+    GenericImportDescriptor& operator=(const GenericImportDescriptor &id)
     {
         IHeader::operator=(id);
         m_thunks32 = id.m_thunks32;
