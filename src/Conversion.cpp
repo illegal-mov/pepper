@@ -12,7 +12,7 @@ using namespace Pepper;
 /* Compare addresses in the section headers to find the difference between
  * RVAs and file offsets.
  */
-static uint32_t calculateDiff(const PeFile &pe, const addr_t addr, Convert::AddrType type)
+static uint32_t calculateDiff(const PeFile& pe, const addr_t addr, Convert::AddrType type)
 {
     int base, size, oppo;
     if (type == Convert::AddrType::RVA) {
@@ -28,8 +28,8 @@ static uint32_t calculateDiff(const PeFile &pe, const addr_t addr, Convert::Addr
     }
 
     // linear search for containing section
-    const SectionHeaders &sctns = pe.sectionHdrs();
-    for (const auto &section : sctns.sections()) {
+    const SectionHeaders& sctns = pe.sectionHdrs();
+    for (const auto& section : sctns.sections()) {
         const uint32_t sctnBase = *static_cast<const uint32_t*>(section.getFieldPtr(base));
         const uint32_t sctnSize = *static_cast<const uint32_t*>(section.getFieldPtr(size));
         if (sctnBase <= addr && addr < sctnBase + sctnSize) {
@@ -42,13 +42,13 @@ static uint32_t calculateDiff(const PeFile &pe, const addr_t addr, Convert::Addr
 }
 
 /* Use an RVA address to get the difference between RVAs and RAWs */
-uint32_t Convert::getRvaToRawDiff(const PeFile &pe, const addr_t rva)
+uint32_t Convert::getRvaToRawDiff(const PeFile& pe, const addr_t rva)
 {
     return calculateDiff(pe, rva, AddrType::RVA);
 }
 
 /* Use a RAW address to get the difference between RVAs and RAWs */
-uint32_t Convert::getRawToRvaDiff(const PeFile &pe, const addr_t raw)
+uint32_t Convert::getRawToRvaDiff(const PeFile& pe, const addr_t raw)
 {
     return calculateDiff(pe, raw, AddrType::RAW);
 }
@@ -58,9 +58,9 @@ uint32_t Convert::getRawToRvaDiff(const PeFile &pe, const addr_t raw)
  * for conversions to smaller types.
  * Returns 0 if the conversion fails.
  */
-addr_t Convert::convertAddr(const PeFile &pe, const addr_t addr, AddrType src, AddrType dst)
+addr_t Convert::convertAddr(const PeFile& pe, const addr_t addr, AddrType src, AddrType dst)
 {
-    const OptionalHeader &poh = pe.optionalHdr();
+    const OptionalHeader& poh = pe.optionalHdr();
     uint64_t diff = 0;
 
     if (src == dst) {

@@ -17,7 +17,7 @@ protected:
 
     IHeader() = default;
 
-    IHeader(const FileBytes &fbytes, const size_t offset)
+    IHeader(const FileBytes& fbytes, const size_t offset)
     : m_headerPtr(fbytes.bytes())
     , m_baseOffset(offset)
     {}

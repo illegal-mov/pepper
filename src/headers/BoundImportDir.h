@@ -55,7 +55,7 @@ class DataDirectoryEntry;
 
 class BoundImportDir final : public IDirectory {
 public:
-    BoundImportDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde);
+    BoundImportDir(const PeFile& pe, const FileBytes& fbytes, const DataDirectoryEntry& dde);
 
     // member functions
 //  const IMAGE_BOUND_IMPORT_DIRECTORY* imports() const { return static_cast<const IMAGE_*>(dir()); }

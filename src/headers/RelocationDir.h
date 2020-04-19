@@ -55,7 +55,7 @@ public:
 
     RelocationTable() = default;
 
-    RelocationTable(const FileBytes &fbytes, const offset_t raw, const size_t len)
+    RelocationTable(const FileBytes& fbytes, const offset_t raw, const size_t len)
     : IHeader(fbytes, raw)
     , m_length(len)
     {}
@@ -74,7 +74,7 @@ public:
 
     // static functions
     static const char* getFieldName(const int index);
-    static const char* getRelocationTypeName(const PeFile &pe, const int index);
+    static const char* getRelocationTypeName(const PeFile& pe, const int index);
 
 private:
     size_t m_length{};
@@ -91,7 +91,7 @@ public:
         _NUM_FIELDS,
     };
 
-    RelocationBase(const FileBytes &fbytes, const offset_t raw)
+    RelocationBase(const FileBytes& fbytes, const offset_t raw)
     : IHeader(fbytes, raw)
     {}
 
@@ -116,7 +116,7 @@ public:
         _NUM_FIELDS,
     };
 
-    RelocationBlock(const FileBytes &fbytes, const offset_t raw);
+    RelocationBlock(const FileBytes& fbytes, const offset_t raw);
 
     // member functions
     const void* getFieldPtr(const int index) const override;
@@ -135,7 +135,7 @@ private:
  */
 class RelocationDir final : public IDirectory {
 public:
-    RelocationDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde);
+    RelocationDir(const PeFile& pe, const FileBytes& fbytes, const DataDirectoryEntry& dde);
 
     // member functions
     const void* getFieldPtr(const int index) const override;

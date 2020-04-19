@@ -17,14 +17,14 @@ public:
     FileBytes(const FileBytes& fb) = delete;
     FileBytes& operator=(const FileBytes& fb) = delete;
 
-    FileBytes(const std::string &path);
+    FileBytes(const std::string& path);
 
     // member functions
     const char* bytes() const { return m_bytes.data(); }
     void readBytes(const offset_t pos, char *buf, const size_t bufLen) const;
 
     // static functions
-    static size_t getFileSize(std::ifstream &in);
+    static size_t getFileSize(std::ifstream& in);
 
 private:
     size_t m_fsize{};

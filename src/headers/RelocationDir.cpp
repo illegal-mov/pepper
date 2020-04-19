@@ -5,7 +5,7 @@
 
 using namespace Pepper;
 
-RelocationBlock::RelocationBlock(const FileBytes &fbytes, const offset_t raw)
+RelocationBlock::RelocationBlock(const FileBytes& fbytes, const offset_t raw)
 : IHeader(fbytes, raw)
 , m_relocBase(fbytes, raw)
 , m_relocTable()
@@ -16,7 +16,7 @@ RelocationBlock::RelocationBlock(const FileBytes &fbytes, const offset_t raw)
         (size - sizeof(IMAGE_BASE_RELOCATION)) / sizeof(IMAGE_BASE_RELOCATION_ENTRY));
 }
 
-RelocationDir::RelocationDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde)
+RelocationDir::RelocationDir(const PeFile& pe, const FileBytes& fbytes, const DataDirectoryEntry& dde)
 : IDirectory(pe, fbytes, dde)
 {
     if (Ident::dirExists(*this)) {
@@ -47,7 +47,7 @@ const char* RelocationTable::getFieldName(const int index)
     }
 }
 
-const char* RelocationTable::getRelocationTypeName(const PeFile &pe, const int index)
+const char* RelocationTable::getRelocationTypeName(const PeFile& pe, const int index)
 {
     switch (index) {
         case ABSOLUTE      : return "Absolute";

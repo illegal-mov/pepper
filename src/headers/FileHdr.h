@@ -83,7 +83,7 @@ public:
         BYTES_REVERSED_HI       = 0x8000,
     };
 
-    FileHeader(const FileBytes &fbytes, const DosHeader &dos)
+    FileHeader(const FileBytes& fbytes, const DosHeader& dos)
     : IHeader(fbytes, 0)
     {
         const uint16_t lfanew = dos.dos()->e_lfanew;

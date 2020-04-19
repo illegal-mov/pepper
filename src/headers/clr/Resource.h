@@ -39,7 +39,7 @@ public:
 
     ClrResource() = default;
 
-    ClrResource(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde);
+    ClrResource(const PeFile& pe, const FileBytes& fbytes, const DataDirectoryEntry& dde);
 
     // member functions
     const void* rsrc() const { return static_cast<const void*>(dir()); }

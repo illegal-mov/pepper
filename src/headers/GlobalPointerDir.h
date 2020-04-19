@@ -17,7 +17,7 @@ public:
         _NUM_FIELDS,
     };
 
-    GlobalPointerDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde);
+    GlobalPointerDir(const PeFile& pe, const FileBytes& fbytes, const DataDirectoryEntry& dde);
 
     // member functions
     const void* getFieldPtr(const int index) const override;

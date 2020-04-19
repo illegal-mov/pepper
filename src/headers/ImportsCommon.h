@@ -61,7 +61,7 @@ public:
 
     ImportName() = default;
 
-    ImportName(const FileBytes &fbytes, const offset_t raw)
+    ImportName(const FileBytes& fbytes, const offset_t raw)
     : IHeader(fbytes, raw)
     {}
 
@@ -88,14 +88,14 @@ public:
     };
 
     // constructor for import by ordinal (when OrdinalFlag is set)
-    ImportThunk(const FileBytes &fbytes, const offset_t raw, std::string ordstr)
+    ImportThunk(const FileBytes& fbytes, const offset_t raw, std::string ordstr)
     : IHeader(fbytes, raw)
     , m_hintname()
     , m_ordstr(ordstr)
     {}
 
     // constructor for regular import
-    ImportThunk(const FileBytes &fbytes, const offset_t raw)
+    ImportThunk(const FileBytes& fbytes, const offset_t raw)
     : IHeader(fbytes, raw)
     , m_hintname(fbytes, thunk()->HintNameTableRVA - *s_pDiskToMemDiff)
     {}
@@ -134,9 +134,9 @@ public:
     // this enum is defined in template specializations
     enum Fields : int {};
 
-    GenericImportDescriptor(const PeFile &pe, const FileBytes &fbytes, const offset_t raw);
+    GenericImportDescriptor(const PeFile& pe, const FileBytes& fbytes, const offset_t raw);
 
-    GenericImportDescriptor(const GenericImportDescriptor &id)
+    GenericImportDescriptor(const GenericImportDescriptor& id)
     : IHeader(id)
     , m_thunks32(id.m_thunks32)
     , m_addresses32(id.m_addresses32)
@@ -145,7 +145,7 @@ public:
     ~GenericImportDescriptor() {}
 
     // overloaded operators
-    GenericImportDescriptor& operator=(const GenericImportDescriptor &id)
+    GenericImportDescriptor& operator=(const GenericImportDescriptor& id)
     {
         IHeader::operator=(id);
         m_thunks32 = id.m_thunks32;
@@ -191,10 +191,10 @@ private:
 
     // a helper function to construct a {regular,delay} descriptor
     template <int ILT, int IAT, int TIMESTAMP>
-    void makeDescriptor(const PeFile &pe, const FileBytes &fbytes);
+    void makeDescriptor(const PeFile& pe, const FileBytes& fbytes);
 
     template <typename ArchType>
-    void readThunks(const FileBytes &fbytes, const offset_t raw);
+    void readThunks(const FileBytes& fbytes, const offset_t raw);
 
     template <typename ArchType>
     void readAddresses(size_t raw);

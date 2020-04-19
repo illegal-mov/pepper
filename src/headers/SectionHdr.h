@@ -92,7 +92,7 @@ public:
         MEM_WRITE       = 0x80000000,
     };
 
-    SectionHeaderEntry(const FileBytes &fbytes, const offset_t raw)
+    SectionHeaderEntry(const FileBytes& fbytes, const offset_t raw)
     : IHeader(fbytes, raw)
     {}
 
@@ -114,7 +114,7 @@ class SectionHeaders final {
 public:
     static constexpr int ALIGN_NYBBLE = 0x00F00000;
 
-    SectionHeaders(const FileBytes &fbytes, const FileHeader &file);
+    SectionHeaders(const FileBytes& fbytes, const FileHeader& file);
 
     // member functions
     const std::vector<SectionHeaderEntry>& sections() const { return m_elements; }

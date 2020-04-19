@@ -146,7 +146,7 @@ public:
         TERMINAL_SERVER_AWARE = 0x8000,
     };
 
-    OptionalHeader(const FileBytes &fbytes, const FileHeader &file);
+    OptionalHeader(const FileBytes& fbytes, const FileHeader& file);
 
     // member functions
     const void* getFieldPtr(const int index) const override;
@@ -185,7 +185,7 @@ public:
         _NUM_ENTRIES,
     };
 
-    DataDirectory(const FileBytes &fbytes, const OptionalHeader &opt);
+    DataDirectory(const FileBytes& fbytes, const OptionalHeader& opt);
 
     // member functions
     const std::array<DataDirectoryEntry, _NUM_ENTRIES>& directories() const

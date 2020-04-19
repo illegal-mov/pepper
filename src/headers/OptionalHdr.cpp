@@ -3,13 +3,13 @@
 
 using namespace Pepper;
 
-OptionalHeader::OptionalHeader(const FileBytes &fbytes, const FileHeader &file)
+OptionalHeader::OptionalHeader(const FileBytes& fbytes, const FileHeader& file)
 : IHeader(fbytes, 0)
 {
     m_baseOffset = file.hdrOffset() + sizeof(IMAGE_FILE_HEADER);
 }
 
-DataDirectory::DataDirectory(const FileBytes &fbytes, const OptionalHeader &opt)
+DataDirectory::DataDirectory(const FileBytes& fbytes, const OptionalHeader& opt)
 {
     // get offset to data directory
     const bool is32bit = opt.optional32()->Magic == OptionalHeader::BIT32;
@@ -19,7 +19,7 @@ DataDirectory::DataDirectory(const FileBytes &fbytes, const OptionalHeader &opt)
 
     // construct each data directory entry by copy assignment
     size_t index = 0;
-    for (auto &entry : m_directoryEntries) {
+    for (auto& entry : m_directoryEntries) {
         entry = DataDirectoryEntry(fbytes, base + (index * sizeof(IMAGE_DATA_DIRECTORY)));
         index++;
     }

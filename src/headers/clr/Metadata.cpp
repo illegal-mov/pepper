@@ -8,7 +8,7 @@ using namespace Pepper;
 size_t  ClrMetadata::s_metadataBase = 0;
 size_t *ClrStream::s_pMetadataBase  = &ClrMetadata::s_metadataBase;
 
-ClrMetadata::ClrMetadata(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde)
+ClrMetadata::ClrMetadata(const PeFile& pe, const FileBytes& fbytes, const DataDirectoryEntry& dde)
 : IDirectory(pe, fbytes, dde)
 {
     s_metadataBase = dirOffset();

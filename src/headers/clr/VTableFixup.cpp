@@ -3,7 +3,7 @@
 
 using namespace Pepper;
 
-ClrVTableFixup::ClrVTableFixup(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde)
+ClrVTableFixup::ClrVTableFixup(const PeFile& pe, const FileBytes& fbytes, const DataDirectoryEntry& dde)
 : IDirectory(pe, fbytes, dde)
 {}
 

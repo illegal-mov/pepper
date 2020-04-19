@@ -12,7 +12,7 @@ template<> size_t *ImportDescriptor::s_pDiskToMemDiff = &ImportDir::s_diskToMemD
 template<> size_t *ImportThunk32::s_pDiskToMemDiff    = &ImportDir::s_diskToMemDiff;
 template<> size_t *ImportThunk64::s_pDiskToMemDiff    = &ImportDir::s_diskToMemDiff;
 
-ImportDir::ImportDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde)
+ImportDir::ImportDir(const PeFile& pe, const FileBytes& fbytes, const DataDirectoryEntry& dde)
 : IDirectory(pe, fbytes, dde)
 {
     if (Ident::dirExists(*this)) {

@@ -135,7 +135,7 @@ public:
 
     CodeIntegrity() = default;
 
-    CodeIntegrity(const FileBytes &fbytes, const offset_t raw);
+    CodeIntegrity(const FileBytes& fbytes, const offset_t raw);
 
     // member functions
     const void* getFieldPtr(const int index) const override;
@@ -198,7 +198,7 @@ public:
         _NUM_FIELDS,
     };
 
-    LoadConfigDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde);
+    LoadConfigDir(const PeFile& pe, const FileBytes& fbytes, const DataDirectoryEntry& dde);
 
     // member functions
     const void* getFieldPtr(const int index) const override;

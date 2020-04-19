@@ -24,9 +24,9 @@ protected:
 
     IDirectory() = default;
 
-    IDirectory(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde);
+    IDirectory(const PeFile& pe, const FileBytes& fbytes, const DataDirectoryEntry& dde);
 
-    IDirectory(const IDirectory &id)
+    IDirectory(const IDirectory& id)
     : IHeader(id)
     , m_pe(id.m_pe)
     , m_dde(id.m_dde)
@@ -34,7 +34,7 @@ protected:
     , m_diffOfRvaRaw(id.m_diffOfRvaRaw)
     {}
 
-    IDirectory& operator=(const IDirectory &id)
+    IDirectory& operator=(const IDirectory& id)
     {
         IHeader::operator=(id);
         m_pe = id.m_pe;

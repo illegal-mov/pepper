@@ -25,7 +25,7 @@ public:
 
     ClrExportJump() = default;
 
-    ClrExportJump(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde);
+    ClrExportJump(const PeFile& pe, const FileBytes& fbytes, const DataDirectoryEntry& dde);
 
     // member functions
     const void* jump() const { return static_cast<const void*>(dir()); }

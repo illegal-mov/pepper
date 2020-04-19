@@ -6,7 +6,7 @@
 
 using namespace Pepper;
 
-IDirectory::IDirectory(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde)
+IDirectory::IDirectory(const PeFile& pe, const FileBytes& fbytes, const DataDirectoryEntry& dde)
 : IHeader(fbytes, dde.rva())
 , m_pe(&pe)
 , m_dde(&dde)
@@ -14,8 +14,8 @@ IDirectory::IDirectory(const PeFile &pe, const FileBytes &fbytes, const DataDire
 , m_diffOfRvaRaw(0)
 {
     // linear search for containing section
-    const SectionHeaders &sctns = pe.sectionHdrs();
-    for (const auto &section : sctns.sections()) {
+    const SectionHeaders& sctns = pe.sectionHdrs();
+    for (const auto& section : sctns.sections()) {
         const uint32_t sctnBase = section.entry()->VirtualAddress;
         const uint32_t sctnSize = section.entry()->VirtualSize;
         const uint32_t sctnRaw  = section.entry()->PointerToRawData;

@@ -7,14 +7,14 @@
 
 using namespace Pepper;
 
-DebugEntry::DebugEntry(const FileBytes &fbytes, const offset_t raw)
+DebugEntry::DebugEntry(const FileBytes& fbytes, const offset_t raw)
 : IHeader(fbytes, raw)
 , m_dbgRsds()
 {
     m_dbgRsds = DebugRsds(fbytes, dbg()->PointerToRawData);
 }
 
-DebugDir::DebugDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde)
+DebugDir::DebugDir(const PeFile& pe, const FileBytes& fbytes, const DataDirectoryEntry& dde)
 : IDirectory(pe, fbytes, dde)
 {
     if (Ident::dirExists(*this)) {

@@ -33,7 +33,7 @@ public:
         _NUM_FIELDS,
     };
 
-    CertificateEntry(const FileBytes &fbytes, const offset_t raw)
+    CertificateEntry(const FileBytes& fbytes, const offset_t raw)
     : IHeader(fbytes, raw)
     {}
 
@@ -53,7 +53,7 @@ public:
         _NUM_FIELDS,
     };
 
-    CertificateDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde);
+    CertificateDir(const PeFile& pe, const FileBytes& fbytes, const DataDirectoryEntry& dde);
 
     // member functions
     const void* getFieldPtr(const int index) const override;

@@ -4,7 +4,7 @@
 
 using namespace Pepper;
 
-BoundImportDir::BoundImportDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde)
+BoundImportDir::BoundImportDir(const PeFile& pe, const FileBytes& fbytes, const DataDirectoryEntry& dde)
 : IDirectory(pe, fbytes, dde)
 {
     if (Ident::dirExists(*this)) {

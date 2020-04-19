@@ -31,7 +31,7 @@ using AddressList64 = AddressList<int64_t>;
 template <typename ArchType>
 class AddressList final : public IHeader {
 public:
-    AddressList(const FileBytes &fbytes, const offset_t raw, const size_t len);
+    AddressList(const FileBytes& fbytes, const offset_t raw, const size_t len);
 
     // member functions
     const void* getFieldPtr(const int index) const override;
@@ -57,16 +57,16 @@ private:
  */
 class IatDir final : public IDirectory {
 public:
-    IatDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry& dde);
+    IatDir(const PeFile& pe, const FileBytes& fbytes, const DataDirectoryEntry& dde);
 
-    IatDir(const IatDir &id)
+    IatDir(const IatDir& id)
     : IDirectory(id)
     , m_list32(id.m_list32)
     {}
 
     ~IatDir() {}
 
-    IatDir& operator=(const IatDir &id)
+    IatDir& operator=(const IatDir& id)
     {
         IDirectory::operator=(id);
         m_list32 = id.m_list32;
@@ -89,7 +89,7 @@ private:
     };
 
     template <typename ArchType>
-    void readAddrList(const FileBytes &fbytes, const DataDirectoryEntry &dde);
+    void readAddrList(const FileBytes& fbytes, const DataDirectoryEntry& dde);
 };
 
 // variant declarations

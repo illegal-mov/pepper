@@ -3,7 +3,7 @@
 
 using namespace Pepper;
 
-SectionHeaders::SectionHeaders(const FileBytes &fbytes, const FileHeader &file)
+SectionHeaders::SectionHeaders(const FileBytes& fbytes, const FileHeader& file)
 {
     // find base of section headers
     const uint16_t optHdrSize = file.file()->SizeOfOptionalHeader;

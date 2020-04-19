@@ -58,7 +58,7 @@ public:
         _NUM_FIELDS,
     };
 
-    DosHeader(const FileBytes &fbytes)
+    DosHeader(const FileBytes& fbytes)
     : IHeader(fbytes, 0)
     {
         const int16_t magic = *static_cast<const int16_t*>(hdr());

@@ -3,7 +3,7 @@
 
 using namespace Pepper;
 
-ClrSignature::ClrSignature(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde)
+ClrSignature::ClrSignature(const PeFile& pe, const FileBytes& fbytes, const DataDirectoryEntry& dde)
 : IDirectory(pe, fbytes, dde)
 , m_length(dde.size())
 {}

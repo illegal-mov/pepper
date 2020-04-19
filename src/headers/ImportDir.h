@@ -29,7 +29,7 @@ using ImportDescriptor = GenericImportDescriptor<IMAGE_IMPORT_DESCRIPTOR>;
  */
 class ImportDir final : public IDirectory {
 public:
-    ImportDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde);
+    ImportDir(const PeFile& pe, const FileBytes& fbytes, const DataDirectoryEntry& dde);
 
     // member functions
     const void* getFieldPtr(const int index) const override;

@@ -20,7 +20,7 @@ public:
 
     ClrVTableFixup() = default;
 
-    ClrVTableFixup(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde);
+    ClrVTableFixup(const PeFile& pe, const FileBytes& fbytes, const DataDirectoryEntry& dde);
 
     // member functions
     const void* vtable() const { return static_cast<const void*>(dir()); }

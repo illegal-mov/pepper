@@ -32,7 +32,7 @@ using DelayImportDescriptor = GenericImportDescriptor<IMAGE_DELAY_IMPORT_DESCRIP
  */
 class DelayImportDir final : public IDirectory {
 public:
-    DelayImportDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde);
+    DelayImportDir(const PeFile& pe, const FileBytes& fbytes, const DataDirectoryEntry& dde);
 
     // member functions
     const void* getFieldPtr(const int index) const override;

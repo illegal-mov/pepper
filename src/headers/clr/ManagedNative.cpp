@@ -3,7 +3,7 @@
 
 using namespace Pepper;
 
-ClrNativeHeader::ClrNativeHeader(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde)
+ClrNativeHeader::ClrNativeHeader(const PeFile& pe, const FileBytes& fbytes, const DataDirectoryEntry& dde)
 : IDirectory(pe, fbytes, dde)
 {}
 

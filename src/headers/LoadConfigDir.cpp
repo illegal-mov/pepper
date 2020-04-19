@@ -5,11 +5,11 @@
 
 using namespace Pepper;
 
-CodeIntegrity::CodeIntegrity(const FileBytes &fbytes, const offset_t raw)
+CodeIntegrity::CodeIntegrity(const FileBytes& fbytes, const offset_t raw)
 : IHeader(fbytes, raw)
 {}
 
-LoadConfigDir::LoadConfigDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde)
+LoadConfigDir::LoadConfigDir(const PeFile& pe, const FileBytes& fbytes, const DataDirectoryEntry& dde)
 : IDirectory(pe, fbytes, dde)
 , m_codeInteg()
 {

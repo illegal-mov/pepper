@@ -13,7 +13,7 @@ template<> size_t *FunctionTableEntryArm::s_pCodeDiff = &ExceptionDir::s_codeDif
 // Append elements to the vector. Works for any type of FunctionTable because
 // entrySize is chosen by the caller when it knows the architecture.
 template <typename EntryType>
-void ExceptionDir::appendEntries(const FileBytes &fbytes, const uint32_t totalSize)
+void ExceptionDir::appendEntries(const FileBytes& fbytes, const uint32_t totalSize)
 {
     size_t numEntries = totalSize / sizeof(EntryType);
     m_entries32.reserve(numEntries);
@@ -25,7 +25,7 @@ void ExceptionDir::appendEntries(const FileBytes &fbytes, const uint32_t totalSi
     s_codeDiff = Convert::getRvaToRawDiff(*m_pe, *static_cast<const size_t*>(m_entries32[0].getFieldPtr(0)));
 }
 
-ExceptionDir::ExceptionDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde)
+ExceptionDir::ExceptionDir(const PeFile& pe, const FileBytes& fbytes, const DataDirectoryEntry& dde)
 : IDirectory(pe, fbytes, dde)
 {
     if (Ident::dirExists(*this)) {

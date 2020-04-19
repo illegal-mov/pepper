@@ -49,7 +49,7 @@ public:
 
     DebugRsds() = default;
 
-    DebugRsds(const FileBytes &fbytes, const offset_t raw)
+    DebugRsds(const FileBytes& fbytes, const offset_t raw)
     : IHeader(fbytes, raw)
     {}
 
@@ -95,7 +95,7 @@ public:
         EX_DLL_CHARACT = 20,
     };
 
-    DebugEntry(const FileBytes &fbytes, const offset_t raw);
+    DebugEntry(const FileBytes& fbytes, const offset_t raw);
 
     // member functions
     const void* getFieldPtr(const int index) const override;
@@ -119,7 +119,7 @@ public:
         _NUM_FIELDS,
     };
 
-    DebugDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde);
+    DebugDir(const PeFile& pe, const FileBytes& fbytes, const DataDirectoryEntry& dde);
 
     // member functions
     const std::vector<DebugEntry>& entries() const { return m_elements; }

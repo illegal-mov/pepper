@@ -9,7 +9,7 @@ using namespace Pepper;
 size_t DelayImportDir::s_diskToMemDiff = 0;
 template<> size_t *DelayImportDescriptor::s_pDiskToMemDiff = &DelayImportDir::s_diskToMemDiff;
 
-DelayImportDir::DelayImportDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde)
+DelayImportDir::DelayImportDir(const PeFile& pe, const FileBytes& fbytes, const DataDirectoryEntry& dde)
 : IDirectory(pe, fbytes, dde)
 {
     if (Ident::dirExists(*this)) {

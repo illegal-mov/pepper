@@ -8,7 +8,7 @@ using namespace Pepper;
 size_t ExportAddressTable::s_diskToMemDiff = 0;
 size_t ExportNameTable::s_diskToMemDiff = 0;
 
-ExportAddressTable::ExportAddressTable(const PeFile &pe, const FileBytes &fbytes, const offset_t raw, const size_t len)
+ExportAddressTable::ExportAddressTable(const PeFile& pe, const FileBytes& fbytes, const offset_t raw, const size_t len)
 : IHeader(fbytes, raw)
 , m_length(len)
 {
@@ -16,19 +16,19 @@ ExportAddressTable::ExportAddressTable(const PeFile &pe, const FileBytes &fbytes
     s_diskToMemDiff = Convert::getRvaToRawDiff(pe, addresses()[0]);
 }
 
-ExportNameTable::ExportNameTable(const PeFile &pe, const FileBytes &fbytes, const offset_t raw, const size_t len)
+ExportNameTable::ExportNameTable(const PeFile& pe, const FileBytes& fbytes, const offset_t raw, const size_t len)
 : IHeader(fbytes, raw)
 , m_length(len)
 {
     s_diskToMemDiff = Convert::getRvaToRawDiff(pe, addresses()[0]);
 }
 
-ExportOrdinalTable::ExportOrdinalTable(const FileBytes &fbytes, const offset_t raw, const size_t len)
+ExportOrdinalTable::ExportOrdinalTable(const FileBytes& fbytes, const offset_t raw, const size_t len)
 : IHeader(fbytes, raw)
 , m_length(len)
 {}
 
-ExportDir::ExportDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde)
+ExportDir::ExportDir(const PeFile& pe, const FileBytes& fbytes, const DataDirectoryEntry& dde)
 : IDirectory(pe, fbytes, dde)
 , m_addrTable()
 , m_nameTable()

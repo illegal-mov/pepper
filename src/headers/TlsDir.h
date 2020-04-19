@@ -42,7 +42,7 @@ class CallbacksTable final : public IHeader {
 public:
     CallbacksTable() = default;
 
-    CallbacksTable(const PeFile &pe, const FileBytes &fbytes, const offset_t raw);
+    CallbacksTable(const PeFile& pe, const FileBytes& fbytes, const offset_t raw);
 
     // member functions
     const void* getFieldPtr(const int index) const override;
@@ -87,7 +87,7 @@ public:
         _NUM_FIELDS,
     };
 
-    TlsDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde);
+    TlsDir(const PeFile& pe, const FileBytes& fbytes, const DataDirectoryEntry& dde);
 
     ~TlsDir() {}
 

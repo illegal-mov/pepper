@@ -25,7 +25,7 @@ public:
 
     ClrCodeManager() = default;
 
-    ClrCodeManager(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde);
+    ClrCodeManager(const PeFile& pe, const FileBytes& fbytes, const DataDirectoryEntry& dde);
 
     // member functions
     const void* codeman() const { return static_cast<const void*>(dir()); }

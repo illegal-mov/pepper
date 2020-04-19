@@ -72,8 +72,8 @@ public:
         _NUM_HEADERS,
     };
 
-    PeFile(const PeFile &pe) = delete;
-    PeFile& operator=(const PeFile &pe) = delete;
+    PeFile(const PeFile& pe) = delete;
+    PeFile& operator=(const PeFile& pe) = delete;
 
     PeFile(const std::string& path);
 

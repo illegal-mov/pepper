@@ -14,13 +14,13 @@ size_t *ResourceEntry::s_pRsrcBase = &ResourceDir::s_rsrcBase;
 size_t *ResourceData::s_pRsrcBase  = &ResourceDir::s_rsrcBase;
 
 template<>
-ResourceString::GenericResourceString(const FileBytes &fbytes, const offset_t raw)
+ResourceString::GenericResourceString(const FileBytes& fbytes, const offset_t raw)
 : IHeader(fbytes, raw)
 , m_name(string()->NameString, length())
 {}
 
 template<>
-ResourceStringU::GenericResourceString(const FileBytes &fbytes, const offset_t raw)
+ResourceStringU::GenericResourceString(const FileBytes& fbytes, const offset_t raw)
 : IHeader(fbytes, raw)
 {
     const uint16_t *strBytes = string()->NameString;
@@ -32,12 +32,12 @@ ResourceStringU::GenericResourceString(const FileBytes &fbytes, const offset_t r
     }
 }
 
-ResourceData::ResourceData(const FileBytes &fbytes, const offset_t raw, const ResourceNode *parent)
+ResourceData::ResourceData(const FileBytes& fbytes, const offset_t raw, const ResourceNode *parent)
 : IHeader(fbytes, raw)
 , m_parent(parent)
 {}
 
-ResourceEntry::ResourceEntry(const FileBytes &fbytes, const offset_t raw, const ResourceNode *parent, std::map<uint32_t, ResourceData*> &dataMap)
+ResourceEntry::ResourceEntry(const FileBytes& fbytes, const offset_t raw, const ResourceNode *parent, std::map<uint32_t, ResourceData*>& dataMap)
 : IHeader(fbytes, raw)
 {
     if (hasName()) {
@@ -64,7 +64,7 @@ ResourceEntry::~ResourceEntry()
     }
 }
 
-ResourceNode::ResourceNode(const FileBytes &fbytes, const offset_t raw, const ResourceNode *parent, std::map<uint32_t, ResourceData*> &dataMap)
+ResourceNode::ResourceNode(const FileBytes& fbytes, const offset_t raw, const ResourceNode *parent, std::map<uint32_t, ResourceData*>& dataMap)
 : IHeader(fbytes, raw)
 , m_parent(parent)
 {
@@ -82,7 +82,7 @@ ResourceNode::ResourceNode(const FileBytes &fbytes, const offset_t raw, const Re
     }
 }
 
-ResourceDir::ResourceDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde)
+ResourceDir::ResourceDir(const PeFile& pe, const FileBytes& fbytes, const DataDirectoryEntry& dde)
 : IDirectory(pe, fbytes, dde)
 {
     if (Ident::dirExists(*this)) {

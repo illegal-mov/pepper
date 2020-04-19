@@ -3,7 +3,7 @@
 
 using namespace Pepper;
 
-ClrExportJump::ClrExportJump(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde)
+ClrExportJump::ClrExportJump(const PeFile& pe, const FileBytes& fbytes, const DataDirectoryEntry& dde)
 : IDirectory(pe, fbytes, dde)
 {}
 

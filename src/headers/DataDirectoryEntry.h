@@ -26,7 +26,7 @@ public:
 
     DataDirectoryEntry() = default;
 
-    DataDirectoryEntry(const FileBytes &fbytes, const offset_t raw)
+    DataDirectoryEntry(const FileBytes& fbytes, const offset_t raw)
     : IHeader(fbytes, raw)
     {}
 

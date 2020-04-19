@@ -38,7 +38,7 @@ public:
 
     ExportAddressTable() = default;
 
-    ExportAddressTable(const PeFile &pe, const FileBytes &fbytes, const offset_t raw, const size_t len);
+    ExportAddressTable(const PeFile& pe, const FileBytes& fbytes, const offset_t raw, const size_t len);
 
     // member functions
     const void* getFieldPtr(const int index) const override;
@@ -76,7 +76,7 @@ public:
 
     ExportNameTable() = default;
 
-    ExportNameTable(const PeFile &pe, const FileBytes &fbytes, const offset_t raw, const size_t len);
+    ExportNameTable(const PeFile& pe, const FileBytes& fbytes, const offset_t raw, const size_t len);
 
     // member functions
     const void* getFieldPtr(const int index) const override;
@@ -117,7 +117,7 @@ public:
 
     ExportOrdinalTable() = default;
 
-    ExportOrdinalTable(const FileBytes &fbytes, const offset_t raw, const size_t len);
+    ExportOrdinalTable(const FileBytes& fbytes, const offset_t raw, const size_t len);
 
     // member functions
     const void* getFieldPtr(const int index) const override;
@@ -159,7 +159,7 @@ public:
         _NUM_FIELDS,
     };
 
-    ExportDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde);
+    ExportDir(const PeFile& pe, const FileBytes& fbytes, const DataDirectoryEntry& dde);
 
     // member functions
     const void* getFieldPtr(const int index) const override;

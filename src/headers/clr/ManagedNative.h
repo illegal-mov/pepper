@@ -25,7 +25,7 @@ public:
 
     ClrNativeHeader() = default;
 
-    ClrNativeHeader(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde);
+    ClrNativeHeader(const PeFile& pe, const FileBytes& fbytes, const DataDirectoryEntry& dde);
 
     // member functions
     const void* head() const { return static_cast<const void*>(dir()); }

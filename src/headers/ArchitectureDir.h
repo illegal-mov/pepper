@@ -17,7 +17,7 @@ public:
         _NUM_FIELDS,
     };
 
-    ArchitectureDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde);
+    ArchitectureDir(const PeFile& pe, const FileBytes& fbytes, const DataDirectoryEntry& dde);
 
     // member functions
     const void* getFieldPtr(const int index) const override;

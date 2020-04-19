@@ -3,7 +3,7 @@
 
 using namespace Pepper;
 
-ClrDir::ClrDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde)
+ClrDir::ClrDir(const PeFile& pe, const FileBytes& fbytes, const DataDirectoryEntry& dde)
 : IDirectory(pe, fbytes, dde)
 {
     if (Ident::dirExists(*this)) {

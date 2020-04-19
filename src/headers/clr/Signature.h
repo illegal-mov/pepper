@@ -20,7 +20,7 @@ public:
 
     ClrSignature() = default;
 
-    ClrSignature(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde);
+    ClrSignature(const PeFile& pe, const FileBytes& fbytes, const DataDirectoryEntry& dde);
 
     // member functions
     const char* sig() const { return static_cast<const char*>(dir()); }

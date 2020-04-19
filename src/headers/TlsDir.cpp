@@ -11,7 +11,7 @@ template <typename ArchType>
 size_t CallbacksTable<ArchType>::s_codeDiff = 0;
 
 template <typename ArchType>
-CallbacksTable<ArchType>::CallbacksTable(const PeFile &pe, const FileBytes &fbytes, const offset_t raw)
+CallbacksTable<ArchType>::CallbacksTable(const PeFile& pe, const FileBytes& fbytes, const offset_t raw)
 : IHeader(fbytes, raw)
 {
     const ArchType *cbArray = callbacks();
@@ -25,11 +25,11 @@ CallbacksTable<ArchType>::CallbacksTable(const PeFile &pe, const FileBytes &fbyt
 
     // Since these are AVAs, add ImageBase to
     //  s_codeDiff to more easily convert to RAW
-    const OptionalHeader &poh = pe.optionalHdr();
+    const OptionalHeader& poh = pe.optionalHdr();
     s_codeDiff += poh.imageBase();
 }
 
-TlsDir::TlsDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde)
+TlsDir::TlsDir(const PeFile& pe, const FileBytes& fbytes, const DataDirectoryEntry& dde)
 : IDirectory(pe, fbytes, dde)
 , m_callbacks32()
 {

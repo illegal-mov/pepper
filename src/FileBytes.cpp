@@ -9,7 +9,7 @@
 
 using namespace Pepper;
 
-FileBytes::FileBytes(const std::string &path)
+FileBytes::FileBytes(const std::string& path)
 {
     // open the file
     std::ifstream in(path, std::ios_base::in | std::ios_base::binary);
@@ -51,7 +51,7 @@ void FileBytes::readBytes(const offset_t pos, char *buf, const size_t bufLen) co
     }
 }
 
-size_t FileBytes::getFileSize(std::ifstream &in)
+size_t FileBytes::getFileSize(std::ifstream& in)
 {
     in.seekg(0, in.end);
     const size_t size = static_cast<size_t>(in.tellg());

@@ -78,7 +78,7 @@ public:
         _NUM_FIELDS,
     };
 
-    ClrDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde);
+    ClrDir(const PeFile& pe, const FileBytes& fbytes, const DataDirectoryEntry& dde);
 
     // member functions
     const std::array<DataDirectoryEntry, _NUM_HEADERS>& directories() const

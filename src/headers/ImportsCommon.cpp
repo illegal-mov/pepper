@@ -22,7 +22,7 @@ void GenericImportDescriptor<DescriptorType>::readAddresses(size_t raw)
  */
 template <typename DescriptorType> // for the class
 template <typename ArchType> // for the function
-void GenericImportDescriptor<DescriptorType>::readThunks(const FileBytes &fbytes, const offset_t raw)
+void GenericImportDescriptor<DescriptorType>::readThunks(const FileBytes& fbytes, const offset_t raw)
 {
     ArchType *thunk = (ArchType*)&mem()[raw];
     // count number of IMAGE_IMPORT_DESCRIPTORS up until the null descriptor
@@ -47,7 +47,7 @@ void GenericImportDescriptor<DescriptorType>::readThunks(const FileBytes &fbytes
 
 template <typename DescriptorType>
 template <int ILT, int IAT, int TIMESTAMP>
-void GenericImportDescriptor<DescriptorType>::makeDescriptor(const PeFile &pe, const FileBytes &fbytes)
+void GenericImportDescriptor<DescriptorType>::makeDescriptor(const PeFile& pe, const FileBytes& fbytes)
 {
     /* `ImportLookupTableRVA` may be zero, especially for install files.
      * Switch to `ImportAddressTableRVA` if so, and check if IAT is bound
@@ -81,14 +81,14 @@ void GenericImportDescriptor<DescriptorType>::makeDescriptor(const PeFile &pe, c
  * the implementations are practically the same.
  */
 template<>
-GenericImportDescriptor<IMAGE_IMPORT_DESCRIPTOR>::GenericImportDescriptor(const PeFile &pe, const FileBytes &fbytes, const offset_t raw)
+GenericImportDescriptor<IMAGE_IMPORT_DESCRIPTOR>::GenericImportDescriptor(const PeFile& pe, const FileBytes& fbytes, const offset_t raw)
 : IHeader(fbytes, raw)
 {
     makeDescriptor<IMPORT_LOOKUP_TABLE_RVA, IMPORT_ADDRESS_TABLE_RVA, TIMESTAMP>(pe, fbytes);
 }
 
 template<>
-GenericImportDescriptor<IMAGE_DELAY_IMPORT_DESCRIPTOR>::GenericImportDescriptor(const PeFile &pe, const FileBytes &fbytes, const offset_t raw)
+GenericImportDescriptor<IMAGE_DELAY_IMPORT_DESCRIPTOR>::GenericImportDescriptor(const PeFile& pe, const FileBytes& fbytes, const offset_t raw)
 : IHeader(fbytes, raw)
 {
     makeDescriptor<DELAY_IMPORT_NAME_TABLE_RVA, DELAY_IMPORT_ADDRESS_TABLE_RVA, TIMESTAMP>(pe, fbytes);

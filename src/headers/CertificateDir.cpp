@@ -4,7 +4,7 @@
 
 using namespace Pepper;
 
-CertificateDir::CertificateDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde)
+CertificateDir::CertificateDir(const PeFile& pe, const FileBytes& fbytes, const DataDirectoryEntry& dde)
 : IDirectory(pe, fbytes, dde)
 {
     if (Ident::dirExists(*this)) {

@@ -45,7 +45,7 @@ public:
         _NUM_FIELDS,
     };
 
-    ClrStream(const FileBytes &fbytes, const offset_t raw)
+    ClrStream(const FileBytes& fbytes, const offset_t raw)
     : IHeader(fbytes, raw)
     {}
 
@@ -86,7 +86,7 @@ public:
 
     ClrMetadata() = default;
 
-    ClrMetadata(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde);
+    ClrMetadata(const PeFile& pe, const FileBytes& fbytes, const DataDirectoryEntry& dde);
 
     // member functions
     const IMAGE_COR20_METADATA_HEADER* metadata() const { return (PIMAGE_COR20_METADATA_HEADER)dir(); }

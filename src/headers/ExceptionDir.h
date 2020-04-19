@@ -52,7 +52,7 @@ public:
     // defined in template specializations
     enum Fields : int {};
 
-    FunctionTableEntry(const FileBytes &fbytes, const offset_t raw)
+    FunctionTableEntry(const FileBytes& fbytes, const offset_t raw)
     : IHeader(fbytes, raw)
     {}
 
@@ -77,12 +77,12 @@ private:
  */
 class ExceptionDir final : public IDirectory {
 public:
-    ExceptionDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde);
+    ExceptionDir(const PeFile& pe, const FileBytes& fbytes, const DataDirectoryEntry& dde);
 
     ~ExceptionDir() {}
 
     // overloaded operators
-    ExceptionDir& operator=(const ExceptionDir &ed)
+    ExceptionDir& operator=(const ExceptionDir& ed)
     {
         IDirectory::operator=(ed);
         m_entries32 = ed.m_entries32;
@@ -127,7 +127,7 @@ private:
     // Append entries to the vector. Works for any type of FunctionTable because
     // entrySize is chosen by the caller when it knows the architecture.
     template <typename EntryType>
-    void appendEntries(const FileBytes &fbytes, uint32_t totalSize);
+    void appendEntries(const FileBytes& fbytes, uint32_t totalSize);
 };
 
 template<>

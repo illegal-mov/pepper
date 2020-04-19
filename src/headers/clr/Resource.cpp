@@ -3,7 +3,7 @@
 
 using namespace Pepper;
 
-ClrResource::ClrResource(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde)
+ClrResource::ClrResource(const PeFile& pe, const FileBytes& fbytes, const DataDirectoryEntry& dde)
 : IDirectory(pe, fbytes, dde)
 {}
 

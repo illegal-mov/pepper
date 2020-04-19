@@ -18,10 +18,10 @@ namespace Pepper { namespace Extract {
     };
 
     /* dump the resource data to disk */
-    bool dumpResource(const std::string &path, const ResourceData &rd, ExceptionFlag throwFlag);
+    bool dumpResource(const std::string& path, const ResourceData& resource, ExceptionFlag throwFlag);
 
     /* dump the certificate data disk */
-    bool dumpCertificate(const std::string &path, const CertificateEntry &ce, ExceptionFlag throwFlag);
+    bool dumpCertificate(const std::string& path, const CertificateEntry& certificate, ExceptionFlag throwFlag);
 }}
 
 #endif

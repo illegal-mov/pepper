@@ -6,13 +6,13 @@
 using namespace Pepper;
 
 template <typename ArchType>
-AddressList<ArchType>::AddressList(const FileBytes &fbytes, const offset_t raw, const size_t len)
+AddressList<ArchType>::AddressList(const FileBytes& fbytes, const offset_t raw, const size_t len)
 : IHeader(fbytes, raw)
 , m_length(len)
 {}
 
 template <typename ArchType>
-void IatDir::readAddrList(const FileBytes &fbytes, const DataDirectoryEntry &dde)
+void IatDir::readAddrList(const FileBytes& fbytes, const DataDirectoryEntry& dde)
 {
     const ArchType *addrs = static_cast<const ArchType*>(dir());
     size_t i = 0;
@@ -32,7 +32,7 @@ void IatDir::readAddrList(const FileBytes &fbytes, const DataDirectoryEntry &dde
     }
 }
 
-IatDir::IatDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde)
+IatDir::IatDir(const PeFile& pe, const FileBytes& fbytes, const DataDirectoryEntry& dde)
 : IDirectory(pe, fbytes, dde)
 {
     if (Ident::dirExists(*this)) {

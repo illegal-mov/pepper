@@ -3,7 +3,7 @@
 
 using namespace Pepper;
 
-ClrCodeManager::ClrCodeManager(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde)
+ClrCodeManager::ClrCodeManager(const PeFile& pe, const FileBytes& fbytes, const DataDirectoryEntry& dde)
 : IDirectory(pe, fbytes, dde)
 {}
 
