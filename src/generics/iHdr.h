@@ -11,10 +11,20 @@ namespace Pepper {
  * of the header data.
  */
 class IHeader {
-protected:
-    const char* m_headerPtr{};
-    size_t m_baseOffset{};
+public:
+    // get pointer to start of PE file content
+    const char* mem() const { return m_headerPtr; }
 
+    // get offset into PE file content where header is located
+    size_t hdrOffset() const { return m_baseOffset; };
+
+    // pointer to base of header as char*
+    const void* hdr() const { return &m_headerPtr[hdrOffset()]; }
+
+    // only derived classes know how to return pointers to given header fields
+    virtual const void* getFieldPtr(const int fieldIndex) const = 0;
+
+protected:
     IHeader() = default;
 
     IHeader(const FileBytes& fbytes, const size_t offset)
@@ -39,18 +49,9 @@ protected:
         m_headerPtr = nullptr;
         m_baseOffset = 0;
     }
-public:
-    // get pointer to start of PE file content
-    const char* mem() const { return m_headerPtr; }
 
-    // get offset into PE file content where header is located
-    size_t hdrOffset() const { return m_baseOffset; };
-
-    // pointer to base of header as char*
-    const void* hdr() const { return &m_headerPtr[hdrOffset()]; }
-
-    // only derived classes know how to return pointers to given header fields
-    virtual const void* getFieldPtr(const int fieldIndex) const = 0;
+    const char* m_headerPtr{};
+    size_t m_baseOffset{};
 };
 } // namespace Pepper
 

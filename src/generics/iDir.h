@@ -16,12 +16,20 @@ class SectionHeaderEntry;
  * amount that can only be determined by examining the relevant section.
  */
 class IDirectory : public IHeader {
-protected:
-    const PeFile *m_pe{};
-    const DataDirectoryEntry *m_dde{};
-    const SectionHeaderEntry *m_she{};
-    size_t m_diffOfRvaRaw{};
+public:
+    /* get true offset into PE file content where directory is located */
+    size_t dirOffset() const { return hdrOffset() - m_diffOfRvaRaw; }
 
+    /* pointer to base of directory as char* only if the directory exists */
+    const void* dir() const;
+
+    /* get size of directory */
+    uint32_t size() const;
+
+    /* get a pointer to the section containing this directory's data */
+    const SectionHeaderEntry* owningSection() const { return m_she; }
+
+protected:
     IDirectory() = default;
 
     IDirectory(const PeFile& pe, const FileBytes& fbytes, const DataDirectoryEntry& dde);
@@ -51,18 +59,11 @@ protected:
         m_she = nullptr;
         m_diffOfRvaRaw = 0;
     }
-public:
-    /* get true offset into PE file content where directory is located */
-    size_t dirOffset() const { return hdrOffset() - m_diffOfRvaRaw; }
 
-    /* pointer to base of directory as char* only if the directory exists */
-    const void* dir() const;
-
-    /* get size of directory */
-    uint32_t size() const;
-
-    /* get a pointer to the section containing this directory's data */
-    const SectionHeaderEntry* owningSection() const { return m_she; }
+    const PeFile *m_pe{};
+    const DataDirectoryEntry *m_dde{};
+    const SectionHeaderEntry *m_she{};
+    size_t m_diffOfRvaRaw{};
 };
 } // namespace Pepper
 
