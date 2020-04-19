@@ -1,6 +1,8 @@
 #ifndef IDENTIFICATION_H
 #define IDENTIFICATION_H
 
+#include <memory>
+
 /* Non-member non-friend functions to check key information about a PE file */
 
 // forward declarations
@@ -21,6 +23,9 @@ namespace Pepper { namespace Ident {
 
     /* return true if and only if the file is a ROM image */
     bool isRom(const PeFile &pe);
+
+    /* return true if and only if the directory exists and has data */
+    bool dirIsValid(const std::shared_ptr<IDirectory> &id);
 
     /* return true if and only if the directory has data */
     bool dirHasData(const IDirectory &id);

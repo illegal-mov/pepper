@@ -34,6 +34,14 @@ typedef struct _IMAGE_COR20_HEADER {
 
 namespace Pepper {
 
+using ClrMetadataPtr     = std::shared_ptr<ClrMetadata>;
+using ClrResourcePtr     = std::shared_ptr<ClrResource>;
+using ClrSignaturePtr    = std::shared_ptr<ClrSignature>;
+using ClrCodeManagerPtr  = std::shared_ptr<ClrCodeManager>;
+using ClrVTableFixupPtr  = std::shared_ptr<ClrVTableFixup>;
+using ClrExportJumpPtr   = std::shared_ptr<ClrExportJump>;
+using ClrNativeHeaderPtr = std::shared_ptr<ClrNativeHeader>;
+
 // forward declarations
 class PeFile;
 class FileBytes;
@@ -80,13 +88,13 @@ public:
 
     const IMAGE_COR20_HEADER* clr() const { return (PIMAGE_COR20_HEADER)dir(); }
 
-    const ClrMetadata&     metadataHdr()    const { return m_Meta; }
-    const ClrResource&     resourceHdr()    const { return m_Rsrc; }
-    const ClrSignature&    signatureHdr()   const { return m_Signtr; }
-    const ClrCodeManager&  codeManagerHdr() const { return m_CodeMan; }
-    const ClrVTableFixup&  vTableFixupHdr() const { return m_VTabFix; }
-    const ClrExportJump&   exportJumpHdr()  const { return m_XprtJmp; }
-    const ClrNativeHeader& nativeHdr()      const { return m_NatHead; }
+    const ClrMetadataPtr&     metadataHdr()    const { return m_Meta; }
+    const ClrResourcePtr&     resourceHdr()    const { return m_Rsrc; }
+    const ClrSignaturePtr&    signatureHdr()   const { return m_Signtr; }
+    const ClrCodeManagerPtr&  codeManagerHdr() const { return m_CodeMan; }
+    const ClrVTableFixupPtr&  vTableFixupHdr() const { return m_VTabFix; }
+    const ClrExportJumpPtr&   exportJumpHdr()  const { return m_XprtJmp; }
+    const ClrNativeHeaderPtr& nativeHdr()      const { return m_NatHead; }
 
     const void* getFieldPtr(const int index) const override;
 
@@ -96,13 +104,13 @@ public:
 
 private:
     std::array<DataDirectoryEntry, _NUM_HEADERS> m_directoryEntries{};
-    ClrMetadata     m_Meta;
-    ClrResource     m_Rsrc;
-    ClrSignature    m_Signtr;
-    ClrCodeManager  m_CodeMan;
-    ClrVTableFixup  m_VTabFix;
-    ClrExportJump   m_XprtJmp;
-    ClrNativeHeader m_NatHead;
+    ClrMetadataPtr     m_Meta{};
+    ClrResourcePtr     m_Rsrc{};
+    ClrSignaturePtr    m_Signtr{};
+    ClrCodeManagerPtr  m_CodeMan{};
+    ClrVTableFixupPtr  m_VTabFix{};
+    ClrExportJumpPtr   m_XprtJmp{};
+    ClrNativeHeaderPtr m_NatHead{};
 };
 } // namespace Pepper
 

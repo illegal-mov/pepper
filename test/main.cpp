@@ -97,21 +97,21 @@ void printSectionHeaders(const Pepper::PeFile &pe)
 void printExport(const Pepper::PeFile &pe)
 {
     using namespace Pepper;
-    const ExportDir &xport = pe.exportDir();
-    if (Ident::dirExists(xport)) {
+    const ExportDirPtr &xport = pe.exportDir();
+    if (Ident::dirIsValid(xport)) {
         int i=0;
         for (; i < ExportDir::MAJOR_VERSION; i++)
-            printf("%-40s0x%08x\n", xport.getFieldName(i), *static_cast<const int32_t*>(xport.getFieldPtr(i)));
+            printf("%-40s0x%08x\n", xport->getFieldName(i), *static_cast<const int32_t*>(xport->getFieldPtr(i)));
         for (; i < ExportDir::NAME_RVA; i++)
-            printf("%-40s0x%04x\n", xport.getFieldName(i), *static_cast<const int16_t*>(xport.getFieldPtr(i)));
+            printf("%-40s0x%04x\n", xport->getFieldName(i), *static_cast<const int16_t*>(xport->getFieldPtr(i)));
         for (; i < ExportDir::_NUM_FIELDS; i++)
-            printf("%-40s0x%08x\n", xport.getFieldName(i), *static_cast<const int32_t*>(xport.getFieldPtr(i)));
+            printf("%-40s0x%08x\n", xport->getFieldName(i), *static_cast<const int32_t*>(xport->getFieldPtr(i)));
 
-        std::cout << '\n' << xport.dllName() << '\n';
+        std::cout << '\n' << xport->dllName() << '\n';
 
-        const ExportAddressTable *eat = xport.eat();
-        const ExportNameTable    *ent = xport.ent();
-        const ExportOrdinalTable *eot = xport.eot();
+        const ExportAddressTable *eat = xport->eat();
+        const ExportNameTable    *ent = xport->ent();
+        const ExportOrdinalTable *eot = xport->eot();
 
         std::cout << "\n RVA        | RAW        | ORD  | NAME       | STRING\n";
         std::cout << "------------+------------+------+------------+--------\n";
@@ -139,8 +139,8 @@ void printImportDescriptors(const Pepper::PeFile &pe)
 {
     using namespace Pepper;
     const DirType &mport = (pe.*HeaderGetter)();
-    if (Ident::dirExists(mport)) {
-        for (const auto &descriptor : mport.descriptors()) {
+    if (Ident::dirIsValid(mport)) {
+        for (const auto &descriptor : mport->descriptors()) {
             std::cout << "DLL Name: " << descriptor.dllName() << '\n';
             for (int i=0; i < DescriptorType::_NUM_FIELDS; i++) {
                 printf("    %-40s0x%08x\n", descriptor.getFieldName(i), *static_cast<const int32_t*>(descriptor.getFieldPtr(i)));
@@ -166,7 +166,7 @@ void printImportDescriptors(const Pepper::PeFile &pe)
 void printImport(const Pepper::PeFile &pe)
 {
     using namespace Pepper;
-    printImportDescriptors<ImportDir, ImportDescriptor, &PeFile::importDir>(pe);
+    printImportDescriptors<ImportDirPtr, ImportDescriptor, &PeFile::importDir>(pe);
 }
 
 void printResourceString(const Pepper::ResourceStringU &rs)
@@ -225,9 +225,9 @@ void printResourceNode(const Pepper::ResourceNode &rn, int depth)
 void printResource(const Pepper::PeFile &pe)
 {
     using namespace Pepper;
-    const ResourceDir &resource = pe.resourceDir();
-    if (Ident::dirExists(resource)) {
-        printResourceNode(*resource.resources(), 0);
+    const ResourceDirPtr &resource = pe.resourceDir();
+    if (Ident::dirIsValid(resource)) {
+        printResourceNode(*resource->resources(), 0);
     }
 }
 
@@ -245,29 +245,29 @@ void printExceptionTable(const Pepper::ExceptionDir &exception)
 void printException(const Pepper::PeFile &pe)
 {
     using namespace Pepper;
-    const ExceptionDir &exception = pe.exceptionDir();
-    if (Ident::dirExists(exception)) {
+    const ExceptionDirPtr &exception = pe.exceptionDir();
+    if (Ident::dirIsValid(exception)) {
         if (Ident::is32bit(pe))
-            printExceptionTable<decltype(exception.table32()),
+            printExceptionTable<decltype(exception->table32()),
                 FunctionTableEntry32::_NUM_FIELDS,
-                &ExceptionDir::table32>(exception);
+                &ExceptionDir::table32>(*exception);
         else if (Ident::is64bit(pe))
-            printExceptionTable<decltype(exception.table64()),
+            printExceptionTable<decltype(exception->table64()),
                 FunctionTableEntry64::_NUM_FIELDS,
-                &ExceptionDir::table64>(exception);
+                &ExceptionDir::table64>(*exception);
         else
-            printExceptionTable<decltype(exception.tableArm()),
+            printExceptionTable<decltype(exception->tableArm()),
                 FunctionTableEntryArm::_NUM_FIELDS,
-                &ExceptionDir::tableArm>(exception);
+                &ExceptionDir::tableArm>(*exception);
     }
 }
 
 void printCertificate(const Pepper::PeFile &pe)
 {
     using namespace Pepper;
-    const CertificateDir &certificate = pe.certificateDir();
-    if (Ident::dirExists(certificate)) {
-        for (const auto &cert : certificate.certs()) {
+    const CertificateDirPtr &certificate = pe.certificateDir();
+    if (Ident::dirIsValid(certificate)) {
+        for (const auto &cert : certificate->certs()) {
             int i=0;
             int32_t size = *static_cast<const int32_t*>(cert.getFieldPtr(i));
             printf("%-40s0x%08x\n", cert.getFieldName(i), size); i++;
@@ -288,9 +288,9 @@ void printCertificate(const Pepper::PeFile &pe)
 void printRelocation(const Pepper::PeFile &pe)
 {
     using namespace Pepper;
-    const RelocationDir &relocation = pe.relocationDir();
-    if (Ident::dirExists(relocation)) {
-        for (const auto &block : relocation.blocks()) {
+    const RelocationDirPtr &relocation = pe.relocationDir();
+    if (Ident::dirIsValid(relocation)) {
+        for (const auto &block : relocation->blocks()) {
             const RelocationBase *prb = block.relocBase();
             printf("0x%08x | 0x%08x\n",
                 *static_cast<const int32_t*>(prb->getFieldPtr(RelocationBase::PAGE_RVA)),
@@ -306,9 +306,9 @@ void printRelocation(const Pepper::PeFile &pe)
 void printDebug(const Pepper::PeFile &pe)
 {
     using namespace Pepper;
-    const DebugDir &debug = pe.debugDir();
-    if (Ident::dirExists(debug)) {
-        for (const auto &entry : debug.entries()) {
+    const DebugDirPtr &debug = pe.debugDir();
+    if (Ident::dirIsValid(debug)) {
+        for (const auto &entry : debug->entries()) {
             int i=0;
             for (; i < DebugEntry::MAJOR_VERSION; i++)
                 printf("%-40s0x%08x\n", entry.getFieldName(i), *static_cast<const int32_t*>(entry.getFieldPtr(i)));
@@ -338,18 +338,18 @@ void printDebug(const Pepper::PeFile &pe)
 void printArchitecture(const Pepper::PeFile &pe)
 {
     using namespace Pepper;
-    const ArchitectureDir &architecture = pe.architectureDir();
-    if (Ident::dirExists(architecture)) {
-        printf("[DEBUG] '%s' has %s (RAW = 0x%08lx, diff = 0x%08lx)\n", pe.path().c_str(), pe.getHeaderName(PeFile::ARCHITECTURE), architecture.dirOffset(), architecture.hdrOffset() - architecture.dirOffset());
+    const ArchitectureDirPtr &architecture = pe.architectureDir();
+    if (Ident::dirIsValid(architecture)) {
+        printf("[DEBUG] '%s' has %s (RAW = 0x%08lx, diff = 0x%08lx)\n", pe.path().c_str(), pe.getHeaderName(PeFile::ARCHITECTURE), architecture->dirOffset(), architecture->hdrOffset() - architecture->dirOffset());
     }
 }
 
 void printGlobalPointer(const Pepper::PeFile &pe)
 {
     using namespace Pepper;
-    const GlobalPointerDir &globalPointer = pe.globalPointerDir();
-    if (Ident::dirExists(globalPointer)) {
-        printf("[DEBUG] '%s' has %s (RAW = 0x%08lx, diff = 0x%08lx)\n", pe.path().c_str(), pe.getHeaderName(PeFile::GLOBAL_POINTER), globalPointer.dirOffset(), globalPointer.hdrOffset() - globalPointer.dirOffset());
+    const GlobalPointerDirPtr &globalPointer = pe.globalPointerDir();
+    if (Ident::dirIsValid(globalPointer)) {
+        printf("[DEBUG] '%s' has %s (RAW = 0x%08lx, diff = 0x%08lx)\n", pe.path().c_str(), pe.getHeaderName(PeFile::GLOBAL_POINTER), globalPointer->dirOffset(), globalPointer->hdrOffset() - globalPointer->dirOffset());
     }
 }
 
@@ -373,12 +373,12 @@ void printTlsStruct(const Pepper::TlsDir& tls)
 void printTls(const Pepper::PeFile &pe)
 {
     using namespace Pepper;
-    const TlsDir &tls = pe.tlsDir();
-    if (Ident::dirExists(tls)) {
+    const TlsDirPtr &tls = pe.tlsDir();
+    if (Ident::dirIsValid(tls)) {
         if (Ident::is32bit(pe))
-            printTlsStruct<ptr32_t, fmt32, &TlsDir::cbt32>(tls);
+            printTlsStruct<ptr32_t, fmt32, &TlsDir::cbt32>(*tls);
         else
-            printTlsStruct<ptr64_t, fmt64, &TlsDir::cbt64>(tls);
+            printTlsStruct<ptr64_t, fmt64, &TlsDir::cbt64>(*tls);
     }
 }
 
@@ -433,21 +433,21 @@ void printLdCfgStruct(const Pepper::LoadConfigDir &ldcfg)
 void printLoadConfig(const Pepper::PeFile &pe)
 {
     using namespace Pepper;
-    const LoadConfigDir &loadConfig = pe.loadConfigDir();
-    if (Ident::dirExists(loadConfig)) {
+    const LoadConfigDirPtr &loadConfig = pe.loadConfigDir();
+    if (Ident::dirIsValid(loadConfig)) {
         if (Ident::is32bit(pe))
-            printLdCfgStruct<ptr32_t, fmt32>(loadConfig);
+            printLdCfgStruct<ptr32_t, fmt32>(*loadConfig);
         else
-            printLdCfgStruct<ptr64_t, fmt64>(loadConfig);
+            printLdCfgStruct<ptr64_t, fmt64>(*loadConfig);
     }
 }
 
 void printBoundImport(const Pepper::PeFile &pe)
 {
     using namespace Pepper;
-    const BoundImportDir &boundImport = pe.boundImportDir();
-    if (Ident::dirExists(boundImport)) {
-        printf("[DEBUG] '%s' has %s (RAW = 0x%08lx, diff = 0x%08lx)\n", pe.path().c_str(), pe.getHeaderName(PeFile::BOUND_IMPORT), boundImport.dirOffset(), boundImport.hdrOffset() - boundImport.dirOffset());
+    const BoundImportDirPtr &boundImport = pe.boundImportDir();
+    if (Ident::dirIsValid(boundImport)) {
+        printf("[DEBUG] '%s' has %s (RAW = 0x%08lx, diff = 0x%08lx)\n", pe.path().c_str(), pe.getHeaderName(PeFile::BOUND_IMPORT), boundImport->dirOffset(), boundImport->hdrOffset() - boundImport->dirOffset());
     }
 }
 
@@ -466,49 +466,49 @@ void printAddressesList(const Pepper::IatDir &id)
 void printIat(const Pepper::PeFile &pe)
 {
     using namespace Pepper;
-    const IatDir &iat = pe.iatDir();
-    if (Ident::dirExists(iat)) {
+    const IatDirPtr &iat = pe.iatDir();
+    if (Ident::dirIsValid(iat)) {
         if (Ident::is32bit(pe))
             printAddressesList<
-                decltype(iat.list32()),
-                &IatDir::list32>(iat);
+                decltype(iat->list32()),
+                &IatDir::list32>(*iat);
         else
             printAddressesList<
-                decltype(iat.list64()),
-                &IatDir::list64>(iat);
+                decltype(iat->list64()),
+                &IatDir::list64>(*iat);
     }
 }
 
 void printDelayImport(const Pepper::PeFile &pe)
 {
     using namespace Pepper;
-    printImportDescriptors<DelayImportDir, DelayImportDescriptor, &PeFile::delayImportDir>(pe);
+    printImportDescriptors<DelayImportDirPtr, DelayImportDescriptor, &PeFile::delayImportDir>(pe);
 }
 
 void printClrMetadata(const Pepper::ClrDir &clr)
 {
     using namespace Pepper;
-    const ClrMetadata &metadata = clr.metadataHdr();
-    if (Ident::dirExists(metadata)) {
+    const ClrMetadataPtr &metadata = clr.metadataHdr();
+    if (Ident::dirIsValid(metadata)) {
         std::cout << "\nCLR Metadata\n";
-        printf("%-40s%.4s\n", metadata.getFieldName(0), static_cast<const char*>(metadata.getFieldPtr(0)));
+        printf("%-40s%.4s\n", metadata->getFieldName(0), static_cast<const char*>(metadata->getFieldPtr(0)));
         int i=1;
         for (; i <= ClrMetadata::MINOR_VERSION; i++) {
-            printf("%-40s0x%04x\n", metadata.getFieldName(i), *static_cast<const int16_t*>(metadata.getFieldPtr(i)));
+            printf("%-40s0x%04x\n", metadata->getFieldName(i), *static_cast<const int16_t*>(metadata->getFieldPtr(i)));
         }
 
         for (; i <= ClrMetadata::LENGTH; i++) {
-            printf("%-40s0x%04x\n", metadata.getFieldName(i), *static_cast<const int32_t*>(metadata.getFieldPtr(i)));
+            printf("%-40s0x%04x\n", metadata->getFieldName(i), *static_cast<const int32_t*>(metadata->getFieldPtr(i)));
         }
 
-        printf("%-40s%s\n", metadata.getFieldName(i), static_cast<const char*>(metadata.getFieldPtr(i)));
+        printf("%-40s%s\n", metadata->getFieldName(i), static_cast<const char*>(metadata->getFieldPtr(i)));
 
         for (i++; i < ClrMetadata::_NUM_FIELDS; i++) {
-            printf("%-40s0x%04x\n", metadata.getFieldName(i), *static_cast<const int16_t*>(metadata.getFieldPtr(i)));
+            printf("%-40s0x%04x\n", metadata->getFieldName(i), *static_cast<const int16_t*>(metadata->getFieldPtr(i)));
         }
 
         printf("\n");
-        for (const auto &stream : metadata.streams()) {
+        for (const auto &stream : metadata->streams()) {
             printf("0x%08x 0x%08x %s\n",
                 *static_cast<const int32_t*>(stream.getFieldPtr(ClrStream::OFFSET)),
                 *static_cast<const int32_t*>(stream.getFieldPtr(ClrStream::SIZE)),
@@ -520,8 +520,8 @@ void printClrMetadata(const Pepper::ClrDir &clr)
 void printClrResource(const Pepper::ClrDir &clr)
 {
     using namespace Pepper;
-    const ClrResource &resource = clr.resourceHdr();
-    if (Ident::dirExists(resource)) {
+    const ClrResourcePtr &resource = clr.resourceHdr();
+    if (Ident::dirIsValid(resource)) {
         std::cout << "CLR Resource\n";
     }
 }
@@ -529,11 +529,11 @@ void printClrResource(const Pepper::ClrDir &clr)
 void printClrSignature(const Pepper::ClrDir &clr)
 {
     using namespace Pepper;
-    const ClrSignature &signature = clr.signatureHdr();
-    if (Ident::dirExists(signature)) {
+    const ClrSignaturePtr &signature = clr.signatureHdr();
+    if (Ident::dirIsValid(signature)) {
         std::cout << "CLR Signature\n";
-        for (size_t i=0; i < signature.size(); i++) {
-            printf("%02x ", signature.sig()[i] & 0xFF);
+        for (size_t i=0; i < signature->size(); i++) {
+            printf("%02x ", signature->sig()[i] & 0xFF);
         }
         printf("\n");
     }
@@ -542,8 +542,8 @@ void printClrSignature(const Pepper::ClrDir &clr)
 void printClrCodeManager(const Pepper::ClrDir &clr)
 {
     using namespace Pepper;
-    const ClrCodeManager &codeManager = clr.codeManagerHdr();
-    if (Ident::dirExists(codeManager)) {
+    const ClrCodeManagerPtr &codeManager = clr.codeManagerHdr();
+    if (Ident::dirIsValid(codeManager)) {
         std::cout << "CLR Code Manager\n";
     }
 }
@@ -551,8 +551,8 @@ void printClrCodeManager(const Pepper::ClrDir &clr)
 void printClrVTableFixup(const Pepper::ClrDir &clr)
 {
     using namespace Pepper;
-    const ClrVTableFixup &vtableFixup = clr.vTableFixupHdr();
-    if (Ident::dirExists(vtableFixup)) {
+    const ClrVTableFixupPtr &vtableFixup = clr.vTableFixupHdr();
+    if (Ident::dirIsValid(vtableFixup)) {
         std::cout << "CLR VTable Fixups\n";
     }
 }
@@ -560,8 +560,8 @@ void printClrVTableFixup(const Pepper::ClrDir &clr)
 void printClrExportJump(const Pepper::ClrDir &clr)
 {
     using namespace Pepper;
-    const ClrExportJump &exportJump = clr.exportJumpHdr();
-    if (Ident::dirExists(exportJump)) {
+    const ClrExportJumpPtr &exportJump = clr.exportJumpHdr();
+    if (Ident::dirIsValid(exportJump)) {
         std::cout << "CLR Export Address Table Jumps\n";
     }
 }
@@ -569,8 +569,8 @@ void printClrExportJump(const Pepper::ClrDir &clr)
 void printClrNativeHeader(const Pepper::ClrDir &clr)
 {
     using namespace Pepper;
-    const ClrNativeHeader &native = clr.nativeHdr();
-    if (Ident::dirExists(native)) {
+    const ClrNativeHeaderPtr &native = clr.nativeHdr();
+    if (Ident::dirIsValid(native)) {
         std::cout << "CLR Native Header\n";
     }
 }
@@ -578,30 +578,30 @@ void printClrNativeHeader(const Pepper::ClrDir &clr)
 void printClr(const Pepper::PeFile &pe)
 {
     using namespace Pepper;
-    const ClrDir &clr = pe.clrDir();
-    if (Ident::dirExists(clr)) {
+    const ClrDirPtr &clr = pe.clrDir();
+    if (Ident::dirIsValid(clr)) {
         int i=0;
         for (; i <= ClrDir::SIZE; i++)
-            printf("%-40s0x%08x\n", clr.getFieldName(i), *static_cast<const int32_t*>(clr.getFieldPtr(i)));
+            printf("%-40s0x%08x\n", clr->getFieldName(i), *static_cast<const int32_t*>(clr->getFieldPtr(i)));
         for (; i <= ClrDir::MINOR_RUNTIME_VERSION; i++)
-            printf("%-40s0x%04x\n", clr.getFieldName(i), *static_cast<const int16_t*>(clr.getFieldPtr(i)));
+            printf("%-40s0x%04x\n", clr->getFieldName(i), *static_cast<const int16_t*>(clr->getFieldPtr(i)));
         for (; i < ClrDir::_NUM_FIELDS; i++)
-            printf("%-40s0x%08x\n", clr.getFieldName(i), *static_cast<const int32_t*>(clr.getFieldPtr(i)));
+            printf("%-40s0x%08x\n", clr->getFieldName(i), *static_cast<const int32_t*>(clr->getFieldPtr(i)));
 
         printf("\n");
         i=0;
-        for (const auto &dataDir : clr.directories()) {
+        for (const auto &dataDir : clr->directories()) {
             printf("%02d - %-32s0x%08x | 0x%08x\n", i, ClrDir::getHeaderName(i), dataDir.rva(), dataDir.size());
             i++;
         }
 
-        printClrMetadata(clr);
-        printClrResource(clr);
-        printClrSignature(clr);
-        printClrCodeManager(clr);
-        printClrVTableFixup(clr);
-        printClrExportJump(clr);
-        printClrNativeHeader(clr);
+        printClrMetadata(*clr);
+        printClrResource(*clr);
+        printClrSignature(*clr);
+        printClrCodeManager(*clr);
+        printClrVTableFixup(*clr);
+        printClrExportJump(*clr);
+        printClrNativeHeader(*clr);
     }
 }
 

@@ -37,6 +37,11 @@ bool Ident::isRom(const PeFile &pe)
     return getOptionalHeaderMagic(pe) == OptionalHeader::Magic::ROM;
 }
 
+bool Ident::dirIsValid(const std::shared_ptr<IDirectory> &id)
+{
+    return (id != nullptr) && dirHasData(*id);
+}
+
 bool Ident::dirHasData(const IDirectory &id)
 {
     return id.hdrOffset() != 0; // TODO: not the most accurate way of checking for data
