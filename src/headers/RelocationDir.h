@@ -29,9 +29,6 @@ class DataDirectoryEntry;
 /* Variable-length array of IMAGE_BASE_RELOCATION_ENTRY
  */
 class RelocationTable final : public IHeader {
-private:
-    size_t m_length{};
-    const IMAGE_BASE_RELOCATION_ENTRY* relocations() const { return static_cast<const IMAGE_BASE_RELOCATION_ENTRY*>(hdr()); }
 public:
     enum Fields {
         OFFSET,
@@ -78,6 +75,10 @@ public:
     // static functions
     static const char* getFieldName(const int index);
     static const char* getRelocationTypeName(const PeFile &pe, const int index);
+
+private:
+    size_t m_length{};
+    const IMAGE_BASE_RELOCATION_ENTRY* relocations() const { return static_cast<const IMAGE_BASE_RELOCATION_ENTRY*>(hdr()); }
 };
 
 /* A single IMAGE_BASE_RELOCATION preceding the variable number of IMAGE_BASE_RELOCATION_ENTRY
@@ -108,9 +109,6 @@ public:
  * (IMAGE_BASE_RELOCATION.BlockSize - sizeof(IMAGE_BASE_RELOCATION)) / sizeof(IMAGE_BASE_RELOCATION_ENTRY)
  */
 class RelocationBlock final : public IHeader {
-private:
-    RelocationBase  m_relocBase;
-    RelocationTable m_relocTable;
 public:
     enum Fields {
         HEAD,
@@ -127,13 +125,15 @@ public:
 
     // static functions
     static const char* getFieldName(const int index);
+
+private:
+    RelocationBase  m_relocBase;
+    RelocationTable m_relocTable;
 };
 
 /* Variable-length array of RelocationBlocks
  */
 class RelocationDir final : public IDirectory {
-private:
-    std::vector<RelocationBlock> m_elements{};
 public:
     RelocationDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde);
 
@@ -144,6 +144,9 @@ public:
 
     // static functions
     static const char* getFieldName(const int index);
+
+private:
+    std::vector<RelocationBlock> m_elements{};
 };
 } // namespace Pepper
 

@@ -184,9 +184,7 @@ public:
         RSRV,  // null terminator
         _NUM_ENTRIES,
     };
-private:
-    std::array<DataDirectoryEntry, _NUM_ENTRIES> m_directoryEntries{};
-public:
+
     DataDirectory(const FileBytes &fbytes, const OptionalHeader &opt);
 
     // member functions
@@ -201,6 +199,9 @@ public:
     // static functions
     static const char* getFieldName(const int index);
     static const char* getDirectoryEntryName(const int index) { return getFieldName(index); }
+
+private:
+    std::array<DataDirectoryEntry, _NUM_ENTRIES> m_directoryEntries{};
 };
 } // namespace Pepper
 

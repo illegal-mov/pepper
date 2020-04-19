@@ -79,8 +79,6 @@ using ResourceStringU = GenericResourceString<IMAGE_RESOURCE_DIRECTORY_STRING_U>
  */
 template <typename StringStruct>
 class GenericResourceString : public IHeader {
-private:
-    std::string m_name{};
 public:
     enum Fields {
         LENGTH,
@@ -98,16 +96,15 @@ public:
 
     // static functions
     static const char* getFieldName(const int index);
+
+private:
+    std::string m_name{};
 };
 
 /* A leaf in the resource tree.
  * Describes the size of and offset to the embedded file content.
  */
 class ResourceData : public IHeader {
-private:
-    static size_t *s_pDiskToMemDiff; // RVAs in .edata point to .text
-    static size_t *s_pRsrcBase;
-    const ResourceNode *m_parent{};
 public:
     enum Fields {
         OFFSET_TO_DATA,
@@ -139,6 +136,11 @@ public:
 
     // static functions
     static const char* getFieldName(const int index);
+
+private:
+    static size_t *s_pDiskToMemDiff; // RVAs in .edata point to .text
+    static size_t *s_pRsrcBase;
+    const ResourceNode *m_parent{};
 };
 
 /* A pair of DWORDs describing an entry's type and offset;
@@ -146,13 +148,6 @@ public:
  *  next object in the tree is a leaf or a sub-tree.
  */
 class ResourceEntry : public IHeader {
-private:
-    static size_t *s_pRsrcBase;
-    std::unique_ptr<ResourceStringU> m_name{};
-    union {
-        std::unique_ptr<ResourceNode> m_node{};
-        std::unique_ptr<ResourceData> m_data;
-    };
 public:
     enum Fields {
         NAME,
@@ -183,15 +178,19 @@ public:
 
     // static functions
     static const char* getFieldName(const int index);
+
+private:
+    static size_t *s_pRsrcBase;
+    std::unique_ptr<ResourceStringU> m_name{};
+    union {
+        std::unique_ptr<ResourceNode> m_node{};
+        std::unique_ptr<ResourceData> m_data;
+    };
 };
 
 /* Exactly one RESOURCE_DIRECTORY immediately followed by a variable-length array of RESOURCE_ENTRY
  */
 class ResourceNode : public IHeader {
-private:
-    static size_t *s_pRsrcBase;
-    const ResourceNode *m_parent{};
-    std::vector<ResourceEntry> m_entries{};
 public:
     enum Fields {
         CHARACTERISTICS,
@@ -215,17 +214,17 @@ public:
 
     // static functions
     static const char* getFieldName(const int index);
+
+private:
+    static size_t *s_pRsrcBase;
+    const ResourceNode *m_parent{};
+    std::vector<ResourceEntry> m_entries{};
 };
 
 /* The resource directory is a tree structure where each node has a variable-number of children.
  * Each child is either a ResourceNode with its own children, or a ResourceData.
  */
 class ResourceDir final : public IDirectory {
-private:
-    static size_t s_diskToMemDiff;
-    static size_t s_rsrcBase;
-    std::unique_ptr<ResourceNode> m_root{};
-    std::map<uint32_t, ResourceData*> m_dataMap{};
 public:
     enum Fields {
         _NUM_FIELDS,
@@ -248,6 +247,12 @@ public:
     friend class ResourceData;
     friend class ResourceEntry;
     friend class ResourceNode;
+
+private:
+    static size_t s_diskToMemDiff;
+    static size_t s_rsrcBase;
+    std::unique_ptr<ResourceNode> m_root{};
+    std::map<uint32_t, ResourceData*> m_dataMap{};
 };
 
 // variant declarations

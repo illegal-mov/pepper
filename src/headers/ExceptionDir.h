@@ -48,8 +48,6 @@ using FunctionTableEntryArm = FunctionTableEntry<IMAGE_EXCEPTION_ENTRY_ARM>;
  */
 template <typename EntryType>
 class FunctionTableEntry final : public IHeader {
-private:
-    static size_t *s_pCodeDiff;
 public:
     // defined in template specializations
     enum Fields : int {};
@@ -69,24 +67,15 @@ public:
 
     // static functions
     static const char* getFieldName(const int index);
+
+private:
+    static size_t *s_pCodeDiff;
 };
 
 /* Variable-length array of architecture-specific exception structures.
  * Array length is given by (totalDirectorySize / sizeof(exceptionStruct))
  */
 class ExceptionDir final : public IDirectory {
-private:
-    static size_t s_codeDiff; // RVAs in .pdata point to .text
-    union {
-        std::vector<FunctionTableEntry32>  m_entries32{};
-        std::vector<FunctionTableEntry64>  m_entries64;
-        std::vector<FunctionTableEntryArm> m_entriesArm;
-    };
-
-    // Append entries to the vector. Works for any type of FunctionTable because
-    // entrySize is chosen by the caller when it knows the architecture.
-    template <typename EntryType>
-    void appendEntries(const FileBytes &fbytes, uint32_t totalSize);
 public:
     ExceptionDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde);
 
@@ -126,6 +115,19 @@ public:
     friend class FunctionTableEntry<IMAGE_EXCEPTION_ENTRY32>;
     friend class FunctionTableEntry<IMAGE_EXCEPTION_ENTRY64>;
     friend class FunctionTableEntry<IMAGE_EXCEPTION_ENTRY_ARM>;
+
+private:
+    static size_t s_codeDiff; // RVAs in .pdata point to .text
+    union {
+        std::vector<FunctionTableEntry32>  m_entries32{};
+        std::vector<FunctionTableEntry64>  m_entries64;
+        std::vector<FunctionTableEntryArm> m_entriesArm;
+    };
+
+    // Append entries to the vector. Works for any type of FunctionTable because
+    // entrySize is chosen by the caller when it knows the architecture.
+    template <typename EntryType>
+    void appendEntries(const FileBytes &fbytes, uint32_t totalSize);
 };
 
 template<>

@@ -18,7 +18,6 @@ class DataDirectoryEntry;
 /*
  */
 class ClrNativeHeader final : public IDirectory {
-private:
 public:
     enum Fields {
         _NUM_FIELDS,

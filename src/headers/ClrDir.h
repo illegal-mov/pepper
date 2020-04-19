@@ -50,16 +50,7 @@ public:
         CLR_NATIVE_HEADER,
         _NUM_HEADERS,
     };
-private:
-    std::array<DataDirectoryEntry, _NUM_HEADERS> m_directoryEntries{};
-    ClrMetadata     m_Meta;
-    ClrResource     m_Rsrc;
-    ClrSignature    m_Signtr;
-    ClrCodeManager  m_CodeMan;
-    ClrVTableFixup  m_VTabFix;
-    ClrExportJump   m_XprtJmp;
-    ClrNativeHeader m_NatHead;
-public:
+
     // commented out elements exist in the structure, but
     // should be accessed by iterating over `directories()`
     enum Fields {
@@ -102,6 +93,16 @@ public:
     // static functions
     static const char* getHeaderName(const int index);
     static const char* getFieldName(const int index);
+
+private:
+    std::array<DataDirectoryEntry, _NUM_HEADERS> m_directoryEntries{};
+    ClrMetadata     m_Meta;
+    ClrResource     m_Rsrc;
+    ClrSignature    m_Signtr;
+    ClrCodeManager  m_CodeMan;
+    ClrVTableFixup  m_VTabFix;
+    ClrExportJump   m_XprtJmp;
+    ClrNativeHeader m_NatHead;
 };
 } // namespace Pepper
 

@@ -31,33 +31,6 @@
 namespace Pepper {
 
 class PeFile final {
-private:
-    std::string      m_fname;
-    FileBytes        m_Bytes;
-
-    // headers
-    DosHeader        m_Dos;
-    FileHeader       m_File;
-    OptionalHeader   m_Opt;
-    DataDirectory    m_DDir;
-    SectionHeaders   m_Sctns;
-
-    // data directories
-    ExportDir        m_Xprt;
-    ImportDir        m_Mprt;
-    ResourceDir      m_Rsrc;
-    ExceptionDir     m_Xcpt;
-    CertificateDir   m_Cert;
-    RelocationDir    m_Reloc;
-    DebugDir         m_Dbg;
-    ArchitectureDir  m_Rchtr; // unused, all zero
-    GlobalPointerDir m_Gptr;  // TODO: find a file with a global pointer
-    TlsDir           m_Tls;
-    LoadConfigDir    m_Ldcfg;
-    BoundImportDir   m_Bmprt;
-    IatDir           m_Iat;
-    DelayImportDir   m_Dmprt;
-    ClrDir           m_Clr;
 public:
     enum Headers {
         DOS,
@@ -114,6 +87,34 @@ public:
 
     // static functions
     static const char* getHeaderName(const int index);
+
+private:
+    std::string      m_fname;
+    FileBytes        m_Bytes;
+
+    // headers
+    DosHeader        m_Dos;
+    FileHeader       m_File;
+    OptionalHeader   m_Opt;
+    DataDirectory    m_DDir;
+    SectionHeaders   m_Sctns;
+
+    // data directories
+    ExportDir        m_Xprt;
+    ImportDir        m_Mprt;
+    ResourceDir      m_Rsrc;
+    ExceptionDir     m_Xcpt;
+    CertificateDir   m_Cert;
+    RelocationDir    m_Reloc;
+    DebugDir         m_Dbg;
+    ArchitectureDir  m_Rchtr; // unused, all zero
+    GlobalPointerDir m_Gptr;  // TODO: find a file with a global pointer
+    TlsDir           m_Tls;
+    LoadConfigDir    m_Ldcfg;
+    BoundImportDir   m_Bmprt;
+    IatDir           m_Iat;
+    DelayImportDir   m_Dmprt;
+    ClrDir           m_Clr;
 };
 } // namespace Pepper
 

@@ -28,9 +28,6 @@ using ImportDescriptor = GenericImportDescriptor<IMAGE_IMPORT_DESCRIPTOR>;
  * length is equal to number of modules being imported from.
  */
 class ImportDir final : public IDirectory {
-private:
-    std::vector<ImportDescriptor> m_descriptors{};
-    static size_t s_diskToMemDiff;
 public:
     ImportDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde);
 
@@ -50,6 +47,10 @@ public:
     friend class GenericImportDescriptor<IMAGE_IMPORT_DESCRIPTOR>;
     friend class ImportThunk<IMAGE_THUNK_DATA32>;
     friend class ImportThunk<IMAGE_THUNK_DATA64>;
+
+private:
+    std::vector<ImportDescriptor> m_descriptors{};
+    static size_t s_diskToMemDiff;
 };
 } // namespace Pepper
 

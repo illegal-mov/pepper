@@ -32,7 +32,6 @@ class DataDirectoryEntry;
 /* Exactly one COR20_RESOURCES_HEADER followed by some RESOURCES_W?STRING and other data
  */
 class ClrResource final : public IDirectory {
-private:
 public:
     enum Fields {
         _NUM_FIELDS,

@@ -31,9 +31,6 @@ using DelayImportDescriptor = GenericImportDescriptor<IMAGE_DELAY_IMPORT_DESCRIP
  * length is equal to number of modules being imported from.
  */
 class DelayImportDir final : public IDirectory {
-private:
-    std::vector<DelayImportDescriptor> m_descriptors{};
-    static size_t s_diskToMemDiff;
 public:
     DelayImportDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry &dde);
 
@@ -51,6 +48,10 @@ public:
 
     // classes that need special access to s_diskToMemDiff
     friend class GenericImportDescriptor<IMAGE_DELAY_IMPORT_DESCRIPTOR>;
+
+private:
+    std::vector<DelayImportDescriptor> m_descriptors{};
+    static size_t s_diskToMemDiff;
 };
 } // namespace Pepper
 

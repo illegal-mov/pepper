@@ -13,8 +13,6 @@ namespace Pepper {
 /* 128 bytes of random data. Probably a hash of some sort.
  */
 class ClrSignature final : public IDirectory {
-private:
-    size_t m_length{};
 public:
     enum Fields {
         _NUM_FIELDS,
@@ -31,6 +29,9 @@ public:
 
     // static functions
     static const char* getFieldName(const int index);
+
+private:
+    size_t m_length{};
 };
 }
 

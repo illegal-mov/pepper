@@ -31,10 +31,6 @@ class DataDirectoryEntry;
 /* Variable-length array of RVAs to .text section
  */
 class ExportAddressTable final : public IHeader {
-private:
-    size_t m_length{};
-    static size_t s_diskToMemDiff; // RVAs in .edata point to .text
-    const uint32_t* addresses() const { return static_cast<const uint32_t*>(hdr()); }
 public:
     enum Fields {
         _NUM_FIELDS,
@@ -63,15 +59,16 @@ public:
 
     // static functions
     static const char* getFieldName(const int index);
+
+private:
+    size_t m_length{};
+    static size_t s_diskToMemDiff; // RVAs in .edata point to .text
+    const uint32_t* addresses() const { return static_cast<const uint32_t*>(hdr()); }
 };
 
 /* Variable-length array of RVAs to function names
  */
 class ExportNameTable final : public IHeader {
-private:
-    size_t m_length{};
-    static size_t s_diskToMemDiff;
-    const uint32_t* addresses() const { return static_cast<const uint32_t*>(hdr()); }
 public:
     enum Fields {
         _NUM_FIELDS,
@@ -103,14 +100,16 @@ public:
 
     // static functions
     static const char* getFieldName(const int index);
+
+private:
+    size_t m_length{};
+    static size_t s_diskToMemDiff;
+    const uint32_t* addresses() const { return static_cast<const uint32_t*>(hdr()); }
 };
 
 /* Variable-length array of sequential numbers as int16_t
  */
 class ExportOrdinalTable final : public IHeader {
-private:
-    size_t m_length{};
-    const int16_t* ordinals() const { return static_cast<const int16_t*>(hdr()); }
 public:
     enum Fields {
         _NUM_FIELDS,
@@ -134,16 +133,16 @@ public:
 
     // static functions
     static const char* getFieldName(const int index);
+
+private:
+    size_t m_length{};
+    const int16_t* ordinals() const { return static_cast<const int16_t*>(hdr()); }
 };
 
 /* A single EXPORT_DIRECTORY structure.
  * Contains pointers to variable-length arrays of export-related data.
  */
 class ExportDir final : public IDirectory {
-private:
-    ExportAddressTable m_addrTable;
-    ExportNameTable    m_nameTable;
-    ExportOrdinalTable m_ordTable;
 public:
     enum Fields {
         EXPORT_FLAGS,
@@ -173,6 +172,11 @@ public:
 
     // static functions
     static const char* getFieldName(const int index);
+
+private:
+    ExportAddressTable m_addrTable;
+    ExportNameTable    m_nameTable;
+    ExportOrdinalTable m_ordTable;
 };
 } // namespace Pepper
 

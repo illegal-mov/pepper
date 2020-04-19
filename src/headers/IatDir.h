@@ -30,9 +30,6 @@ using AddressList64 = AddressList<int64_t>;
  */
 template <typename ArchType>
 class AddressList final : public IHeader {
-private:
-    size_t m_length{};
-    const ArchType* addresses() const { return static_cast<const ArchType*>(hdr()); }
 public:
     AddressList(const FileBytes &fbytes, const offset_t raw, const size_t len);
 
@@ -49,20 +46,16 @@ public:
 
     // static functions
     static const char* getFieldName(const int index);
+
+private:
+    size_t m_length{};
+    const ArchType* addresses() const { return static_cast<const ArchType*>(hdr()); }
 };
 
 /* Base of table of RVAs to function addresses
  * Points to same ImportLookups as ImportDir
  */
 class IatDir final : public IDirectory {
-private:
-    union {
-        std::vector<AddressList32> m_list32{};
-        std::vector<AddressList64> m_list64;
-    };
-
-    template <typename ArchType>
-    void readAddrList(const FileBytes &fbytes, const DataDirectoryEntry &dde);
 public:
     IatDir(const PeFile &pe, const FileBytes &fbytes, const DataDirectoryEntry& dde);
 
@@ -88,6 +81,15 @@ public:
 
     // static functions
     static const char* getFieldName(const int index);
+
+private:
+    union {
+        std::vector<AddressList32> m_list32{};
+        std::vector<AddressList64> m_list64;
+    };
+
+    template <typename ArchType>
+    void readAddrList(const FileBytes &fbytes, const DataDirectoryEntry &dde);
 };
 
 // variant declarations

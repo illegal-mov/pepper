@@ -111,8 +111,6 @@ public:
  * FileHeader.NumberOfSections
  */
 class SectionHeaders final {
-private:
-    std::vector<SectionHeaderEntry> m_elements{};
 public:
     static constexpr int ALIGN_NYBBLE = 0x00F00000;
 
@@ -126,6 +124,9 @@ public:
     static const char* getFieldName(const int index);
     static const char* getCharacteristicName(const int index);
     static const char* getCharacteristicAlignName(const int alignNybble);
+
+private:
+    std::vector<SectionHeaderEntry> m_elements{};
 };
 } // namespace Pepper
 

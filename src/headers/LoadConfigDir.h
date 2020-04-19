@@ -151,8 +151,6 @@ public:
 /* The LOAD_CONFIG directory is a single 32-bit or 64-bit data structure.
  */
 class LoadConfigDir final : public IDirectory {
-private:
-    CodeIntegrity m_codeInteg;
 public:
     enum Fields {
         SIZE,
@@ -217,6 +215,9 @@ public:
 
     // static functions
     static const char* getFieldName(const int index);
+
+private:
+    CodeIntegrity m_codeInteg;
 };
 } // namespace Pepper
 

@@ -65,8 +65,6 @@ public:
  * Contains a field for the file offset to an RSDSI struct.
  */
 class DebugEntry final : public IHeader {
-private:
-    DebugRsds m_dbgRsds;
 public:
     enum Fields {
         CHARACTERISTICS,
@@ -107,14 +105,15 @@ public:
     // static functions
     static const char* getFieldName(const int index);
     static const char* getDebugTypeName(const int index);
+
+private:
+    DebugRsds m_dbgRsds;
 };
 
 /* Array of IMAGE_DEBUG_DIRECTORY structs.
  * Array length is given by (totalDirectorySize / sizeof(debugStruct))
  */
 class DebugDir final : public IDirectory {
-private:
-    std::vector<DebugEntry> m_elements{};
 public:
     enum Fields {
         _NUM_FIELDS,
@@ -128,6 +127,9 @@ public:
 
     // static functions
     static const char* getFieldName(const int index);
+
+private:
+    std::vector<DebugEntry> m_elements{};
 };
 } // namespace Pepper
 

@@ -81,11 +81,6 @@ public:
  */
 template <typename ArchType>
 class ImportThunk final : public IHeader {
-private:
-    ImportName m_hintname;
-    std::string m_ordstr{};
-
-    static size_t *s_pDiskToMemDiff;
 public:
     enum Fields {
         HINTNAMERVA,
@@ -121,6 +116,12 @@ public:
 
     // static functions
     static const char* getFieldName(const int index);
+
+private:
+    ImportName m_hintname;
+    std::string m_ordstr{};
+
+    static size_t *s_pDiskToMemDiff;
 };
 
 /* Has members that point to a variable-length array of ImportThunks
@@ -129,34 +130,6 @@ public:
  */
 template <typename DescriptorType>
 class GenericImportDescriptor final : public IHeader {
-private:
-    // for data at ImportLookupTableRVA
-    /* The variant declaractions at the end of the file are still
-     * needed even though ImportThunk objects are declared with
-     * concrete types right here.
-     */
-    union {
-        std::vector<ImportThunk32> m_thunks32{};
-        std::vector<ImportThunk64> m_thunks64;
-    };
-
-    // for data at ImportAddressTableRVA
-    union {
-        std::vector<ptr32_t> m_addresses32{};
-        std::vector<ptr64_t> m_addresses64;
-    };
-
-    static size_t *s_pDiskToMemDiff;
-
-    // a helper function to construct a {regular,delay} descriptor
-    template <int ILT, int IAT, int TIMESTAMP>
-    void makeDescriptor(const PeFile &pe, const FileBytes &fbytes);
-
-    template <typename ArchType>
-    void readThunks(const FileBytes &fbytes, const offset_t raw);
-
-    template <typename ArchType>
-    void readAddresses(size_t raw);
 public:
     // this enum is defined in template specializations
     enum Fields : int {};
@@ -196,6 +169,35 @@ public:
 
     // static functions
     static const char* getFieldName(const int index);
+
+private:
+    // for data at ImportLookupTableRVA
+    /* The variant declaractions at the end of the file are still
+     * needed even though ImportThunk objects are declared with
+     * concrete types right here.
+     */
+    union {
+        std::vector<ImportThunk32> m_thunks32{};
+        std::vector<ImportThunk64> m_thunks64;
+    };
+
+    // for data at ImportAddressTableRVA
+    union {
+        std::vector<ptr32_t> m_addresses32{};
+        std::vector<ptr64_t> m_addresses64;
+    };
+
+    static size_t *s_pDiskToMemDiff;
+
+    // a helper function to construct a {regular,delay} descriptor
+    template <int ILT, int IAT, int TIMESTAMP>
+    void makeDescriptor(const PeFile &pe, const FileBytes &fbytes);
+
+    template <typename ArchType>
+    void readThunks(const FileBytes &fbytes, const offset_t raw);
+
+    template <typename ArchType>
+    void readAddresses(size_t raw);
 };
 
 template<>

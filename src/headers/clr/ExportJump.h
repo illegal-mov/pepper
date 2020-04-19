@@ -18,7 +18,6 @@ class DataDirectoryEntry;
 /*
  */
 class ClrExportJump final : public IDirectory {
-private:
 public:
     enum Fields {
         _NUM_FIELDS,

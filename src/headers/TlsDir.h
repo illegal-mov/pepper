@@ -2,6 +2,7 @@
 #define TLS_H
 
 #include "../Conversion.h"
+#include "../Identification.h"
 #include "../Types.h"
 #include "../generics/iDir.h"
 #include "struct.h"
@@ -38,11 +39,6 @@ class DataDirectoryEntry;
  */
 template <typename ArchType>
 class CallbacksTable final : public IHeader {
-private:
-    size_t m_length{};
-    static size_t s_codeDiff; // AVAs in the Callbacks array point to .text
-
-    const ArchType* callbacks() const { return static_cast<const ArchType*>(hdr()); }
 public:
     CallbacksTable() = default;
 
@@ -69,16 +65,17 @@ public:
 
     // static functions
     static const char* getFieldName(const int index);
+
+private:
+    size_t m_length{};
+    static size_t s_codeDiff; // AVAs in the Callbacks array point to .text
+
+    const ArchType* callbacks() const { return static_cast<const ArchType*>(hdr()); }
 };
 
 /* The TLS directory is a single 32-bit or 64-bit data structure.
  */
 class TlsDir final : public IDirectory {
-private:
-    union {
-        CallbacksTable<ptr32_t> m_callbacks32;
-        CallbacksTable<ptr64_t> m_callbacks64;
-    };
 public:
     enum Fields {
         RAW_DATA_START_VA,
@@ -103,6 +100,12 @@ public:
 
     // static functions
     static const char* getFieldName(const int index);
+
+private:
+    union {
+        CallbacksTable<ptr32_t> m_callbacks32;
+        CallbacksTable<ptr64_t> m_callbacks64;
+    };
 };
 
 // variant declarations

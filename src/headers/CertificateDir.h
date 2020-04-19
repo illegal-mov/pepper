@@ -48,8 +48,6 @@ public:
 };
 
 class CertificateDir final : public IDirectory {
-private:
-    std::vector<CertificateEntry> m_elements{};
 public:
     enum Fields {
         _NUM_FIELDS,
@@ -64,6 +62,9 @@ public:
 
     // static functions
     static const char* getFieldName(const int index);
+
+private:
+    std::vector<CertificateEntry> m_elements{};
 };
 } // namespace Pepper
 

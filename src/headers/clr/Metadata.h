@@ -37,8 +37,6 @@ class DataDirectoryEntry;
 /* A mysterious dump of bytes
  */
 class ClrStream final : public IHeader {
-private:
-    static size_t *s_pMetadataBase;
 public:
     enum Fields {
         OFFSET,
@@ -65,14 +63,14 @@ public:
 
     // static functions
     static const char* getFieldName(const int index);
+
+private:
+    static size_t *s_pMetadataBase;
 };
 
 /* Exactly one COR20_METADATA_HEADER followed by a variable-number of STREAM_HEADERS
  */
 class ClrMetadata final : public IDirectory {
-private:
-    std::vector<ClrStream> m_streams{};
-    static size_t s_metadataBase;
 public:
     enum Fields {
         SIGNATURE,
@@ -100,6 +98,10 @@ public:
 
     // classes that need special access to s_metadataBase
     friend class ClrStream;
+
+private:
+    std::vector<ClrStream> m_streams{};
+    static size_t s_metadataBase;
 };
 }
 
