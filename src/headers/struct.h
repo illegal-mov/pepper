@@ -15,9 +15,13 @@
     #define __PEPPER_PREFIX
 
     static constexpr int DATA_DIR_LEN = 16;
+    static constexpr int DOS_RESERVED1_LEN = 4;
+    static constexpr int DOS_RESERVED2_LEN = 10;
     static constexpr int NAME_LEN_SECTION = 8;
+    static constexpr int RSDS_GUID_LEN = 4;
     static constexpr int SIG_LEN_DOS = 2;
     static constexpr int SIG_LEN_NT = 4;
+    static constexpr int SIG_LEN_RSDS = 4;
 #else
     #include <stdint.h>
     #define __PEPPER_PREFIX PEPPER_
@@ -246,25 +250,25 @@ enum dbg_dir_dbg_types {
 #endif
 
 typedef struct _IMAGE_DOS_HEADER {
-    char     e_magic[__PEPPER_PASTE(SIG_LEN_DOS)]; // signature
-    int16_t  e_cblp;     // count of bytes on last page
-    int16_t  e_cp;       // count of pages
-    int16_t  e_crlc;     // count of relocations
-    int16_t  e_cparhdr;  // count of paragraph headers
-    int16_t  e_minalloc; // minimum allocations
-    int16_t  e_maxalloc; // maximum allocations
-    int16_t  e_ss;       // initial SS
-    int16_t  e_sp;       // initial SP
-    int16_t  e_csum;     // checksum
-    int16_t  e_ip;       // initial IP
-    int16_t  e_cs;       // initial CS
-    int16_t  e_lfarlc;   // offset to relocations
-    int16_t  e_ovno;     // overlay number
-    int16_t  e_res[4];   // reserved1
-    int16_t  e_oemid;    // oem Identifier
-    int16_t  e_oeminfo;  // oem Info
-    int16_t  e_res2[10]; // reserved2
-    uint16_t e_lfanew;   // file offset to NT header
+    char     e_magic[__PEPPER_PASTE(SIG_LEN_DOS)];      // signature
+    int16_t  e_cblp;                                    // count of bytes on last page
+    int16_t  e_cp;                                      // count of pages
+    int16_t  e_crlc;                                    // count of relocations
+    int16_t  e_cparhdr;                                 // count of paragraph headers
+    int16_t  e_minalloc;                                // minimum allocations
+    int16_t  e_maxalloc;                                // maximum allocations
+    int16_t  e_ss;                                      // initial SS
+    int16_t  e_sp;                                      // initial SP
+    int16_t  e_csum;                                    // checksum
+    int16_t  e_ip;                                      // initial IP
+    int16_t  e_cs;                                      // initial CS
+    int16_t  e_lfarlc;                                  // offset to relocations
+    int16_t  e_ovno;                                    // overlay number
+    int16_t  e_res[__PEPPER_PASTE(DOS_RESERVED1_LEN)];  // reserved1
+    int16_t  e_oemid;                                   // oem Identifier
+    int16_t  e_oeminfo;                                 // oem Info
+    int16_t  e_res2[__PEPPER_PASTE(DOS_RESERVED2_LEN)]; // reserved2
+    uint16_t e_lfanew;                                  // file offset to NT header
 } IMAGE_DOS_HEADER, *PIMAGE_DOS_HEADER;
 
 typedef struct _IMAGE_FILE_HEADER {
@@ -294,38 +298,38 @@ typedef struct _IMAGE_FILE_HEADER {
 } IMAGE_FILE_HEADER, *PIMAGE_FILE_HEADER;
 
 typedef struct _IMAGE_DATA_DIRECTORY {
-    uint32_t VirtualAddress;                 // address of table in memory
-    uint32_t Size;                           // size of table
+    uint32_t VirtualAddress; // address of table in memory
+    uint32_t Size;           // size of table
 } IMAGE_DATA_DIRECTORY, *PIMAGE_DATA_DIRECTORY;
 
 typedef struct _IMAGE_OPTIONAL_HEADER32 {
-    uint16_t Magic;                                                    // identifies file as 32bit, 64bit, or ROM
+    uint16_t Magic;                                                   // identifies file as 32bit, 64bit, or ROM
     /* 0x10b IMAGE_NT_OPTIONAL_HDR32_MAGIC
      * 0x20b IMAGE_NT_OPTIONAL_HDR64_MAGIC
      * 0x107 IMAGE_ROM_OPTIONAL_HDR_MAGIC
      */
-    int8_t   MajorLinkerVersion;                                       // linker major version number
-    int8_t   MinorLinkerVersion;                                       // linker minor version number
-    uint32_t SizeOfCode;                                               // sum of all code section sizes
-    uint32_t SizeOfInitializedData;                                    // sum of all initialized data section sizes
-    uint32_t SizeOfUninitializedData;                                  // sum of all uninitialized data section sizes
-    uint32_t AddressOfEntryPoint;                                      // entry point address relative to image base
-    uint32_t BaseOfCode;                                               // start of code section relative to image base
-    uint32_t BaseOfData;                                               // start of data section relative to image base
-    uint32_t ImageBase;                                                // preferred base address of binary (must be % 65536 == 0)
-    uint32_t SectionAlignment;                                         // byte alignment for section data in memory (must be >= FileAlignment)
-    uint32_t FileAlignment;                                            // byte alignment for section data on disk
-    int16_t  MajorOperatingSystemVersion;                              // operating system major version number
-    int16_t  MinorOperatingSystemVersion;                              // operating system minor version number
-    int16_t  MajorImageVersion;                                        // image major version number
-    int16_t  MinorImageVersion;                                        // image minor version number
-    int16_t  MajorSubsystemVersion;                                    // subsystem major version number
-    int16_t  MinorSubsystemVersion;                                    // subsystem minor version number
-    int32_t  Win32VersionValue;                                        // reserved, must be zero
-    uint32_t SizeOfImage;                                              // size of image, including headers, in bytes (must be % SectionAlignment == 0)
-    uint32_t SizeOfHeaders;                                            // sum of all header sizes
-    uint32_t CheckSum;                                                 // file checksum
-    int16_t  Subsystem;                                                // required subsystem
+    int8_t   MajorLinkerVersion;                                      // linker major version number
+    int8_t   MinorLinkerVersion;                                      // linker minor version number
+    uint32_t SizeOfCode;                                              // sum of all code section sizes
+    uint32_t SizeOfInitializedData;                                   // sum of all initialized data section sizes
+    uint32_t SizeOfUninitializedData;                                 // sum of all uninitialized data section sizes
+    uint32_t AddressOfEntryPoint;                                     // entry point address relative to image base
+    uint32_t BaseOfCode;                                              // start of code section relative to image base
+    uint32_t BaseOfData;                                              // start of data section relative to image base
+    uint32_t ImageBase;                                               // preferred base address of binary (must be % 65536 == 0)
+    uint32_t SectionAlignment;                                        // byte alignment for section data in memory (must be >= FileAlignment)
+    uint32_t FileAlignment;                                           // byte alignment for section data on disk
+    int16_t  MajorOperatingSystemVersion;                             // operating system major version number
+    int16_t  MinorOperatingSystemVersion;                             // operating system minor version number
+    int16_t  MajorImageVersion;                                       // image major version number
+    int16_t  MinorImageVersion;                                       // image minor version number
+    int16_t  MajorSubsystemVersion;                                   // subsystem major version number
+    int16_t  MinorSubsystemVersion;                                   // subsystem minor version number
+    int32_t  Win32VersionValue;                                       // reserved, must be zero
+    uint32_t SizeOfImage;                                             // size of image, including headers, in bytes (must be % SectionAlignment == 0)
+    uint32_t SizeOfHeaders;                                           // sum of all header sizes
+    uint32_t CheckSum;                                                // file checksum
+    int16_t  Subsystem;                                               // required subsystem
     /* 0  IMAGE_SUBSYSTEM_UNKNOWN
      * 1  IMAGE_SUBSYSTEM_NATIVE
      * 2  IMAGE_SUBSYSTEM_WINDOWS_GUI
@@ -340,7 +344,7 @@ typedef struct _IMAGE_OPTIONAL_HEADER32 {
      * 14 IMAGE_SUBSYSTEM_XBOX
      * 16 IMAGE_SUBSYSTEM_WINDOWS_BOOT_APPLICATION
      */
-    uint16_t DllCharacteristics;                                       // bit fields for various properties
+    uint16_t DllCharacteristics;                                      // bit fields for various properties
     /* 0x0001 IMAGE_DLLCHARACTERISTICS_RESERVED_1
      * 0x0002 IMAGE_DLLCHARACTERISTICS_RESERVED_2
      * 0x0004 IMAGE_DLLCHARACTERISTICS_RESERVED_4
@@ -358,42 +362,42 @@ typedef struct _IMAGE_OPTIONAL_HEADER32 {
      * 0x4000 IMAGE_DLLCHARACTERISTICS_GUARD_CF
      * 0x8000 IMAGE_DLLCHARACTERISTICS_TERMINAL_SERVER_AWARE
      */
-    uint32_t SizeOfStackReserve;                                       // stack size to reserve
-    uint32_t SizeOfStackCommit;                                        // stack size to commit
-    uint32_t SizeOfHeapReserve;                                        // heap size to reserve
-    uint32_t SizeOfHeapCommit;                                         // heap size to commit
-    int32_t  LoaderFlags;                                              // reserved, must be zero
-    uint32_t NumberOfRvaAndSizes;                                      // number of non-null DataDirectory entries
+    uint32_t SizeOfStackReserve;                                      // stack size to reserve
+    uint32_t SizeOfStackCommit;                                       // stack size to commit
+    uint32_t SizeOfHeapReserve;                                       // heap size to reserve
+    uint32_t SizeOfHeapCommit;                                        // heap size to commit
+    int32_t  LoaderFlags;                                             // reserved, must be zero
+    uint32_t NumberOfRvaAndSizes;                                     // number of non-null DataDirectory entries
     IMAGE_DATA_DIRECTORY DataDirectory[__PEPPER_PASTE(DATA_DIR_LEN)]; // addresses and sizes of extra tables
 } IMAGE_OPTIONAL_HEADER32, *PIMAGE_OPTIONAL_HEADER32;
 
 typedef struct _IMAGE_OPTIONAL_HEADER64 {
-    uint16_t Magic;                                                    // identifies file as 32bit, 64bit, or ROM
+    uint16_t Magic;                                                   // identifies file as 32bit, 64bit, or ROM
     /* 0x10b IMAGE_NT_OPTIONAL_HDR32_MAGIC
      * 0x20b IMAGE_NT_OPTIONAL_HDR64_MAGIC
      * 0x107 IMAGE_ROM_OPTIONAL_HDR_MAGIC
      */
-    int8_t   MajorLinkerVersion;                                       // linker major version number
-    int8_t   MinorLinkerVersion;                                       // linker minor version number
-    uint32_t SizeOfCode;                                               // sum of all code section sizes
-    uint32_t SizeOfInitializedData;                                    // sum of all initialized data section sizes
-    uint32_t SizeOfUninitializedData;                                  // sum of all uninitialized data section sizes
-    uint32_t AddressOfEntryPoint;                                      // entry point address relative to image base
-    uint32_t BaseOfCode;                                               // start of code section relative to image base
-    uint64_t ImageBase;                                                // preferred base address of binary (must be % 65536 == 0)
-    uint32_t SectionAlignment;                                         // byte alignment for section data in memory (must be >= FileAlignment)
-    uint32_t FileAlignment;                                            // byte alignment for section data on disk
-    int16_t  MajorOperatingSystemVersion;                              // operating system major version number
-    int16_t  MinorOperatingSystemVersion;                              // operating system minor version number
-    int16_t  MajorImageVersion;                                        // image major version number
-    int16_t  MinorImageVersion;                                        // image minor version number
-    int16_t  MajorSubsystemVersion;                                    // subsystem major version number
-    int16_t  MinorSubsystemVersion;                                    // subsystem minor version number
-    int32_t  Win32VersionValue;                                        // reserved, must be zero
-    uint32_t SizeOfImage;                                              // size of image, including headers, in bytes (must be % SectionAlignment == 0)
-    uint32_t SizeOfHeaders;                                            // sum of all header sizes
-    uint32_t CheckSum;                                                 // file checksum
-    int16_t  Subsystem;                                                // required subsystem
+    int8_t   MajorLinkerVersion;                                      // linker major version number
+    int8_t   MinorLinkerVersion;                                      // linker minor version number
+    uint32_t SizeOfCode;                                              // sum of all code section sizes
+    uint32_t SizeOfInitializedData;                                   // sum of all initialized data section sizes
+    uint32_t SizeOfUninitializedData;                                 // sum of all uninitialized data section sizes
+    uint32_t AddressOfEntryPoint;                                     // entry point address relative to image base
+    uint32_t BaseOfCode;                                              // start of code section relative to image base
+    uint64_t ImageBase;                                               // preferred base address of binary (must be % 65536 == 0)
+    uint32_t SectionAlignment;                                        // byte alignment for section data in memory (must be >= FileAlignment)
+    uint32_t FileAlignment;                                           // byte alignment for section data on disk
+    int16_t  MajorOperatingSystemVersion;                             // operating system major version number
+    int16_t  MinorOperatingSystemVersion;                             // operating system minor version number
+    int16_t  MajorImageVersion;                                       // image major version number
+    int16_t  MinorImageVersion;                                       // image minor version number
+    int16_t  MajorSubsystemVersion;                                   // subsystem major version number
+    int16_t  MinorSubsystemVersion;                                   // subsystem minor version number
+    int32_t  Win32VersionValue;                                       // reserved, must be zero
+    uint32_t SizeOfImage;                                             // size of image, including headers, in bytes (must be % SectionAlignment == 0)
+    uint32_t SizeOfHeaders;                                           // sum of all header sizes
+    uint32_t CheckSum;                                                // file checksum
+    int16_t  Subsystem;                                               // required subsystem
     /* 0  IMAGE_SUBSYSTEM_UNKNOWN
      * 1  IMAGE_SUBSYSTEM_NATIVE
      * 2  IMAGE_SUBSYSTEM_WINDOWS_GUI
@@ -408,7 +412,7 @@ typedef struct _IMAGE_OPTIONAL_HEADER64 {
      * 14 IMAGE_SUBSYSTEM_XBOX
      * 16 IMAGE_SUBSYSTEM_WINDOWS_BOOT_APPLICATION
      */
-    uint16_t DllCharacteristics;                                       // bit fields for various properties
+    uint16_t DllCharacteristics;                                      // bit fields for various properties
     /* 0x0001 IMAGE_DLLCHARACTERISTICS_RESERVED_1
      * 0x0002 IMAGE_DLLCHARACTERISTICS_RESERVED_2
      * 0x0004 IMAGE_DLLCHARACTERISTICS_RESERVED_4
@@ -426,12 +430,12 @@ typedef struct _IMAGE_OPTIONAL_HEADER64 {
      * 0x4000 IMAGE_DLLCHARACTERISTICS_GUARD_CF
      * 0x8000 IMAGE_DLLCHARACTERISTICS_TERMINAL_SERVER_AWARE
      */
-    uint64_t SizeOfStackReserve;                                       // stack size to reserve
-    uint64_t SizeOfStackCommit;                                        // stack size to commit
-    uint64_t SizeOfHeapReserve;                                        // heap size to reserve
-    uint64_t SizeOfHeapCommit;                                         // heap size to commit
-    int32_t  LoaderFlags;                                              // reserved, must be zero
-    uint32_t NumberOfRvaAndSizes;                                      // number of non-null DataDirectory entries
+    uint64_t SizeOfStackReserve;                                      // stack size to reserve
+    uint64_t SizeOfStackCommit;                                       // stack size to commit
+    uint64_t SizeOfHeapReserve;                                       // heap size to reserve
+    uint64_t SizeOfHeapCommit;                                        // heap size to commit
+    int32_t  LoaderFlags;                                             // reserved, must be zero
+    uint32_t NumberOfRvaAndSizes;                                     // number of non-null DataDirectory entries
     IMAGE_DATA_DIRECTORY DataDirectory[__PEPPER_PASTE(DATA_DIR_LEN)]; // addresses and sizes of extra tables
 } IMAGE_OPTIONAL_HEADER64, *PIMAGE_OPTIONAL_HEADER64;
 
@@ -542,8 +546,8 @@ typedef struct _IMAGE_THUNK_DATA64 {
 } IMAGE_THUNK_DATA64, *PIMAGE_THUNK_DATA64;
 
 typedef struct _IMAGE_IMPORT_BY_NAME {
-    uint16_t Hint;   // Index into export name table pointer
-    char     Name[]; // Imported function name as null-terminated ASCII string
+    uint16_t  Hint; // Index into export name table pointer
+    char     *Name; // Imported function name as null-terminated ASCII string
 } IMAGE_IMPORT_BY_NAME, *PIMAGE_IMPORT_BY_NAME;
 
 /* RESOURCE DIRECTORY */
@@ -576,13 +580,13 @@ typedef struct _IMAGE_RESOURCE_ENTRY {
 } IMAGE_RESOURCE_ENTRY, *PIMAGE_RESOURCE_ENTRY;
 
 typedef struct _IMAGE_RESOURCE_DIRECTORY_STRING {
-	uint16_t Length;
-	char     NameString[];
+	uint16_t  Length;
+	char     *NameString;
 } IMAGE_RESOURCE_DIRECTORY_STRING, *PIMAGE_RESOURCE_DIRECTORY_STRING;
 
 typedef struct _IMAGE_RESOURCE_DIRECTORY_STRING_U {
-	uint16_t Length;
-	uint16_t NameString[]; // TODO: maybe char16_t
+	uint16_t  Length;
+	uint16_t *NameString; // TODO: maybe char16_t
 } IMAGE_RESOURCE_DIRECTORY_STRING_U, *PIMAGE_RESOURCE_DIRECTORY_STRING_U;
 
 typedef struct _IMAGE_RESOURCE_DATA {
@@ -624,13 +628,13 @@ typedef struct _IMAGE_ATTRIBUTE_CERTIFICATE {
     /* 0x0100 WIN_CERT_REVISION_1_0
      * 0x0200 WIN_CERT_REVISION_2_0
      */
-    int16_t CertificateType;    // certificate type
+    int16_t  CertificateType;    // certificate type
     /* 0x0001 WIN_CERT_TYPE_X509
      * 0x0002 WIN_CERT_TYPE_PKCS_SIGNED_DATA
      * 0x0003 WIN_CERT_TYPE_RESERVED_1
      * 0x0004 WIN_CERT_TYPE_TS_STACK_SIGNED
      */
-    char    CertificateBytes[]; // certificate data
+    char     *CertificateBytes; // certificate data
 } IMAGE_ATTRIBUTE_CERTIFICATE, *PIMAGE_ATTRIBUTE_CERTIFICATE;
 
 /* RELOCATIONS DIRECTORY */
@@ -674,10 +678,10 @@ typedef struct _IMAGE_DEBUG_DIRECTORY {
 } IMAGE_DEBUG_DIRECTORY, *PIMAGE_DEBUG_DIRECTORY;
 
 typedef struct _RSDSI {
-    char    Signature[4]; // always set to "RSDS"
-    char    Guid[16];     // some kind of unique ID
-    int32_t Age;          // <unknown>
-    char    Pdb[];        // path to PDB file
+    char     Signature[__PEPPER_PASTE(SIG_LEN_RSDS)]; // always set to "RSDS"
+    char     Guid[__PEPPER_PASTE(RSDS_GUID_LEN)];     // some kind of unique ID
+    int32_t  Age;                                     // <unknown>
+    char    *Pdb;                                     // path to PDB file
 } RSDSI, *PRSDSI;
 
 /* ARCHITECTURE DIRECTORY */
@@ -859,21 +863,21 @@ typedef struct _IMAGE_COR20_HEADER {
 } IMAGE_COR20_HEADER, *PIMAGE_COR20_HEADER;
 
 typedef struct _IMAGE_COR20_METADATA_HEADER {
-    int32_t  Signature;       // always set to "BSJB"
-    int16_t  MajorVersion;    // metadata major version number
-    int16_t  MinorVersion;    // metadata minor version number
-    int32_t  Reserved;        // reserved, must be zero
-    uint32_t Length;          // Version length (multiple of 4)
-    char     Version[];       // length-prefixed string
+    int32_t   Signature;    // always set to "BSJB"
+    int16_t   MajorVersion; // metadata major version number
+    int16_t   MinorVersion; // metadata minor version number
+    int32_t   Reserved;     // reserved, must be zero
+    uint32_t  Length;       // Version length (multiple of 4)
+    char     *Version;      // length-prefixed string
     // FLEX SPACE
 //  int16_t  Flags;           // reserved, must be zero
 //  uint16_t NumberOfStreams;
 } IMAGE_COR20_METADATA_HEADER, *PIMAGE_COR20_METADATA_HEADER;
 
 typedef struct _IMAGE_COR20_METADATA_STREAM_HEADER {
-    uint32_t Offset; // relative to METADATA_header
-    uint32_t Size;
-    char     Name[];
+    uint32_t  Offset; // relative to METADATA_header
+    uint32_t  Size;
+    char     *Name;
 } IMAGE_COR20_METADATA_STREAM_HEADER, *PIMAGE_COR20_METADATA_STREAM_HEADER;
 
 typedef struct _IMAGE_COR20_RESOURCES_HEADER {
@@ -886,25 +890,25 @@ typedef struct _IMAGE_COR20_RESOURCES_HEADER {
 // custom structs used in CLR directory
 
 typedef struct _IMAGE_COR20_RESOURCES_STRING {
-    uint8_t Length;
-    char    String[];
+    uint8_t  Length;
+    char    *String;
 } IMAGE_COR20_RESOURCES_STRING, *PIMAGE_COR20_RESOURCES_STRING;
 
 typedef struct _IMAGE_COR20_RESOURCES_WSTRING {
-    uint8_t  Length;
-    uint16_t String[]; // TODO: maybe char16_t
+    uint8_t   Length;
+    uint16_t *String; // TODO: maybe char16_t
 } IMAGE_COR20_RESOURCES_WSTRING, *PIMAGE_COR20_RESOURCES_WSTRING;
 
 typedef struct _IMAGE_COR20_RESOURCES_TAGGED_STRING {
     uint8_t Type;
-    uint8_t Length;
-    char    String[];
+    uint8_t  Length;
+    char    *String;
 } IMAGE_COR20_RESOURCES_TAGGED_STRING, *PIMAGE_COR20_RESOURCES_TAGGED_STRING;
 
 typedef struct _IMAGE_COR20_RESOURCES_TAGGED_WSTRING {
-    uint8_t  Type;
-    uint8_t  Length;
-    uint16_t String[]; // TODO: maybe char16_t
+    uint8_t   Type;
+    uint8_t   Length;
+    uint16_t *String; // TODO: maybe char16_t
 } IMAGE_COR20_RESOURCES_TAGGED_WSTRING, *PIMAGE_COR20_RESOURCES_TAGGED_WSTRING;
 
 #ifdef __cplusplus
