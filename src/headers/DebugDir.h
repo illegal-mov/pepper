@@ -100,7 +100,7 @@ public:
     // member functions
     const void* getFieldPtr(const int index) const override;
     const IMAGE_DEBUG_DIRECTORY* dbg() const { return static_cast<const IMAGE_DEBUG_DIRECTORY*>(hdr()); }
-    const DebugRsds* rsds() const { return &m_dbgRsds; }
+    const DebugRsds& rsds() const { return m_dbgRsds; }
 
     // static functions
     static const char* getFieldName(const int index);

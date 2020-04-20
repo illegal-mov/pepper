@@ -546,8 +546,8 @@ typedef struct _IMAGE_THUNK_DATA64 {
 } IMAGE_THUNK_DATA64, *PIMAGE_THUNK_DATA64;
 
 typedef struct _IMAGE_IMPORT_BY_NAME {
-    uint16_t  Hint; // Index into export name table pointer
-    char     *Name; // Imported function name as null-terminated ASCII string
+    uint16_t Hint;    // Index into export name table pointer
+    char     Name[1]; // Imported function name as null-terminated ASCII string
 } IMAGE_IMPORT_BY_NAME, *PIMAGE_IMPORT_BY_NAME;
 
 /* RESOURCE DIRECTORY */
@@ -580,13 +580,13 @@ typedef struct _IMAGE_RESOURCE_ENTRY {
 } IMAGE_RESOURCE_ENTRY, *PIMAGE_RESOURCE_ENTRY;
 
 typedef struct _IMAGE_RESOURCE_DIRECTORY_STRING {
-	uint16_t  Length;
-	char     *NameString;
+	uint16_t Length;
+	char     NameString[1];
 } IMAGE_RESOURCE_DIRECTORY_STRING, *PIMAGE_RESOURCE_DIRECTORY_STRING;
 
 typedef struct _IMAGE_RESOURCE_DIRECTORY_STRING_U {
-	uint16_t  Length;
-	uint16_t *NameString; // TODO: maybe char16_t
+	uint16_t Length;
+	uint16_t NameString[1]; // TODO: maybe char16_t
 } IMAGE_RESOURCE_DIRECTORY_STRING_U, *PIMAGE_RESOURCE_DIRECTORY_STRING_U;
 
 typedef struct _IMAGE_RESOURCE_DATA {
@@ -623,18 +623,18 @@ typedef struct _IMAGE_EXCEPTION_ENTRY_ARM {
 /* CERTIFICATE / SECURITY DIRECTORY */
 
 typedef struct _IMAGE_ATTRIBUTE_CERTIFICATE {
-    uint32_t Length;            // certificate size in bytes
-    int16_t  Revision;          // certificate version
+    uint32_t Length;              // certificate size in bytes
+    int16_t  Revision;            // certificate version
     /* 0x0100 WIN_CERT_REVISION_1_0
      * 0x0200 WIN_CERT_REVISION_2_0
      */
-    int16_t  CertificateType;    // certificate type
+    int16_t  CertificateType;     // certificate type
     /* 0x0001 WIN_CERT_TYPE_X509
      * 0x0002 WIN_CERT_TYPE_PKCS_SIGNED_DATA
      * 0x0003 WIN_CERT_TYPE_RESERVED_1
      * 0x0004 WIN_CERT_TYPE_TS_STACK_SIGNED
      */
-    char     *CertificateBytes; // certificate data
+    char     CertificateBytes[1]; // certificate data
 } IMAGE_ATTRIBUTE_CERTIFICATE, *PIMAGE_ATTRIBUTE_CERTIFICATE;
 
 /* RELOCATIONS DIRECTORY */
@@ -678,10 +678,10 @@ typedef struct _IMAGE_DEBUG_DIRECTORY {
 } IMAGE_DEBUG_DIRECTORY, *PIMAGE_DEBUG_DIRECTORY;
 
 typedef struct _RSDSI {
-    char     Signature[__PEPPER_PASTE(SIG_LEN_RSDS)]; // always set to "RSDS"
-    char     Guid[__PEPPER_PASTE(RSDS_GUID_LEN)];     // some kind of unique ID
-    int32_t  Age;                                     // <unknown>
-    char    *Pdb;                                     // path to PDB file
+    char    Signature[__PEPPER_PASTE(SIG_LEN_RSDS)]; // always set to "RSDS"
+    char    Guid[__PEPPER_PASTE(RSDS_GUID_LEN)];     // some kind of unique ID
+    int32_t Age;                                     // <unknown>
+    char    Pdb[1];                                  // path to PDB file
 } RSDSI, *PRSDSI;
 
 /* ARCHITECTURE DIRECTORY */
@@ -863,21 +863,21 @@ typedef struct _IMAGE_COR20_HEADER {
 } IMAGE_COR20_HEADER, *PIMAGE_COR20_HEADER;
 
 typedef struct _IMAGE_COR20_METADATA_HEADER {
-    int32_t   Signature;    // always set to "BSJB"
-    int16_t   MajorVersion; // metadata major version number
-    int16_t   MinorVersion; // metadata minor version number
-    int32_t   Reserved;     // reserved, must be zero
-    uint32_t  Length;       // Version length (multiple of 4)
-    char     *Version;      // length-prefixed string
+    int32_t  Signature;    // always set to "BSJB"
+    int16_t  MajorVersion; // metadata major version number
+    int16_t  MinorVersion; // metadata minor version number
+    int32_t  Reserved;     // reserved, must be zero
+    uint32_t Length;       // Version length (multiple of 4)
+    char     Version[1];      // length-prefixed string
     // FLEX SPACE
 //  int16_t  Flags;           // reserved, must be zero
 //  uint16_t NumberOfStreams;
 } IMAGE_COR20_METADATA_HEADER, *PIMAGE_COR20_METADATA_HEADER;
 
 typedef struct _IMAGE_COR20_METADATA_STREAM_HEADER {
-    uint32_t  Offset; // relative to METADATA_header
-    uint32_t  Size;
-    char     *Name;
+    uint32_t Offset; // relative to METADATA_header
+    uint32_t Size;
+    char     Name[1];
 } IMAGE_COR20_METADATA_STREAM_HEADER, *PIMAGE_COR20_METADATA_STREAM_HEADER;
 
 typedef struct _IMAGE_COR20_RESOURCES_HEADER {
@@ -890,25 +890,25 @@ typedef struct _IMAGE_COR20_RESOURCES_HEADER {
 // custom structs used in CLR directory
 
 typedef struct _IMAGE_COR20_RESOURCES_STRING {
-    uint8_t  Length;
-    char    *String;
+    uint8_t Length;
+    char    String[1];
 } IMAGE_COR20_RESOURCES_STRING, *PIMAGE_COR20_RESOURCES_STRING;
 
 typedef struct _IMAGE_COR20_RESOURCES_WSTRING {
-    uint8_t   Length;
-    uint16_t *String; // TODO: maybe char16_t
+    uint8_t  Length;
+    uint16_t String[1]; // TODO: maybe char16_t
 } IMAGE_COR20_RESOURCES_WSTRING, *PIMAGE_COR20_RESOURCES_WSTRING;
 
 typedef struct _IMAGE_COR20_RESOURCES_TAGGED_STRING {
     uint8_t Type;
-    uint8_t  Length;
-    char    *String;
+    uint8_t Length;
+    char    String[1];
 } IMAGE_COR20_RESOURCES_TAGGED_STRING, *PIMAGE_COR20_RESOURCES_TAGGED_STRING;
 
 typedef struct _IMAGE_COR20_RESOURCES_TAGGED_WSTRING {
-    uint8_t   Type;
-    uint8_t   Length;
-    uint16_t *String; // TODO: maybe char16_t
+    uint8_t  Type;
+    uint8_t  Length;
+    uint16_t String[1]; // TODO: maybe char16_t
 } IMAGE_COR20_RESOURCES_TAGGED_WSTRING, *PIMAGE_COR20_RESOURCES_TAGGED_WSTRING;
 
 #ifdef __cplusplus
