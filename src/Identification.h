@@ -24,13 +24,8 @@ namespace Pepper { namespace Ident {
     /* return true if and only if the file is a ROM image */
     bool isRom(const PeFile& pe);
 
-    /* return true if and only if the directory exists and has data */
-    bool dirIsValid(const std::shared_ptr<IDirectory>& id);
-
-    /* return true if and only if the directory has data */
-    bool dirHasData(const IDirectory& id);
-
     /* return true if and only if the directory exists */
+    bool dirExists(const std::shared_ptr<IDirectory>& id);
     bool dirExists(const IDirectory& id);
 
     /* return true if and only if DOS magic and NT signature are correct */

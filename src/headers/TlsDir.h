@@ -93,10 +93,10 @@ public:
 
     // member functions
     const void* getFieldPtr(const int index) const override;
-    const IMAGE_TLS_DIRECTORY32*    tls32() const { return (PIMAGE_TLS_DIRECTORY32)dir(); }
-    const IMAGE_TLS_DIRECTORY64*    tls64() const { return (PIMAGE_TLS_DIRECTORY64)dir(); }
-    const CallbacksTable<ptr32_t>* cbt32() const { return Ident::dirExists(*this) ? &m_callbacks32 : nullptr; }
-    const CallbacksTable<ptr64_t>* cbt64() const { return Ident::dirExists(*this) ? &m_callbacks64 : nullptr; }
+    const IMAGE_TLS_DIRECTORY32*   tls32() const { return (PIMAGE_TLS_DIRECTORY32)dir(); }
+    const IMAGE_TLS_DIRECTORY64*   tls64() const { return (PIMAGE_TLS_DIRECTORY64)dir(); }
+    const CallbacksTable<ptr32_t>& cbt32() const { return m_callbacks32; }
+    const CallbacksTable<ptr64_t>& cbt64() const { return m_callbacks64; }
 
     // static functions
     static const char* getFieldName(const int index);

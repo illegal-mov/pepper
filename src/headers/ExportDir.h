@@ -165,9 +165,9 @@ public:
     const void* getFieldPtr(const int index) const override;
     const IMAGE_EXPORT_DIRECTORY* xport() const { return static_cast<const IMAGE_EXPORT_DIRECTORY*>(dir()); }
 
-    const ExportAddressTable* eat() const { return Ident::dirExists(*this) ? &m_addrTable : nullptr; }
-    const ExportNameTable*    ent() const { return Ident::dirExists(*this) ? &m_nameTable : nullptr; }
-    const ExportOrdinalTable* eot() const { return Ident::dirExists(*this) ? &m_ordTable  : nullptr; }
+    const ExportAddressTable& eat() const { return m_addrTable; }
+    const ExportNameTable&    ent() const { return m_nameTable; }
+    const ExportOrdinalTable& eot() const { return m_ordTable; }
     const char* dllName() const { return &mem()[xport()->NameRVA - m_diffOfRvaRaw]; }
 
     // static functions

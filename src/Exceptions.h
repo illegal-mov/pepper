@@ -8,12 +8,13 @@ namespace Pepper {
 /* Base class for exceptions */
 class PeException : public std::exception
 {
-protected:
-    std::string m_error;
 public:
     PeException(const std::string& error)
     : m_error(error) {}
     const char* getError() const { return m_error.c_str(); }
+
+protected:
+    std::string m_error;
 };
 
 class BadSignature : public PeException

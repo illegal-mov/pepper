@@ -37,14 +37,9 @@ bool Ident::isRom(const PeFile& pe)
     return getOptionalHeaderMagic(pe) == OptionalHeader::Magic::ROM;
 }
 
-bool Ident::dirIsValid(const std::shared_ptr<IDirectory>& id)
+bool Ident::dirExists(const std::shared_ptr<IDirectory>& id)
 {
-    return (id != nullptr) && dirHasData(*id);
-}
-
-bool Ident::dirHasData(const IDirectory& id)
-{
-    return id.hdrOffset() != 0; // TODO: not the most accurate way of checking for data
+    return id != nullptr;
 }
 
 bool Ident::dirExists(const IDirectory& id)
@@ -56,16 +51,37 @@ bool Ident::isAllSigsValid(const PeFile& pe)
 {
     // check DOS signature
     const DosHeader& dos = pe.dosHdr();
-    const uint16_t dosMagic = *reinterpret_cast<const uint16_t*>(dos.dos()->e_magic);
-    if (dosMagic != 0x4D5A && dosMagic != 0x5A4D) {
+    const uint16_t dosMagic = *static_cast<const uint16_t*>(dos.getFieldPtr(DosHeader::E_MAGIC));
+    if ((dosMagic != 0x4D5A) && (dosMagic != 0x5A4D)) {
         return false;
     }
 
     // check NT signature
     const FileHeader& file = pe.fileHdr();
     const int32_t ntSig = *reinterpret_cast<const int32_t*>(file.ntSig());
-    if (ntSig != 0x00004550 && ntSig != 0x50450000) {
+    if ((ntSig != 0x00004550) && (ntSig != 0x50450000)) {
         return false;
+    }
+
+    // check debug directory RSDS signature
+    const std::shared_ptr<DebugDir> dbg = pe.debugDir();
+    if (dirExists(dbg)) {
+        for (const auto& entry : dbg->entries()) {
+            const int32_t rsdsSig = *static_cast<const int32_t*>(entry.rsds().getFieldPtr(DebugRsds::SIGNATURE));
+            if ((rsdsSig != 0x52534453) && (rsdsSig != 0x53445352)) { // "RSDS" "SDSR"
+                return false;
+            }
+        }
+    }
+
+    // check CLR metadata header BSJB signature
+    const std::shared_ptr<ClrDir> clr = pe.clrDir();
+    if (dirExists(clr)) {
+        const std::shared_ptr<ClrMetadata> meta = clr->metadataHdr();
+        const int32_t bsjbSig = *static_cast<const int32_t*>(meta->getFieldPtr(ClrMetadata::SIGNATURE));
+        if ((bsjbSig != 0x42534A42) && (bsjbSig != 0x424A5342)) { // "BSJB" "BJSB"
+            return false;
+        }
     }
 
     return true;
