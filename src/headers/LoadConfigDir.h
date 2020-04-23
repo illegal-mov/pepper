@@ -205,12 +205,12 @@ public:
 
     const IMAGE_LOAD_CONFIG_DIRECTORY32* ldcfg32() const
     {
-        return (PIMAGE_LOAD_CONFIG_DIRECTORY32)dir();
+        return static_cast<const IMAGE_LOAD_CONFIG_DIRECTORY32*>(dir());
     }
 
     const IMAGE_LOAD_CONFIG_DIRECTORY64* ldcfg64() const
     {
-        return (PIMAGE_LOAD_CONFIG_DIRECTORY64)dir();
+        return static_cast<const IMAGE_LOAD_CONFIG_DIRECTORY64*>(dir());
     }
 
     // static functions

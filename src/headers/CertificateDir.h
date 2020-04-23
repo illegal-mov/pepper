@@ -38,7 +38,7 @@ public:
     {}
 
     // member functions
-    const IMAGE_ATTRIBUTE_CERTIFICATE* cert() const { return (PIMAGE_ATTRIBUTE_CERTIFICATE)hdr(); }
+    const IMAGE_ATTRIBUTE_CERTIFICATE* cert() const { return static_cast<const IMAGE_ATTRIBUTE_CERTIFICATE*>(hdr()); }
     const void* getFieldPtr(const int index) const override;
     const char* bytes() const { return cert()->CertificateBytes; }
     uint32_t size() const { return cert()->Length; }

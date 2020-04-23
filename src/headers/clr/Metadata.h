@@ -53,7 +53,7 @@ public:
     const void* getFieldPtr(const int index) const override;
     const IMAGE_COR20_METADATA_STREAM_HEADER* stream() const
     {
-        return (PIMAGE_COR20_METADATA_STREAM_HEADER)hdr();
+        return static_cast<const IMAGE_COR20_METADATA_STREAM_HEADER*>(hdr());
     }
 
     const char* data() const
@@ -89,7 +89,7 @@ public:
     ClrMetadata(const PeFile& pe, const FileBytes& fbytes, const DataDirectoryEntry& dde);
 
     // member functions
-    const IMAGE_COR20_METADATA_HEADER* metadata() const { return (PIMAGE_COR20_METADATA_HEADER)dir(); }
+    const IMAGE_COR20_METADATA_HEADER* metadata() const { return static_cast<const IMAGE_COR20_METADATA_HEADER*>(dir()); }
     const std::vector<ClrStream>& streams() const { return m_streams; }
     const void* getFieldPtr(const int index) const override;
 

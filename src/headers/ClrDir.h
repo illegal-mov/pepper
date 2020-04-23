@@ -86,7 +86,7 @@ public:
         return m_directoryEntries;
     }
 
-    const IMAGE_COR20_HEADER* clr() const { return (PIMAGE_COR20_HEADER)dir(); }
+    const IMAGE_COR20_HEADER* clr() const { return static_cast<const IMAGE_COR20_HEADER*>(dir()); }
 
     const ClrMetadataPtr&     metadataHdr()    const { return m_Meta; }
     const ClrResourcePtr&     resourceHdr()    const { return m_Rsrc; }

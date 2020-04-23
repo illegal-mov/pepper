@@ -93,8 +93,8 @@ public:
 
     // member functions
     const void* getFieldPtr(const int index) const override;
-    const IMAGE_TLS_DIRECTORY32*   tls32() const { return (PIMAGE_TLS_DIRECTORY32)dir(); }
-    const IMAGE_TLS_DIRECTORY64*   tls64() const { return (PIMAGE_TLS_DIRECTORY64)dir(); }
+    const IMAGE_TLS_DIRECTORY32*   tls32() const { return static_cast<const IMAGE_TLS_DIRECTORY32*>(dir()); }
+    const IMAGE_TLS_DIRECTORY64*   tls64() const { return static_cast<const IMAGE_TLS_DIRECTORY64*>(dir()); }
     const CallbacksTable<ptr32_t>& cbt32() const { return m_callbacks32; }
     const CallbacksTable<ptr64_t>& cbt64() const { return m_callbacks64; }
 
