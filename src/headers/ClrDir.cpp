@@ -80,11 +80,11 @@ const char* ClrDir::getFieldName(const int index)
 const void* ClrDir::getFieldPtr(const int index) const
 {
     switch (index) {
-        case SIZE                 : return &clr()->Size;
-        case MAJOR_RUNTIME_VERSION: return &clr()->MajorRuntimeVersion;
-        case MINOR_RUNTIME_VERSION: return &clr()->MinorRuntimeVersion;
-        case FLAGS                : return &clr()->Flags;
-        case ENTRY_POINT_RVA      : return &clr()->EntryPointRVA;
+        case SIZE                 : return &getStructPtr()->Size;
+        case MAJOR_RUNTIME_VERSION: return &getStructPtr()->MajorRuntimeVersion;
+        case MINOR_RUNTIME_VERSION: return &getStructPtr()->MinorRuntimeVersion;
+        case FLAGS                : return &getStructPtr()->Flags;
+        case ENTRY_POINT_RVA      : return &getStructPtr()->EntryPointRVA;
         default                   : return nullptr;
     }
 }

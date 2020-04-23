@@ -32,9 +32,9 @@ public:
 
     // member functions
     const void* getFieldPtr(const int index) const override;
-    const IMAGE_DATA_DIRECTORY* entry() const { return static_cast<const IMAGE_DATA_DIRECTORY*>(hdr()); }
-    uint32_t rva() const { return entry()->VirtualAddress; }
-    uint32_t size() const { return entry()->Size; }
+    const IMAGE_DATA_DIRECTORY* getStructPtr() const { return static_cast<const IMAGE_DATA_DIRECTORY*>(hdr()); }
+    uint32_t rva() const { return getStructPtr()->VirtualAddress; }
+    uint32_t size() const { return getStructPtr()->Size; }
 
     // static functions
     static const char* getFieldName(const int index);

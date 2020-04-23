@@ -42,7 +42,7 @@ public:
     ClrResource(const PeFile& pe, const FileBytes& fbytes, const DataDirectoryEntry& dde);
 
     // member functions
-    const void* rsrc() const { return static_cast<const void*>(dir()); }
+    const void* getStructPtr() const { return static_cast<const void*>(dir()); }
     const void* getFieldPtr(const int index) const override;
 
     // static functions

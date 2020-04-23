@@ -18,16 +18,16 @@ class SectionHeaderEntry;
 class IDirectory : public IHeader {
 public:
     /* get true offset into PE file content where directory is located */
-    size_t dirOffset() const { return hdrOffset() - m_diffOfRvaRaw; }
+    size_t dirOffset() const { return hdrOffset() - m_diskToMemoryDifference; }
 
-    /* pointer to base of directory as char* only if the directory exists */
+    /* pointer to base of directory only if the directory exists */
     const void* dir() const;
 
     /* get size of directory */
     uint32_t size() const;
 
     /* get a pointer to the section containing this directory's data */
-    const SectionHeaderEntry* owningSection() const { return m_she; }
+    const SectionHeaderEntry* getOwningSection() const { return m_sectionHeaderEntry; }
 
 protected:
     IDirectory() = default;
@@ -36,34 +36,34 @@ protected:
 
     IDirectory(const IDirectory& id)
     : IHeader(id)
-    , m_pe(id.m_pe)
-    , m_dde(id.m_dde)
-    , m_she(id.m_she)
-    , m_diffOfRvaRaw(id.m_diffOfRvaRaw)
+    , m_peFile(id.m_peFile)
+    , m_dataDirectoryEntry(id.m_dataDirectoryEntry)
+    , m_sectionHeaderEntry(id.m_sectionHeaderEntry)
+    , m_diskToMemoryDifference(id.m_diskToMemoryDifference)
     {}
 
     IDirectory& operator=(const IDirectory& id)
     {
         IHeader::operator=(id);
-        m_pe = id.m_pe;
-        m_dde = id.m_dde;
-        m_she = id.m_she;
-        m_diffOfRvaRaw = id.m_diffOfRvaRaw;
+        m_peFile = id.m_peFile;
+        m_dataDirectoryEntry = id.m_dataDirectoryEntry;
+        m_sectionHeaderEntry = id.m_sectionHeaderEntry;
+        m_diskToMemoryDifference = id.m_diskToMemoryDifference;
         return *this;
     }
 
     virtual ~IDirectory()
     {
-        m_pe = nullptr;
-        m_dde = nullptr;
-        m_she = nullptr;
-        m_diffOfRvaRaw = 0;
+        m_peFile = nullptr;
+        m_dataDirectoryEntry = nullptr;
+        m_sectionHeaderEntry = nullptr;
+        m_diskToMemoryDifference = 0;
     }
 
-    const PeFile *m_pe{};
-    const DataDirectoryEntry *m_dde{};
-    const SectionHeaderEntry *m_she{};
-    size_t m_diffOfRvaRaw{};
+    const PeFile *m_peFile{};
+    const DataDirectoryEntry *m_dataDirectoryEntry{};
+    const SectionHeaderEntry *m_sectionHeaderEntry{};
+    size_t m_diskToMemoryDifference{};
 };
 } // namespace Pepper
 

@@ -57,7 +57,7 @@ const void* AddressList<ArchType>::getFieldPtr(const int index) const
 {
     size_t uindex = static_cast<size_t>(index);
     return (uindex < length())
-        ? &addresses()[uindex]
+        ? &getStructPtr()[uindex]
         : nullptr;
 }
 

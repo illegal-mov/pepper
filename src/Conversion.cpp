@@ -29,7 +29,7 @@ static uint32_t calculateDiff(const PeFile& pe, const addr_t addr, Convert::Addr
 
     // linear search for containing section
     const SectionHeaders& sctns = pe.sectionHdrs();
-    for (const auto& section : sctns.sections()) {
+    for (const auto& section : sctns.getSections()) {
         const uint32_t sctnBase = *static_cast<const uint32_t*>(section.getFieldPtr(base));
         const uint32_t sctnSize = *static_cast<const uint32_t*>(section.getFieldPtr(size));
         if (sctnBase <= addr && addr < sctnBase + sctnSize) {

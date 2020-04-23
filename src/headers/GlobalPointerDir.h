@@ -21,7 +21,7 @@ public:
 
     // member functions
     const void* getFieldPtr(const int index) const override;
-//  const IMAGE_GLOBAL_POINTER_DIRECTORY* gptr() const { return static_cast<const IMAGE_GLOBAL_POINTER_DIRECTORY*>(dir()); }
+//  const IMAGE_GLOBAL_POINTER_DIRECTORY* getStructPtr() const { return static_cast<const IMAGE_GLOBAL_POINTER_DIRECTORY*>(dir()); }
 
     // static functions
     static const char* getFieldName(const int index);

@@ -63,13 +63,13 @@ public:
     // member functions
     const void* getFieldPtr(const int index) const override;
 
-    const IMAGE_BASE_RELOCATION_ENTRY* entry(const int index) const
+    const IMAGE_BASE_RELOCATION_ENTRY* getStructPtr(const int index) const
     {
         return static_cast<const IMAGE_BASE_RELOCATION_ENTRY*>(getFieldPtr(index));
     }
 
-    int16_t type(const int index) const { return relocations()[index].Type & 0xF; }
-    int16_t offset(const int index) const { return relocations()[index].Offset & 0x0FFF; }
+    int16_t type(const int index) const { return getStructPtr()[index].Type & 0xF; }
+    int16_t offset(const int index) const { return getStructPtr()[index].Offset & 0x0FFF; }
     size_t length() const { return m_length; }
 
     // static functions
@@ -78,7 +78,7 @@ public:
 
 private:
     size_t m_length{};
-    const IMAGE_BASE_RELOCATION_ENTRY* relocations() const { return static_cast<const IMAGE_BASE_RELOCATION_ENTRY*>(hdr()); }
+    const IMAGE_BASE_RELOCATION_ENTRY* getStructPtr() const { return static_cast<const IMAGE_BASE_RELOCATION_ENTRY*>(hdr()); }
 };
 
 /* A single IMAGE_BASE_RELOCATION preceding the variable number of IMAGE_BASE_RELOCATION_ENTRY
@@ -97,7 +97,7 @@ public:
 
     // member functions
     const void* getFieldPtr(const int index) const override;
-    const IMAGE_BASE_RELOCATION* base() const { return static_cast<const IMAGE_BASE_RELOCATION*>(hdr()); }
+    const IMAGE_BASE_RELOCATION* getStructPtr() const { return static_cast<const IMAGE_BASE_RELOCATION*>(hdr()); }
 
     // static functions
     static const char* getFieldName(const int index);
@@ -139,14 +139,14 @@ public:
 
     // member functions
     const void* getFieldPtr(const int index) const override;
-    const std::vector<RelocationBlock>& blocks() const { return m_elements; }
-    size_t length() const { return m_elements.size(); }
+    const std::vector<RelocationBlock>& blocks() const { return m_relocationBlocks; }
+    size_t length() const { return m_relocationBlocks.size(); }
 
     // static functions
     static const char* getFieldName(const int index);
 
 private:
-    std::vector<RelocationBlock> m_elements{};
+    std::vector<RelocationBlock> m_relocationBlocks{};
 };
 } // namespace Pepper
 

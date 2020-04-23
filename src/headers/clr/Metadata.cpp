@@ -20,13 +20,13 @@ ClrMetadata::ClrMetadata(const PeFile& pe, const FileBytes& fbytes, const DataDi
      * structure, this is a really ridiculous way of doing `sizeof`
      */
     size_t pos = offsetof(IMAGE_COR20_METADATA_HEADER, Version)
-               + metadata()->Length + 4;
+               + getStructPtr()->Length + 4;
     // construct each ClrStream object
     for (size_t i=0; i < numStreams; i++) {
         ClrStream tmp(fbytes, dirOffset() + pos);
         m_streams.push_back(tmp);
 
-        const char *name = tmp.stream()->Name;
+        const char *name = tmp.getStructPtr()->Name;
         // it is important that the member `Name[]` counts as zero bytes
         pos += sizeof(IMAGE_COR20_METADATA_STREAM_HEADER) + strlen(name) + 1;
         // align to next 4-byte boundary
@@ -47,9 +47,9 @@ const char* ClrStream::getFieldName(const int index)
 const void* ClrStream::getFieldPtr(const int index) const
 {
     switch (index) {
-        case OFFSET: return &stream()->Offset;
-        case SIZE  : return &stream()->Size;
-        case NAME  : return &stream()->Name;
+        case OFFSET: return &getStructPtr()->Offset;
+        case SIZE  : return &getStructPtr()->Size;
+        case NAME  : return &getStructPtr()->Name;
         default    : return nullptr;
     }
 }
@@ -72,15 +72,15 @@ const char* ClrMetadata::getFieldName(const int index)
 const void* ClrMetadata::getFieldPtr(const int index) const
 {
     switch (index) {
-        case SIGNATURE        : return &metadata()->Signature;
-        case MAJOR_VERSION    : return &metadata()->MajorVersion;
-        case MINOR_VERSION    : return &metadata()->MinorVersion;
-        case RESERVED         : return &metadata()->Reserved;
-        case LENGTH           : return &metadata()->Length;
-        case VERSION          : return &metadata()->Version;
+        case SIGNATURE        : return &getStructPtr()->Signature;
+        case MAJOR_VERSION    : return &getStructPtr()->MajorVersion;
+        case MINOR_VERSION    : return &getStructPtr()->MinorVersion;
+        case RESERVED         : return &getStructPtr()->Reserved;
+        case LENGTH           : return &getStructPtr()->Length;
+        case VERSION          : return &getStructPtr()->Version;
         // the length-prefixed string makes this part weird
-        case FLAGS            : return &static_cast<const char*>(dir())[offsetof(IMAGE_COR20_METADATA_HEADER, Version) + metadata()->Length];
-        case NUMBER_OF_STREAMS: return &static_cast<const char*>(dir())[offsetof(IMAGE_COR20_METADATA_HEADER, Version) + metadata()->Length + 2];
+        case FLAGS            : return &static_cast<const char*>(dir())[offsetof(IMAGE_COR20_METADATA_HEADER, Version) + getStructPtr()->Length];
+        case NUMBER_OF_STREAMS: return &static_cast<const char*>(dir())[offsetof(IMAGE_COR20_METADATA_HEADER, Version) + getStructPtr()->Length + 2];
         default               : return nullptr;
     }
 }

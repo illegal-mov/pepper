@@ -9,12 +9,12 @@ CertificateDir::CertificateDir(const PeFile& pe, const FileBytes& fbytes, const 
 {
     if (Ident::dirExists(*this)) {
         // certificate is special and does not need a diff
-        m_diffOfRvaRaw = 0;
+        m_diskToMemoryDifference = 0;
 
         uint32_t currentSize = 0;
         while (currentSize < dde.size()) {
-            m_elements.emplace_back(fbytes, dirOffset() + currentSize);
-            currentSize += m_elements.back().cert()->Length;
+            m_certificates.emplace_back(fbytes, dirOffset() + currentSize);
+            currentSize += m_certificates.back().getStructPtr()->Length;
             // round up to 8 byte alignment
             currentSize += (8 - (currentSize & 7)) & 7;
         }
@@ -35,10 +35,10 @@ const char* CertificateEntry::getFieldName(const int index)
 const void* CertificateEntry::getFieldPtr(const int index) const
 {
     switch (index) {
-        case LENGTH           : return &cert()->Length;
-        case REVISION         : return &cert()->Revision;
-        case CERTIFICATE_TYPE : return &cert()->CertificateType;
-        case CERTIFICATE_BYTES: return &cert()->CertificateBytes;
+        case LENGTH           : return &getStructPtr()->Length;
+        case REVISION         : return &getStructPtr()->Revision;
+        case CERTIFICATE_TYPE : return &getStructPtr()->CertificateType;
+        case CERTIFICATE_BYTES: return &getStructPtr()->CertificateBytes;
         default               : return nullptr;
     }
 }

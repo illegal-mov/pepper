@@ -38,31 +38,31 @@ class PeFile;
 class FileBytes;
 class DataDirectoryEntry;
 template <typename EntryType>
-class FunctionTableEntry;
+class ExceptionTableEntry;
 
-using FunctionTableEntry32  = FunctionTableEntry<IMAGE_EXCEPTION_ENTRY32>;
-using FunctionTableEntry64  = FunctionTableEntry<IMAGE_EXCEPTION_ENTRY64>;
-using FunctionTableEntryArm = FunctionTableEntry<IMAGE_EXCEPTION_ENTRY_ARM>;
+using ExceptionTableEntry32  = ExceptionTableEntry<IMAGE_EXCEPTION_ENTRY32>;
+using ExceptionTableEntry64  = ExceptionTableEntry<IMAGE_EXCEPTION_ENTRY64>;
+using ExceptionTableEntryArm = ExceptionTableEntry<IMAGE_EXCEPTION_ENTRY_ARM>;
 
 /* An element of the variable-length array of any IMAGE_EXCEPTION_ENTRY data structure.
  */
 template <typename EntryType>
-class FunctionTableEntry final : public IHeader {
+class ExceptionTableEntry final : public IHeader {
 public:
     // defined in template specializations
     enum Fields : int {};
 
-    FunctionTableEntry(const FileBytes& fbytes, const offset_t raw)
+    ExceptionTableEntry(const FileBytes& fbytes, const offset_t raw)
     : IHeader(fbytes, raw)
     {}
 
     // member functions
-    const EntryType* entry() const { return static_cast<const EntryType*>(hdr()); }
+    const EntryType* getStructPtr() const { return static_cast<const EntryType*>(hdr()); }
     const void* getFieldPtr(const int index) const override;
 
-    uint32_t     beginRaw() const { return entry()->BeginAddress - *s_pCodeDiff; }
-    uint32_t     endRaw()   const { return entry()->EndAddress   - *s_pCodeDiff; }
-    uint32_t     codeLen()  const { return entry()->EndAddress   -  entry()->BeginAddress; }
+    uint32_t     beginRaw() const { return getStructPtr()->BeginAddress - *s_pCodeDiff; }
+    uint32_t     endRaw()   const { return getStructPtr()->EndAddress   - *s_pCodeDiff; }
+    uint32_t     codeLen()  const { return getStructPtr()->EndAddress   -  getStructPtr()->BeginAddress; }
     const void*  codePtr()  const { return &mem()[beginRaw()]; }
 
     // static functions
@@ -85,53 +85,53 @@ public:
     ExceptionDir& operator=(const ExceptionDir& ed)
     {
         IDirectory::operator=(ed);
-        m_entries32 = ed.m_entries32;
+        m_exceptionTableEntries32 = ed.m_exceptionTableEntries32;
         return *this;
     }
 
     // member functions
-    const std::vector<FunctionTableEntry32>& table32() const
+    const std::vector<ExceptionTableEntry32>& getFunctions32() const
     {
-        return m_entries32;
+        return m_exceptionTableEntries32;
     }
 
-    const std::vector<FunctionTableEntry64>& table64() const
+    const std::vector<ExceptionTableEntry64>& getFunctions64() const
     {
-        return m_entries64;
+        return m_exceptionTableEntries64;
     }
 
-    const std::vector<FunctionTableEntryArm>& tableArm() const
+    const std::vector<ExceptionTableEntryArm>& getFunctionsArm() const
     {
-        return m_entriesArm;
+        return m_exceptionTableEntriesArm;
     }
 
     const void* getFieldPtr(const int index) const override;
-    size_t length() const { return m_entries32.size(); }
+    size_t length() const { return m_exceptionTableEntries32.size(); }
 
     // static functions
     static const char* getFieldName(const int index);
 
     // classes that need special access to s_codeDiff
-    friend class FunctionTableEntry<IMAGE_EXCEPTION_ENTRY32>;
-    friend class FunctionTableEntry<IMAGE_EXCEPTION_ENTRY64>;
-    friend class FunctionTableEntry<IMAGE_EXCEPTION_ENTRY_ARM>;
+    friend class ExceptionTableEntry<IMAGE_EXCEPTION_ENTRY32>;
+    friend class ExceptionTableEntry<IMAGE_EXCEPTION_ENTRY64>;
+    friend class ExceptionTableEntry<IMAGE_EXCEPTION_ENTRY_ARM>;
 
 private:
     static size_t s_codeDiff; // RVAs in .pdata point to .text
     union {
-        std::vector<FunctionTableEntry32>  m_entries32{};
-        std::vector<FunctionTableEntry64>  m_entries64;
-        std::vector<FunctionTableEntryArm> m_entriesArm;
+        std::vector<ExceptionTableEntry32>  m_exceptionTableEntries32{};
+        std::vector<ExceptionTableEntry64>  m_exceptionTableEntries64;
+        std::vector<ExceptionTableEntryArm> m_exceptionTableEntriesArm;
     };
 
-    // Append entries to the vector. Works for any type of FunctionTable because
+    // Append entries to the vector. Works for any type of ExceptionTable because
     // entrySize is chosen by the caller when it knows the architecture.
     template <typename EntryType>
     void appendEntries(const FileBytes& fbytes, uint32_t totalSize);
 };
 
 template<>
-enum FunctionTableEntry32::Fields : int {
+enum ExceptionTableEntry32::Fields : int {
     BEGIN_ADDRESS,
     END_ADDRESS,
     EXCEPTION_HANDLER,
@@ -141,7 +141,7 @@ enum FunctionTableEntry32::Fields : int {
 };
 
 template<>
-enum FunctionTableEntry64::Fields : int {
+enum ExceptionTableEntry64::Fields : int {
     BEGIN_ADDRESS,
     END_ADDRESS,
     UNWIND_INFORMATION,
@@ -149,7 +149,7 @@ enum FunctionTableEntry64::Fields : int {
 };
 
 template<>
-enum FunctionTableEntryArm::Fields : int {
+enum ExceptionTableEntryArm::Fields : int {
     BEGIN_ADDRESS,
     INFO,
     _NUM_FIELDS,

@@ -13,14 +13,14 @@ ExportAddressTable::ExportAddressTable(const PeFile& pe, const FileBytes& fbytes
 , m_length(len)
 {
     // RVAs in .edata point to .text
-    s_diskToMemDiff = Convert::getRvaToRawDiff(pe, addresses()[0]);
+    s_diskToMemDiff = Convert::getRvaToRawDiff(pe, getStructPtr()[0]);
 }
 
 ExportNameTable::ExportNameTable(const PeFile& pe, const FileBytes& fbytes, const offset_t raw, const size_t len)
 : IHeader(fbytes, raw)
 , m_length(len)
 {
-    s_diskToMemDiff = Convert::getRvaToRawDiff(pe, addresses()[0]);
+    s_diskToMemDiff = Convert::getRvaToRawDiff(pe, getStructPtr()[0]);
 }
 
 ExportOrdinalTable::ExportOrdinalTable(const FileBytes& fbytes, const offset_t raw, const size_t len)
@@ -35,21 +35,21 @@ ExportDir::ExportDir(const PeFile& pe, const FileBytes& fbytes, const DataDirect
 , m_ordTable()
 {
     if (Ident::dirExists(*this)) {
-        const IMAGE_EXPORT_DIRECTORY *pExpDir = xport();
+        const IMAGE_EXPORT_DIRECTORY *pExpDir = getStructPtr();
 
         // construct each of the three export tables by copy assignment
-        if (xport()->AddressTableEntries > 0) {
-            ExportAddressTable eat(pe, fbytes, pExpDir->ExportAddressTableRVA - m_diffOfRvaRaw,
+        if (getStructPtr()->AddressTableEntries > 0) {
+            ExportAddressTable eat(pe, fbytes, pExpDir->ExportAddressTableRVA - m_diskToMemoryDifference,
                 pExpDir->AddressTableEntries);
             m_addrTable = eat;
         }
 
-        if (xport()->NumberOfNamePointers > 0) {
-            ExportNameTable ent(pe, fbytes, pExpDir->NamePointerRVA - m_diffOfRvaRaw,
+        if (getStructPtr()->NumberOfNamePointers > 0) {
+            ExportNameTable ent(pe, fbytes, pExpDir->NamePointerRVA - m_diskToMemoryDifference,
                 pExpDir->NumberOfNamePointers);
             m_nameTable = ent;
 
-            ExportOrdinalTable eot(fbytes, pExpDir->OrdinalTableRVA - m_diffOfRvaRaw,
+            ExportOrdinalTable eot(fbytes, pExpDir->OrdinalTableRVA - m_diskToMemoryDifference,
                 pExpDir->NumberOfNamePointers);
             m_ordTable = eot;
         }
@@ -67,7 +67,7 @@ const void* ExportAddressTable::getFieldPtr(const int index) const
 {
     size_t uindex = static_cast<size_t>(index);
     return (uindex < length())
-        ? &addresses()[uindex]
+        ? &getStructPtr()[uindex]
         : nullptr;
 }
 
@@ -82,7 +82,7 @@ const void* ExportNameTable::getFieldPtr(const int index) const
 {
     size_t uindex = static_cast<size_t>(index);
     return (uindex < length())
-        ? &addresses()[uindex]
+        ? &getStructPtr()[uindex]
         : nullptr;
 }
 
@@ -97,7 +97,7 @@ const void* ExportOrdinalTable::getFieldPtr(const int index) const
 {
     size_t uindex = static_cast<size_t>(index);
     return (uindex < length())
-        ? &ordinals()[uindex]
+        ? &getStructPtr()[uindex]
         : nullptr;
 }
 
@@ -122,17 +122,17 @@ const char* ExportDir::getFieldName(const int index)
 const void* ExportDir::getFieldPtr(const int index) const
 {
     switch (index) {
-        case EXPORT_FLAGS            : return &xport()->ExportFlags;
-        case TIMESTAMP               : return &xport()->TimeDateStamp;
-        case MAJOR_VERSION           : return &xport()->MajorVersion;
-        case MINOR_VERSION           : return &xport()->MinorVersion;
-        case NAME_RVA                : return &xport()->NameRVA;
-        case ORDINAL_BASE            : return &xport()->OrdinalBase;
-        case ADDRESS_TABLE_ENTRIES   : return &xport()->AddressTableEntries;
-        case NUMBER_OF_NAME_POINTERS : return &xport()->NumberOfNamePointers;
-        case EXPORT_ADDRESS_TABLE_RVA: return &xport()->ExportAddressTableRVA;
-        case NAME_POINTER_RVA        : return &xport()->NamePointerRVA;
-        case ORDINAL_TABLE_RVA       : return &xport()->OrdinalTableRVA;
+        case EXPORT_FLAGS            : return &getStructPtr()->ExportFlags;
+        case TIMESTAMP               : return &getStructPtr()->TimeDateStamp;
+        case MAJOR_VERSION           : return &getStructPtr()->MajorVersion;
+        case MINOR_VERSION           : return &getStructPtr()->MinorVersion;
+        case NAME_RVA                : return &getStructPtr()->NameRVA;
+        case ORDINAL_BASE            : return &getStructPtr()->OrdinalBase;
+        case ADDRESS_TABLE_ENTRIES   : return &getStructPtr()->AddressTableEntries;
+        case NUMBER_OF_NAME_POINTERS : return &getStructPtr()->NumberOfNamePointers;
+        case EXPORT_ADDRESS_TABLE_RVA: return &getStructPtr()->ExportAddressTableRVA;
+        case NAME_POINTER_RVA        : return &getStructPtr()->NamePointerRVA;
+        case ORDINAL_TABLE_RVA       : return &getStructPtr()->OrdinalTableRVA;
         default                      : return nullptr;
     }
 }

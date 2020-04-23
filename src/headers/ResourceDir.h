@@ -90,8 +90,8 @@ public:
 
     // member functions
     const void* getFieldPtr(const int index) const override;
-    const StringStruct* string() const { return static_cast<const StringStruct*>(hdr()); }
-    uint16_t length() const { return string()->Length; }
+    const StringStruct* getStructPtr() const { return static_cast<const StringStruct*>(hdr()); }
+    uint16_t length() const { return getStructPtr()->Length; }
     const std::string& name() const { return m_name; }
 
     // static functions
@@ -130,9 +130,9 @@ public:
 
     // member functions
     const void* getFieldPtr(const int index) const override;
-    const IMAGE_RESOURCE_DATA* data() const { return static_cast<const IMAGE_RESOURCE_DATA*>(hdr()); }
-    const char* bytes() const { return &mem()[data()->OffsetToData - *s_pDiskToMemDiff]; }
-    uint32_t size() const { return data()->Size; }
+    const IMAGE_RESOURCE_DATA* getStructPtr() const { return static_cast<const IMAGE_RESOURCE_DATA*>(hdr()); }
+    const char* bytes() const { return &mem()[getStructPtr()->OffsetToData - *s_pDiskToMemDiff]; }
+    uint32_t size() const { return getStructPtr()->Size; }
 
     // static functions
     static const char* getFieldName(const int index);
@@ -169,9 +169,9 @@ public:
 
     // member functions
     const void* getFieldPtr(const int index) const override;
-    const IMAGE_RESOURCE_ENTRY* entry() const { return static_cast<const IMAGE_RESOURCE_ENTRY*>(hdr()); }
-    bool isDirectory() const { return entry()->DataIsDirectory; }
-    bool hasName() const { return entry()->NameIsString; }
+    const IMAGE_RESOURCE_ENTRY* getStructPtr() const { return static_cast<const IMAGE_RESOURCE_ENTRY*>(hdr()); }
+    bool isDirectory() const { return getStructPtr()->DataIsDirectory; }
+    bool hasName() const { return getStructPtr()->NameIsString; }
     const ResourceStringU* name() const { return m_name.get(); }
     const ResourceNode* node() const { return isDirectory() ? m_node.get() : nullptr; }
     const ResourceData* data() const { return isDirectory() ? nullptr : m_data.get(); }
@@ -209,8 +209,8 @@ public:
 
     // member functions
     const void* getFieldPtr(const int index) const override;
-    const IMAGE_RESOURCE_DIRECTORY* header() const { return static_cast<const IMAGE_RESOURCE_DIRECTORY*>(hdr()); }
-    const std::vector<ResourceEntry>& entries() const { return m_entries; }
+    const IMAGE_RESOURCE_DIRECTORY* getStructPtr() const { return static_cast<const IMAGE_RESOURCE_DIRECTORY*>(hdr()); }
+    const std::vector<ResourceEntry>& entries() const { return m_resourceEntries; }
 
     // static functions
     static const char* getFieldName(const int index);
@@ -218,7 +218,7 @@ public:
 private:
     static size_t *s_pRsrcBase;
     const ResourceNode *m_parent{};
-    std::vector<ResourceEntry> m_entries{};
+    std::vector<ResourceEntry> m_resourceEntries{};
 };
 
 /* The resource directory is a tree structure where each node has a variable-number of children.

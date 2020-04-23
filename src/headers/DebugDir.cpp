@@ -11,7 +11,7 @@ DebugEntry::DebugEntry(const FileBytes& fbytes, const offset_t raw)
 : IHeader(fbytes, raw)
 , m_dbgRsds()
 {
-    m_dbgRsds = DebugRsds(fbytes, dbg()->PointerToRawData);
+    m_dbgRsds = DebugRsds(fbytes, getStructPtr()->PointerToRawData);
 }
 
 DebugDir::DebugDir(const PeFile& pe, const FileBytes& fbytes, const DataDirectoryEntry& dde)
@@ -20,7 +20,7 @@ DebugDir::DebugDir(const PeFile& pe, const FileBytes& fbytes, const DataDirector
     if (Ident::dirExists(*this)) {
         const size_t len = dde.size() / sizeof(IMAGE_DEBUG_DIRECTORY);
         for (size_t i=0; i < len; i++) {
-            m_elements.emplace_back(fbytes, dirOffset() + i*sizeof(IMAGE_DEBUG_DIRECTORY));
+            m_debugEntries.emplace_back(fbytes, dirOffset() + i*sizeof(IMAGE_DEBUG_DIRECTORY));
         }
     }
 }
@@ -39,10 +39,10 @@ const char* DebugRsds::getFieldName(const int index)
 const void* DebugRsds::getFieldPtr(const int index) const
 {
     switch (index) {
-        case SIGNATURE: return &rsds()->Signature;
-        case GUID     : return &rsds()->Guid;
-        case AGE      : return &rsds()->Age;
-        case PDB      : return &rsds()->Pdb;
+        case SIGNATURE: return &getStructPtr()->Signature;
+        case GUID     : return &getStructPtr()->Guid;
+        case AGE      : return &getStructPtr()->Age;
+        case PDB      : return &getStructPtr()->Pdb;
         default       : return nullptr;
     }
 }
@@ -65,14 +65,14 @@ const char* DebugEntry::getFieldName(const int index)
 const void* DebugEntry::getFieldPtr(const int index) const
 {
     switch (index) {
-        case CHARACTERISTICS    : return &dbg()->Characteristics;
-        case TIMEDATESTAMP      : return &dbg()->TimeDateStamp;
-        case MAJOR_VERSION      : return &dbg()->MajorVersion;
-        case MINOR_VERSION      : return &dbg()->MinorVersion;
-        case TYPE               : return &dbg()->Type;
-        case SIZE_OF_DATA       : return &dbg()->SizeOfData;
-        case ADDRESS_OF_RAW_DATA: return &dbg()->AddressOfRawData;
-        case POINTER_TO_RAW_DATA: return &dbg()->PointerToRawData;
+        case CHARACTERISTICS    : return &getStructPtr()->Characteristics;
+        case TIMEDATESTAMP      : return &getStructPtr()->TimeDateStamp;
+        case MAJOR_VERSION      : return &getStructPtr()->MajorVersion;
+        case MINOR_VERSION      : return &getStructPtr()->MinorVersion;
+        case TYPE               : return &getStructPtr()->Type;
+        case SIZE_OF_DATA       : return &getStructPtr()->SizeOfData;
+        case ADDRESS_OF_RAW_DATA: return &getStructPtr()->AddressOfRawData;
+        case POINTER_TO_RAW_DATA: return &getStructPtr()->PointerToRawData;
         default                 : return nullptr;
     }
 }

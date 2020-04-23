@@ -38,10 +38,10 @@ public:
     {}
 
     // member functions
-    const IMAGE_ATTRIBUTE_CERTIFICATE* cert() const { return static_cast<const IMAGE_ATTRIBUTE_CERTIFICATE*>(hdr()); }
+    const IMAGE_ATTRIBUTE_CERTIFICATE* getStructPtr() const { return static_cast<const IMAGE_ATTRIBUTE_CERTIFICATE*>(hdr()); }
     const void* getFieldPtr(const int index) const override;
-    const char* bytes() const { return cert()->CertificateBytes; }
-    uint32_t size() const { return cert()->Length; }
+    const char* bytes() const { return getStructPtr()->CertificateBytes; }
+    uint32_t size() const { return getStructPtr()->Length; }
 
     // static functions
     static const char* getFieldName(const int index);
@@ -57,14 +57,14 @@ public:
 
     // member functions
     const void* getFieldPtr(const int index) const override;
-    const std::vector<CertificateEntry>& certs() const { return m_elements; }
-    size_t length() const { return m_elements.size(); }
+    const std::vector<CertificateEntry>& certs() const { return m_certificates; }
+    size_t length() const { return m_certificates.size(); }
 
     // static functions
     static const char* getFieldName(const int index);
 
 private:
-    std::vector<CertificateEntry> m_elements{};
+    std::vector<CertificateEntry> m_certificates{};
 };
 } // namespace Pepper
 

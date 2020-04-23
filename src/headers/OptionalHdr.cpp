@@ -6,13 +6,13 @@ using namespace Pepper;
 OptionalHeader::OptionalHeader(const FileBytes& fbytes, const FileHeader& file)
 : IHeader(fbytes, 0)
 {
-    m_baseOffset = file.hdrOffset() + sizeof(IMAGE_FILE_HEADER);
+    m_headerOffset = file.hdrOffset() + sizeof(IMAGE_FILE_HEADER);
 }
 
 DataDirectory::DataDirectory(const FileBytes& fbytes, const OptionalHeader& opt)
 {
     // get offset to data directory
-    const bool is32bit = opt.optional32()->Magic == OptionalHeader::BIT32;
+    const bool is32bit = opt.getStructPtr32()->Magic == OptionalHeader::BIT32;
     const size_t base = opt.hdrOffset() + ((is32bit) ?
         offsetof(IMAGE_OPTIONAL_HEADER32, DataDirectory):
         offsetof(IMAGE_OPTIONAL_HEADER64, DataDirectory));
@@ -27,9 +27,9 @@ DataDirectory::DataDirectory(const FileBytes& fbytes, const OptionalHeader& opt)
 
 addr_t OptionalHeader::imageBase() const
 {
-    return (optional32()->Magic == BIT32)
-        ? optional32()->ImageBase
-        : optional64()->ImageBase;
+    return (getStructPtr32()->Magic == BIT32)
+        ? getStructPtr32()->ImageBase
+        : getStructPtr64()->ImageBase;
 }
 
 const char* OptionalHeader::getFieldName(const int index)
@@ -72,39 +72,39 @@ const char* OptionalHeader::getFieldName(const int index)
 
 const void* OptionalHeader::getFieldPtr(const int index) const
 {
-    const bool is32bit = optional32()->Magic == BIT32;
+    const bool is32bit = getStructPtr32()->Magic == BIT32;
     switch (index) {
-        case MAGIC                         : return (is32bit) ? (void*)&optional32()->Magic                       : (void*)&optional64()->Magic;
-        case MAJOR_LINKER_VERSION          : return (is32bit) ? (void*)&optional32()->MajorLinkerVersion          : (void*)&optional64()->MajorLinkerVersion;
-        case MINOR_LINKER_VERSION          : return (is32bit) ? (void*)&optional32()->MinorLinkerVersion          : (void*)&optional64()->MinorLinkerVersion;
-        case SIZE_OF_CODE                  : return (is32bit) ? (void*)&optional32()->SizeOfCode                  : (void*)&optional64()->SizeOfCode;
-        case SIZE_OF_INITIALIZED_DATA      : return (is32bit) ? (void*)&optional32()->SizeOfInitializedData       : (void*)&optional64()->SizeOfInitializedData;
-        case SIZE_OF_UNINITIALIZED_DATA    : return (is32bit) ? (void*)&optional32()->SizeOfUninitializedData     : (void*)&optional64()->SizeOfUninitializedData;
-        case ADDRESS_OF_ENTRY_POINT        : return (is32bit) ? (void*)&optional32()->AddressOfEntryPoint         : (void*)&optional64()->AddressOfEntryPoint;
-        case BASE_OF_CODE                  : return (is32bit) ? (void*)&optional32()->BaseOfCode                  : (void*)&optional64()->BaseOfCode;
-        case BASE_OF_DATA                  : return (is32bit) ? (void*)&optional32()->BaseOfData                  : (void*)nullptr;
-        case IMAGE_BASE                    : return (is32bit) ? (void*)&optional32()->ImageBase                   : (void*)&optional64()->ImageBase;
-        case SECTION_ALIGNMENT             : return (is32bit) ? (void*)&optional32()->SectionAlignment            : (void*)&optional64()->SectionAlignment;
-        case FILE_ALIGNMENT                : return (is32bit) ? (void*)&optional32()->FileAlignment               : (void*)&optional64()->FileAlignment;
-        case MAJOR_OPERATING_SYSTEM_VERSION: return (is32bit) ? (void*)&optional32()->MajorOperatingSystemVersion : (void*)&optional64()->MajorOperatingSystemVersion;
-        case MINOR_OPERATING_SYSTEM_VERSION: return (is32bit) ? (void*)&optional32()->MinorOperatingSystemVersion : (void*)&optional64()->MinorOperatingSystemVersion;
-        case MAJOR_IMAGE_VERSION           : return (is32bit) ? (void*)&optional32()->MajorImageVersion           : (void*)&optional64()->MajorImageVersion;
-        case MINOR_IMAGE_VERSION           : return (is32bit) ? (void*)&optional32()->MinorImageVersion           : (void*)&optional64()->MinorImageVersion;
-        case MAJOR_SUBSYSTEM_VERSION       : return (is32bit) ? (void*)&optional32()->MajorSubsystemVersion       : (void*)&optional64()->MajorSubsystemVersion;
-        case MINOR_SUBSYSTEM_VERSION       : return (is32bit) ? (void*)&optional32()->MinorSubsystemVersion       : (void*)&optional64()->MinorSubsystemVersion;
-        case WIN32_VERSION_VALUE           : return (is32bit) ? (void*)&optional32()->Win32VersionValue           : (void*)&optional64()->Win32VersionValue;
-        case SIZE_OF_IMAGE                 : return (is32bit) ? (void*)&optional32()->SizeOfImage                 : (void*)&optional64()->SizeOfImage;
-        case SIZE_OF_HEADERS               : return (is32bit) ? (void*)&optional32()->SizeOfHeaders               : (void*)&optional64()->SizeOfHeaders;
-        case CHECKSUM                      : return (is32bit) ? (void*)&optional32()->CheckSum                    : (void*)&optional64()->CheckSum;
-        case SUBSYSTEM                     : return (is32bit) ? (void*)&optional32()->Subsystem                   : (void*)&optional64()->Subsystem;
-        case DLL_CHARACTERISTICS           : return (is32bit) ? (void*)&optional32()->DllCharacteristics          : (void*)&optional64()->DllCharacteristics;
-        case SIZE_OF_STACK_RESERVE         : return (is32bit) ? (void*)&optional32()->SizeOfStackReserve          : (void*)&optional64()->SizeOfStackReserve;
-        case SIZE_OF_STACK_COMMIT          : return (is32bit) ? (void*)&optional32()->SizeOfStackCommit           : (void*)&optional64()->SizeOfStackCommit;
-        case SIZE_OF_HEAP_RESERVE          : return (is32bit) ? (void*)&optional32()->SizeOfHeapReserve           : (void*)&optional64()->SizeOfHeapReserve;
-        case SIZE_OF_HEAP_COMMIT           : return (is32bit) ? (void*)&optional32()->SizeOfHeapCommit            : (void*)&optional64()->SizeOfHeapCommit;
-        case LOADER_FLAGS                  : return (is32bit) ? (void*)&optional32()->LoaderFlags                 : (void*)&optional64()->LoaderFlags;
-        case NUMBER_OF_RVA_AND_SIZES       : return (is32bit) ? (void*)&optional32()->NumberOfRvaAndSizes         : (void*)&optional64()->NumberOfRvaAndSizes;
-        case DATA_DIRECTORY                : return (is32bit) ? (void*)&optional32()->DataDirectory               : (void*)&optional64()->DataDirectory;
+        case MAGIC                         : return (is32bit) ? (void*)&getStructPtr32()->Magic                       : (void*)&getStructPtr64()->Magic;
+        case MAJOR_LINKER_VERSION          : return (is32bit) ? (void*)&getStructPtr32()->MajorLinkerVersion          : (void*)&getStructPtr64()->MajorLinkerVersion;
+        case MINOR_LINKER_VERSION          : return (is32bit) ? (void*)&getStructPtr32()->MinorLinkerVersion          : (void*)&getStructPtr64()->MinorLinkerVersion;
+        case SIZE_OF_CODE                  : return (is32bit) ? (void*)&getStructPtr32()->SizeOfCode                  : (void*)&getStructPtr64()->SizeOfCode;
+        case SIZE_OF_INITIALIZED_DATA      : return (is32bit) ? (void*)&getStructPtr32()->SizeOfInitializedData       : (void*)&getStructPtr64()->SizeOfInitializedData;
+        case SIZE_OF_UNINITIALIZED_DATA    : return (is32bit) ? (void*)&getStructPtr32()->SizeOfUninitializedData     : (void*)&getStructPtr64()->SizeOfUninitializedData;
+        case ADDRESS_OF_ENTRY_POINT        : return (is32bit) ? (void*)&getStructPtr32()->AddressOfEntryPoint         : (void*)&getStructPtr64()->AddressOfEntryPoint;
+        case BASE_OF_CODE                  : return (is32bit) ? (void*)&getStructPtr32()->BaseOfCode                  : (void*)&getStructPtr64()->BaseOfCode;
+        case BASE_OF_DATA                  : return (is32bit) ? (void*)&getStructPtr32()->BaseOfData                  : (void*)nullptr;
+        case IMAGE_BASE                    : return (is32bit) ? (void*)&getStructPtr32()->ImageBase                   : (void*)&getStructPtr64()->ImageBase;
+        case SECTION_ALIGNMENT             : return (is32bit) ? (void*)&getStructPtr32()->SectionAlignment            : (void*)&getStructPtr64()->SectionAlignment;
+        case FILE_ALIGNMENT                : return (is32bit) ? (void*)&getStructPtr32()->FileAlignment               : (void*)&getStructPtr64()->FileAlignment;
+        case MAJOR_OPERATING_SYSTEM_VERSION: return (is32bit) ? (void*)&getStructPtr32()->MajorOperatingSystemVersion : (void*)&getStructPtr64()->MajorOperatingSystemVersion;
+        case MINOR_OPERATING_SYSTEM_VERSION: return (is32bit) ? (void*)&getStructPtr32()->MinorOperatingSystemVersion : (void*)&getStructPtr64()->MinorOperatingSystemVersion;
+        case MAJOR_IMAGE_VERSION           : return (is32bit) ? (void*)&getStructPtr32()->MajorImageVersion           : (void*)&getStructPtr64()->MajorImageVersion;
+        case MINOR_IMAGE_VERSION           : return (is32bit) ? (void*)&getStructPtr32()->MinorImageVersion           : (void*)&getStructPtr64()->MinorImageVersion;
+        case MAJOR_SUBSYSTEM_VERSION       : return (is32bit) ? (void*)&getStructPtr32()->MajorSubsystemVersion       : (void*)&getStructPtr64()->MajorSubsystemVersion;
+        case MINOR_SUBSYSTEM_VERSION       : return (is32bit) ? (void*)&getStructPtr32()->MinorSubsystemVersion       : (void*)&getStructPtr64()->MinorSubsystemVersion;
+        case WIN32_VERSION_VALUE           : return (is32bit) ? (void*)&getStructPtr32()->Win32VersionValue           : (void*)&getStructPtr64()->Win32VersionValue;
+        case SIZE_OF_IMAGE                 : return (is32bit) ? (void*)&getStructPtr32()->SizeOfImage                 : (void*)&getStructPtr64()->SizeOfImage;
+        case SIZE_OF_HEADERS               : return (is32bit) ? (void*)&getStructPtr32()->SizeOfHeaders               : (void*)&getStructPtr64()->SizeOfHeaders;
+        case CHECKSUM                      : return (is32bit) ? (void*)&getStructPtr32()->CheckSum                    : (void*)&getStructPtr64()->CheckSum;
+        case SUBSYSTEM                     : return (is32bit) ? (void*)&getStructPtr32()->Subsystem                   : (void*)&getStructPtr64()->Subsystem;
+        case DLL_CHARACTERISTICS           : return (is32bit) ? (void*)&getStructPtr32()->DllCharacteristics          : (void*)&getStructPtr64()->DllCharacteristics;
+        case SIZE_OF_STACK_RESERVE         : return (is32bit) ? (void*)&getStructPtr32()->SizeOfStackReserve          : (void*)&getStructPtr64()->SizeOfStackReserve;
+        case SIZE_OF_STACK_COMMIT          : return (is32bit) ? (void*)&getStructPtr32()->SizeOfStackCommit           : (void*)&getStructPtr64()->SizeOfStackCommit;
+        case SIZE_OF_HEAP_RESERVE          : return (is32bit) ? (void*)&getStructPtr32()->SizeOfHeapReserve           : (void*)&getStructPtr64()->SizeOfHeapReserve;
+        case SIZE_OF_HEAP_COMMIT           : return (is32bit) ? (void*)&getStructPtr32()->SizeOfHeapCommit            : (void*)&getStructPtr64()->SizeOfHeapCommit;
+        case LOADER_FLAGS                  : return (is32bit) ? (void*)&getStructPtr32()->LoaderFlags                 : (void*)&getStructPtr64()->LoaderFlags;
+        case NUMBER_OF_RVA_AND_SIZES       : return (is32bit) ? (void*)&getStructPtr32()->NumberOfRvaAndSizes         : (void*)&getStructPtr64()->NumberOfRvaAndSizes;
+        case DATA_DIRECTORY                : return (is32bit) ? (void*)&getStructPtr32()->DataDirectory               : (void*)&getStructPtr64()->DataDirectory;
         default             : return nullptr;
     }
 }

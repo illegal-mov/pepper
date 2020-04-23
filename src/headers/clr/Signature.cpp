@@ -19,7 +19,7 @@ const void* ClrSignature::getFieldPtr(const int index) const
 {
     size_t uindex = static_cast<size_t>(index);
     return (uindex < length())
-        ? &sig()[uindex]
+        ? &getStructPtr()[uindex]
         : nullptr;
 }
 

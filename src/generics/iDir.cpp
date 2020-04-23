@@ -6,28 +6,29 @@
 
 using namespace Pepper;
 
-IDirectory::IDirectory(const PeFile& pe, const FileBytes& fbytes, const DataDirectoryEntry& dde)
-: IHeader(fbytes, dde.rva())
-, m_pe(&pe)
-, m_dde(&dde)
-, m_she(nullptr)
-, m_diffOfRvaRaw(0)
+IDirectory::IDirectory(const PeFile& pe, const FileBytes& fileBytes, const DataDirectoryEntry& dataDirectoryEntry)
+: IHeader(fileBytes, dataDirectoryEntry.rva())
+, m_peFile(&pe)
+, m_dataDirectoryEntry(&dataDirectoryEntry)
+, m_sectionHeaderEntry(nullptr)
+, m_diskToMemoryDifference(0)
 {
     // linear search for containing section
     const SectionHeaders& sctns = pe.sectionHdrs();
-    for (const auto& section : sctns.sections()) {
-        const uint32_t sctnBase = section.entry()->VirtualAddress;
-        const uint32_t sctnSize = section.entry()->VirtualSize;
-        const uint32_t sctnRaw  = section.entry()->PointerToRawData;
-        if (sctnBase <= dde.rva() && dde.rva() < sctnBase + sctnSize) {
-            m_she = &section;
-            m_diffOfRvaRaw = (sctnBase > sctnRaw) ? sctnBase - sctnRaw : sctnRaw - sctnBase;
+    for (const auto& section : sctns.getSections()) {
+        const uint32_t sctnBase = section.getStructPtr()->VirtualAddress;
+        const uint32_t sctnSize = section.getStructPtr()->VirtualSize;
+        const uint32_t sctnRaw  = section.getStructPtr()->PointerToRawData;
+        if (sctnBase <= dataDirectoryEntry.rva()
+        && dataDirectoryEntry.rva() < sctnBase + sctnSize) {
+            m_sectionHeaderEntry = &section;
+            m_diskToMemoryDifference = (sctnBase > sctnRaw) ? sctnBase - sctnRaw : sctnRaw - sctnBase;
             break;
         }
     }
 }
 
-/* pointer to base of directory as char* only if the directory exists */
+/* pointer to base of directory only if the directory exists */
 const void* IDirectory::dir() const
 {
     return (Ident::dirExists(*this))
@@ -38,6 +39,6 @@ const void* IDirectory::dir() const
 /* get size of directory */
 uint32_t IDirectory::size() const
 {
-    return m_dde->size();
+    return m_dataDirectoryEntry->size();
 }
 

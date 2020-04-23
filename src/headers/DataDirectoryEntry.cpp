@@ -14,8 +14,8 @@ const char* DataDirectoryEntry::getFieldName(const int index)
 const void* DataDirectoryEntry::getFieldPtr(const int index) const
 {
     switch (index) {
-        case VIRTUAL_ADDRESS: return &entry()->VirtualAddress;
-        case SIZE           : return &entry()->Size;
+        case VIRTUAL_ADDRESS: return &getStructPtr()->VirtualAddress;
+        case SIZE           : return &getStructPtr()->Size;
         default             : return nullptr;
     }
 }

@@ -16,14 +16,14 @@ size_t *ResourceData::s_pRsrcBase  = &ResourceDir::s_rsrcBase;
 template<>
 ResourceString::GenericResourceString(const FileBytes& fbytes, const offset_t raw)
 : IHeader(fbytes, raw)
-, m_name(string()->NameString, length())
+, m_name(getStructPtr()->NameString, length())
 {}
 
 template<>
 ResourceStringU::GenericResourceString(const FileBytes& fbytes, const offset_t raw)
 : IHeader(fbytes, raw)
 {
-    const uint16_t *strBytes = string()->NameString;
+    const uint16_t *strBytes = getStructPtr()->NameString;
     m_name.resize(length());
     // I hate string encodings so much, so just hacky-copy each
     //  char16_t into a regular std::string and force ASCII range
@@ -42,16 +42,16 @@ ResourceEntry::ResourceEntry(const FileBytes& fbytes, const offset_t raw, const 
 {
     if (hasName()) {
         m_name = std::make_unique<ResourceStringU>(fbytes,
-            *s_pRsrcBase + entry()->NameOffset);
+            *s_pRsrcBase + getStructPtr()->NameOffset);
     }
 
     if (isDirectory()) {
         m_node = std::make_unique<ResourceNode>(fbytes,
-            *s_pRsrcBase + entry()->OffsetToDirectory, parent, dataMap);
+            *s_pRsrcBase + getStructPtr()->OffsetToDirectory, parent, dataMap);
     } else {
         m_data = std::make_unique<ResourceData>(fbytes,
-            *s_pRsrcBase + entry()->OffsetToData, parent);
-        dataMap[entry()->OffsetToData] = m_data.get();
+            *s_pRsrcBase + getStructPtr()->OffsetToData, parent);
+        dataMap[getStructPtr()->OffsetToData] = m_data.get();
     }
 }
 
@@ -69,14 +69,14 @@ ResourceNode::ResourceNode(const FileBytes& fbytes, const offset_t raw, const Re
 , m_parent(parent)
 {
     // pre-allocate for total number of entries
-    size_t numEntries = static_cast<size_t>(header()->NumberOfNamedEntries)
-                      + header()->NumberOfIdEntries;
-    m_entries.reserve(numEntries);
+    size_t numEntries = static_cast<size_t>(getStructPtr()->NumberOfNamedEntries)
+                      + getStructPtr()->NumberOfIdEntries;
+    m_resourceEntries.reserve(numEntries);
 
     // construct each entry
     size_t entriesBase = hdrOffset() + sizeof(IMAGE_RESOURCE_DIRECTORY);
     for (size_t i=0; i < numEntries; i++) {
-        m_entries.emplace_back(fbytes,
+        m_resourceEntries.emplace_back(fbytes,
             entriesBase + (sizeof(IMAGE_RESOURCE_ENTRY) * i),
             this, dataMap);
     }
@@ -86,7 +86,7 @@ ResourceDir::ResourceDir(const PeFile& pe, const FileBytes& fbytes, const DataDi
 : IDirectory(pe, fbytes, dde)
 {
     if (Ident::dirExists(*this)) {
-        s_diskToMemDiff = m_diffOfRvaRaw;
+        s_diskToMemDiff = m_diskToMemoryDifference;
         s_rsrcBase = dirOffset();
         m_root = std::make_unique<ResourceNode>(fbytes, dirOffset(), nullptr, m_dataMap);
     }
@@ -106,8 +106,8 @@ template <typename StringStruct> // requires variant declaration in header to li
 const void* GenericResourceString<StringStruct>::getFieldPtr(const int index) const
 {
     switch (index) {
-        case LENGTH     : return &string()->Length;
-        case NAME_STRING: return &string()->NameString;
+        case LENGTH     : return &getStructPtr()->Length;
+        case NAME_STRING: return &getStructPtr()->NameString;
         default         : return nullptr;
     }
 }
@@ -126,10 +126,10 @@ const char* ResourceData::getFieldName(const int index)
 const void* ResourceData::getFieldPtr(const int index) const
 {
     switch (index) {
-        case OFFSET_TO_DATA: return &data()->OffsetToData;
-        case SIZE          : return &data()->Size;
-        case CODE_PAGE     : return &data()->CodePage;
-        case RESERVED      : return &data()->Reserved;
+        case OFFSET_TO_DATA: return &getStructPtr()->OffsetToData;
+        case SIZE          : return &getStructPtr()->Size;
+        case CODE_PAGE     : return &getStructPtr()->CodePage;
+        case RESERVED      : return &getStructPtr()->Reserved;
         default            : return nullptr;
     }
 }
@@ -146,8 +146,8 @@ const char* ResourceEntry::getFieldName(const int index)
 const void* ResourceEntry::getFieldPtr(const int index) const
 {
     switch (index) {
-        case NAME          : return &entry()->Name;
-        case OFFSET_TO_DATA: return &entry()->OffsetToData;
+        case NAME          : return &getStructPtr()->Name;
+        case OFFSET_TO_DATA: return &getStructPtr()->OffsetToData;
         default            : return nullptr;
     }
 }
@@ -168,12 +168,12 @@ const char* ResourceNode::getFieldName(const int index)
 const void* ResourceNode::getFieldPtr(const int index) const
 {
     switch (index) {
-        case CHARACTERISTICS        : return &header()->Characteristics;
-        case TIMEDATESTAMP          : return &header()->TimeDateStamp;
-        case MAJOR_VERSION          : return &header()->MajorVersion;
-        case MINOR_VERSION          : return &header()->MinorVersion;
-        case NUMBER_OF_NAMED_ENTRIES: return &header()->NumberOfNamedEntries;
-        case NUMBER_OF_ID_ENTRIES   : return &header()->NumberOfIdEntries;
+        case CHARACTERISTICS        : return &getStructPtr()->Characteristics;
+        case TIMEDATESTAMP          : return &getStructPtr()->TimeDateStamp;
+        case MAJOR_VERSION          : return &getStructPtr()->MajorVersion;
+        case MINOR_VERSION          : return &getStructPtr()->MinorVersion;
+        case NUMBER_OF_NAMED_ENTRIES: return &getStructPtr()->NumberOfNamedEntries;
+        case NUMBER_OF_ID_ENTRIES   : return &getStructPtr()->NumberOfIdEntries;
         default                     : return nullptr;
     }
 }

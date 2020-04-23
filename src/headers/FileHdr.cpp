@@ -19,13 +19,13 @@ const char* FileHeader::getFieldName(const int index)
 const void* FileHeader::getFieldPtr(const int index) const
 {
     switch (index) {
-        case MACHINE                : return &file()->Machine;              // type of cpu the binary was compiled for
-        case NUMBER_OF_SECTIONS     : return &file()->NumberOfSections;     // number of section headers
-        case TIMESTAMP              : return &file()->TimeDateStamp;        // file creation time as UNIX epoch
-        case POINTER_TO_SYMBOL_TABLE: return &file()->PointerToSymbolTable; // file offset to symbol table (deprecated)
-        case NUMBER_OF_SYMBOLS      : return &file()->NumberOfSymbols;      // number of symbol table entries (deprecated)
-        case SIZE_OF_OPTIONAL_HEADER: return &file()->SizeOfOptionalHeader; // size of optional header in bytes
-        case CHARACTERISTICS        : return &file()->Characteristics;      // bitfields for various things
+        case MACHINE                : return &getStructPtr()->Machine;              // type of cpu the binary was compiled for
+        case NUMBER_OF_SECTIONS     : return &getStructPtr()->NumberOfSections;     // number of section headers
+        case TIMESTAMP              : return &getStructPtr()->TimeDateStamp;        // file creation time as UNIX epoch
+        case POINTER_TO_SYMBOL_TABLE: return &getStructPtr()->PointerToSymbolTable; // file offset to symbol table (deprecated)
+        case NUMBER_OF_SYMBOLS      : return &getStructPtr()->NumberOfSymbols;      // number of symbol table entries (deprecated)
+        case SIZE_OF_OPTIONAL_HEADER: return &getStructPtr()->SizeOfOptionalHeader; // size of optional header in bytes
+        case CHARACTERISTICS        : return &getStructPtr()->Characteristics;      // bitfields for various things
         default                     : return nullptr;
     }
 }

@@ -98,7 +98,7 @@ public:
 
     // member functions
     const void* getFieldPtr(const int index) const override;
-    const IMAGE_SECTION_HEADER* entry() const { return static_cast<const IMAGE_SECTION_HEADER*>(hdr()); }
+    const IMAGE_SECTION_HEADER* getStructPtr() const { return static_cast<const IMAGE_SECTION_HEADER*>(hdr()); }
 
     // static functions
     static const char* getFieldName(const int index);
@@ -117,8 +117,8 @@ public:
     SectionHeaders(const FileBytes& fbytes, const FileHeader& file);
 
     // member functions
-    const std::vector<SectionHeaderEntry>& sections() const { return m_elements; }
-    size_t length() const { return m_elements.size(); }
+    const std::vector<SectionHeaderEntry>& getSections() const { return m_sectionHeaders; }
+    size_t length() const { return m_sectionHeaders.size(); }
 
     // static functions
     static const char* getFieldName(const int index);
@@ -126,7 +126,7 @@ public:
     static const char* getCharacteristicAlignName(const int alignNybble);
 
 private:
-    std::vector<SectionHeaderEntry> m_elements{};
+    std::vector<SectionHeaderEntry> m_sectionHeaders{};
 };
 } // namespace Pepper
 

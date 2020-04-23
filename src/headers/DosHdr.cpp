@@ -31,25 +31,25 @@ const char* DosHeader::getFieldName(const int index)
 const void* DosHeader::getFieldPtr(const int index) const
 {
     switch (index) {
-        case E_MAGIC   : return &dos()->e_magic;
-        case E_CBLP    : return &dos()->e_cblp;
-        case E_CP      : return &dos()->e_cp;
-        case E_CRLC    : return &dos()->e_crlc;
-        case E_CPARHDR : return &dos()->e_cparhdr;
-        case E_MINALLOC: return &dos()->e_minalloc;
-        case E_MAXALLOC: return &dos()->e_maxalloc;
-        case E_SS      : return &dos()->e_ss;
-        case E_SP      : return &dos()->e_sp;
-        case E_CSUM    : return &dos()->e_csum;
-        case E_IP      : return &dos()->e_ip;
-        case E_CS      : return &dos()->e_cs;
-        case E_LFARLC  : return &dos()->e_lfarlc;
-        case E_OVNO    : return &dos()->e_ovno;
-        case E_RES     : return &dos()->e_res;
-        case E_OEMID   : return &dos()->e_oemid;
-        case E_OEMINFO : return &dos()->e_oeminfo;
-        case E_RES2    : return &dos()->e_res2;
-        case E_LFANEW  : return &dos()->e_lfanew;
+        case E_MAGIC   : return &getStructPtr()->e_magic;
+        case E_CBLP    : return &getStructPtr()->e_cblp;
+        case E_CP      : return &getStructPtr()->e_cp;
+        case E_CRLC    : return &getStructPtr()->e_crlc;
+        case E_CPARHDR : return &getStructPtr()->e_cparhdr;
+        case E_MINALLOC: return &getStructPtr()->e_minalloc;
+        case E_MAXALLOC: return &getStructPtr()->e_maxalloc;
+        case E_SS      : return &getStructPtr()->e_ss;
+        case E_SP      : return &getStructPtr()->e_sp;
+        case E_CSUM    : return &getStructPtr()->e_csum;
+        case E_IP      : return &getStructPtr()->e_ip;
+        case E_CS      : return &getStructPtr()->e_cs;
+        case E_LFARLC  : return &getStructPtr()->e_lfarlc;
+        case E_OVNO    : return &getStructPtr()->e_ovno;
+        case E_RES     : return &getStructPtr()->e_res;
+        case E_OEMID   : return &getStructPtr()->e_oemid;
+        case E_OEMINFO : return &getStructPtr()->e_oeminfo;
+        case E_RES2    : return &getStructPtr()->e_res2;
+        case E_LFANEW  : return &getStructPtr()->e_lfanew;
         default        : return nullptr;
     }
 }

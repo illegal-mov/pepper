@@ -21,7 +21,7 @@ public:
 
     // member functions
     const void* getFieldPtr(const int index) const override;
-//  const IMAGE_ARCHITECTURE_DIRECTORY* arch() const { return static_cast<const IMAGE_ARCHITECTURE_DIRECTORY*>(dir()); }
+//  const IMAGE_ARCHITECTURE_DIRECTORY* getStructPtr() const { return static_cast<const IMAGE_ARCHITECTURE_DIRECTORY*>(dir()); }
 
     // static functions
     static const char* getFieldName(const int index);

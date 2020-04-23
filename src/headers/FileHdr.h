@@ -86,8 +86,8 @@ public:
     FileHeader(const FileBytes& fbytes, const DosHeader& dos)
     : IHeader(fbytes, 0)
     {
-        const uint16_t lfanew = dos.dos()->e_lfanew;
-        m_baseOffset = static_cast<size_t>(lfanew) + 4; // NT signature is "PE\0\0"
+        const uint16_t lfanew = dos.getStructPtr()->e_lfanew;
+        m_headerOffset = static_cast<size_t>(lfanew) + 4; // NT signature is "PE\0\0"
 
         const int32_t sig = *reinterpret_cast<const int32_t*>(ntSig());
         if (sig != 0x00004550 && sig != 0x50450000) {
@@ -96,7 +96,7 @@ public:
     }
 
     // member functions
-    const IMAGE_FILE_HEADER* file() const { return static_cast<const IMAGE_FILE_HEADER*>(hdr()); }
+    const IMAGE_FILE_HEADER* getStructPtr() const { return static_cast<const IMAGE_FILE_HEADER*>(hdr()); }
     const void* getFieldPtr(const int index) const override;
     const char* ntSig() const { return &static_cast<const char*>(hdr())[-4]; }
 

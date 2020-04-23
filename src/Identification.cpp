@@ -12,14 +12,14 @@ using namespace Pepper;
 bool Ident::isDll(const PeFile& pe)
 {
     const FileHeader& pfh = pe.fileHdr();
-    const uint16_t charact = pfh.file()->Characteristics;
+    const uint16_t charact = pfh.getStructPtr()->Characteristics;
     return charact & FileHeader::Characteristics::DLL;
 }
 
 static uint16_t getOptionalHeaderMagic(const PeFile& pe)
 {
     const OptionalHeader& poh = pe.optionalHdr();
-    return poh.optional32()->Magic;
+    return poh.getStructPtr32()->Magic;
 }
 
 bool Ident::is32bit(const PeFile& pe)
@@ -44,7 +44,7 @@ bool Ident::dirExists(const std::shared_ptr<IDirectory>& id)
 
 bool Ident::dirExists(const IDirectory& id)
 {
-    return id.owningSection() != nullptr;
+    return id.getOwningSection() != nullptr;
 }
 
 bool Ident::isAllSigsValid(const PeFile& pe)
@@ -90,7 +90,7 @@ bool Ident::isAllSigsValid(const PeFile& pe)
 static uint16_t getFileHeaderMachine(const PeFile& pe)
 {
     const FileHeader& pfh = pe.fileHdr();
-    return pfh.file()->Machine;
+    return pfh.getStructPtr()->Machine;
 }
 
 bool Ident::isX86(const PeFile& pe)

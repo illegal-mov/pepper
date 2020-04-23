@@ -16,7 +16,7 @@ ImportDir::ImportDir(const PeFile& pe, const FileBytes& fbytes, const DataDirect
 : IDirectory(pe, fbytes, dde)
 {
     if (Ident::dirExists(*this)) {
-        s_diskToMemDiff = m_diffOfRvaRaw;
+        s_diskToMemDiff = m_diskToMemoryDifference;
         // append non-null IMPORT_DESCRIPTOR to m_descriptors vector
         constexpr char null[sizeof(IMAGE_IMPORT_DESCRIPTOR)] = {0};
         const IMAGE_IMPORT_DESCRIPTOR *pid = static_cast<const IMAGE_IMPORT_DESCRIPTOR*>(dir());

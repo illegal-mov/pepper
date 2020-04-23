@@ -14,7 +14,7 @@ template <typename ArchType>
 CallbacksTable<ArchType>::CallbacksTable(const PeFile& pe, const FileBytes& fbytes, const offset_t raw)
 : IHeader(fbytes, raw)
 {
-    const ArchType *cbArray = callbacks();
+    const ArchType *cbArray = getStructPtr();
     while (cbArray[m_length] != 0) {
         m_length++;
     }
@@ -37,8 +37,8 @@ TlsDir::TlsDir(const PeFile& pe, const FileBytes& fbytes, const DataDirectoryEnt
         // get AVA to array of callback function pointers
         const bool is32bit = Ident::is32bit(pe);
         addr_t callbacksPtr = (is32bit)
-                              ? tls32()->AddressOfCallbacks
-                              : tls64()->AddressOfCallbacks;
+                              ? getStructPtr32()->AddressOfCallbacks
+                              : getStructPtr64()->AddressOfCallbacks;
         // convert AVA to RAW, use RAW to construct table
         callbacksPtr = Convert::convertAddr(pe, callbacksPtr, Convert::AddrType::AVA, Convert::AddrType::RAW);
         if (is32bit) {
@@ -62,7 +62,7 @@ const void* CallbacksTable<ArchType>::getFieldPtr(const int index) const
 {
     size_t uindex = static_cast<size_t>(index);
     return (uindex < length())
-        ? &callbacks()[uindex]
+        ? &getStructPtr()[uindex]
         : nullptr;
 }
 
@@ -81,14 +81,14 @@ const char* TlsDir::getFieldName(const int index)
 
 const void* TlsDir::getFieldPtr(const int index) const
 {
-    const bool is32bit = Ident::is32bit(*m_pe);
+    const bool is32bit = Ident::is32bit(*m_peFile);
     switch (index) {
-        case RAW_DATA_START_VA   : return (is32bit) ? (void*)&tls32()->RawDataStartVA     : (void*)&tls64()->RawDataStartVA;
-        case RAW_DATA_END_VA     : return (is32bit) ? (void*)&tls32()->RawDataEndVA       : (void*)&tls64()->RawDataEndVA;
-        case ADDRESS_OF_INDEX    : return (is32bit) ? (void*)&tls32()->AddressOfIndex     : (void*)&tls64()->AddressOfIndex;
-        case ADDRESS_OF_CALLBACKS: return (is32bit) ? (void*)&tls32()->AddressOfCallbacks : (void*)&tls64()->AddressOfCallbacks;
-        case SIZE_OF_ZERO_FILL   : return (is32bit) ? (void*)&tls32()->SizeOfZeroFill     : (void*)&tls64()->SizeOfZeroFill;
-        case CHARACTERISTICS     : return (is32bit) ? (void*)&tls32()->Characteristics    : (void*)&tls64()->Characteristics;
+        case RAW_DATA_START_VA   : return (is32bit) ? (void*)&getStructPtr32()->RawDataStartVA     : (void*)&getStructPtr64()->RawDataStartVA;
+        case RAW_DATA_END_VA     : return (is32bit) ? (void*)&getStructPtr32()->RawDataEndVA       : (void*)&getStructPtr64()->RawDataEndVA;
+        case ADDRESS_OF_INDEX    : return (is32bit) ? (void*)&getStructPtr32()->AddressOfIndex     : (void*)&getStructPtr64()->AddressOfIndex;
+        case ADDRESS_OF_CALLBACKS: return (is32bit) ? (void*)&getStructPtr32()->AddressOfCallbacks : (void*)&getStructPtr64()->AddressOfCallbacks;
+        case SIZE_OF_ZERO_FILL   : return (is32bit) ? (void*)&getStructPtr32()->SizeOfZeroFill     : (void*)&getStructPtr64()->SizeOfZeroFill;
+        case CHARACTERISTICS     : return (is32bit) ? (void*)&getStructPtr32()->Characteristics    : (void*)&getStructPtr64()->Characteristics;
         default                  : return nullptr;
     }
 }

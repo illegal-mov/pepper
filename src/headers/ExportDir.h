@@ -63,7 +63,7 @@ public:
 private:
     size_t m_length{};
     static size_t s_diskToMemDiff; // RVAs in .edata point to .text
-    const uint32_t* addresses() const { return static_cast<const uint32_t*>(hdr()); }
+    const uint32_t* getStructPtr() const { return static_cast<const uint32_t*>(hdr()); }
 };
 
 /* Variable-length array of RVAs to function names
@@ -85,7 +85,7 @@ public:
     uint32_t nameRva(size_t index) const
     {
         return (index < length())
-        ? addresses()[index] : 0;
+        ? getStructPtr()[index] : 0;
     }
 
     // get ASCII name or nullptr if out of range
@@ -104,7 +104,7 @@ public:
 private:
     size_t m_length{};
     static size_t s_diskToMemDiff;
-    const uint32_t* addresses() const { return static_cast<const uint32_t*>(hdr()); }
+    const uint32_t* getStructPtr() const { return static_cast<const uint32_t*>(hdr()); }
 };
 
 /* Variable-length array of sequential numbers as int16_t
@@ -136,7 +136,7 @@ public:
 
 private:
     size_t m_length{};
-    const int16_t* ordinals() const { return static_cast<const int16_t*>(hdr()); }
+    const int16_t* getStructPtr() const { return static_cast<const int16_t*>(hdr()); }
 };
 
 /* A single EXPORT_DIRECTORY structure.
@@ -163,12 +163,12 @@ public:
 
     // member functions
     const void* getFieldPtr(const int index) const override;
-    const IMAGE_EXPORT_DIRECTORY* xport() const { return static_cast<const IMAGE_EXPORT_DIRECTORY*>(dir()); }
+    const IMAGE_EXPORT_DIRECTORY* getStructPtr() const { return static_cast<const IMAGE_EXPORT_DIRECTORY*>(dir()); }
 
     const ExportAddressTable& eat() const { return m_addrTable; }
     const ExportNameTable&    ent() const { return m_nameTable; }
     const ExportOrdinalTable& eot() const { return m_ordTable; }
-    const char* dllName() const { return &mem()[xport()->NameRVA - m_diffOfRvaRaw]; }
+    const char* dllName() const { return &mem()[getStructPtr()->NameRVA - m_diskToMemoryDifference]; }
 
     // static functions
     static const char* getFieldName(const int index);

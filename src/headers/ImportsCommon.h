@@ -67,7 +67,7 @@ public:
 
     // member functions
     const void* getFieldPtr(const int index) const override;
-    const IMAGE_IMPORT_BY_NAME* hintname() const
+    const IMAGE_IMPORT_BY_NAME* getStructPtr() const
     {
         return static_cast<const IMAGE_IMPORT_BY_NAME*>(hdr());
     }
@@ -97,21 +97,21 @@ public:
     // constructor for regular import
     ImportThunk(const FileBytes& fbytes, const offset_t raw)
     : IHeader(fbytes, raw)
-    , m_hintname(fbytes, thunk()->HintNameTableRVA - *s_pDiskToMemDiff)
+    , m_hintname(fbytes, getStructPtr()->HintNameTableRVA - *s_pDiskToMemDiff)
     {}
 
     // member functions
     const void* getFieldPtr(const int index) const override;
-    const ArchType* thunk() const { return static_cast<const ArchType*>(hdr()); }
+    const ArchType* getStructPtr() const { return static_cast<const ArchType*>(hdr()); }
 
     const ImportName* importname() const
     {
-        return (thunk()->OrdinalFlag) ? nullptr : &m_hintname;
+        return (getStructPtr()->OrdinalFlag) ? nullptr : &m_hintname;
     }
 
     const std::string* ordstr() const
     {
-        return (thunk()->OrdinalFlag) ? &m_ordstr : nullptr;
+        return (getStructPtr()->OrdinalFlag) ? &m_ordstr : nullptr;
     }
 
     // static functions
@@ -155,16 +155,16 @@ public:
 
     // member functions
     const void* getFieldPtr(const int index) const override;
-    const DescriptorType* descriptor() const { return static_cast<const DescriptorType*>(hdr()); }
+    const DescriptorType* getStructPtr() const { return static_cast<const DescriptorType*>(hdr()); }
 
     const char* dllName() const;
 
-    const std::vector<ImportThunk32>& thunks32() const { return m_thunks32; }
-    const std::vector<ImportThunk64>& thunks64() const { return m_thunks64; }
+    const std::vector<ImportThunk32>& getThunks32() const { return m_thunks32; }
+    const std::vector<ImportThunk64>& getThunks64() const { return m_thunks64; }
     size_t thunksLength() const { return m_thunks32.size(); }
 
-    const std::vector<ptr32_t>& addresses32() const { return m_addresses32; }
-    const std::vector<ptr64_t>& addresses64() const { return m_addresses64; }
+    const std::vector<ptr32_t>& getAddresses32() const { return m_addresses32; }
+    const std::vector<ptr64_t>& getAddresses64() const { return m_addresses64; }
     size_t addressesLength() const { return m_addresses32.size(); }
 
     // static functions

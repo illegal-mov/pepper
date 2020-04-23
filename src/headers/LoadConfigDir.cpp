@@ -14,8 +14,8 @@ LoadConfigDir::LoadConfigDir(const PeFile& pe, const FileBytes& fbytes, const Da
 , m_codeInteg()
 {
     if (Ident::dirExists(*this)) {
-        const bool is32bit = Ident::is32bit(*m_pe);
-        const uint32_t size = ldcfg32()->Size;
+        const bool is32bit = Ident::is32bit(*m_peFile);
+        const uint32_t size = getStructPtr32()->Size;
         if (is32bit && offsetof(IMAGE_LOAD_CONFIG_DIRECTORY32, CodeIntegrity) < size) {
             m_codeInteg = CodeIntegrity(fbytes, dirOffset()
                 + offsetof(IMAGE_LOAD_CONFIG_DIRECTORY32, CodeIntegrity));
@@ -40,10 +40,10 @@ const char* CodeIntegrity::getFieldName(const int index)
 const void* CodeIntegrity::getFieldPtr(const int index) const
 {
     switch (index) {
-        case FLAGS         : return &integrity()->Flags;
-        case CATALOG       : return &integrity()->Catalog;
-        case CATALOG_OFFSET: return &integrity()->CatalogOffset;
-        case RESERVED      : return &integrity()->Reserved;
+        case FLAGS         : return &getStructPtr()->Flags;
+        case CATALOG       : return &getStructPtr()->Catalog;
+        case CATALOG_OFFSET: return &getStructPtr()->CatalogOffset;
+        case RESERVED      : return &getStructPtr()->Reserved;
         default            : return nullptr;
     }
 }
@@ -105,14 +105,14 @@ const char* LoadConfigDir::getFieldName(const int index)
  */
 #define LDCFG_RET_FIELD(FIELD)                                       \
     (   is32bit && offsetof(IMAGE_LOAD_CONFIG_DIRECTORY32, FIELD) < size) \
-    ? (void*)&ldcfg32()->FIELD                                       \
+    ? (void*)&getStructPtr32()->FIELD                                       \
     : (!is32bit && offsetof(IMAGE_LOAD_CONFIG_DIRECTORY64, FIELD) < size) \
-    ? (void*)&ldcfg64()->FIELD : nullptr
+    ? (void*)&getStructPtr64()->FIELD : nullptr
 
 const void* LoadConfigDir::getFieldPtr(const int index) const
 {
-    const bool is32bit = Ident::is32bit(*m_pe);
-    const uint32_t size = ldcfg32()->Size;
+    const bool is32bit = Ident::is32bit(*m_peFile);
+    const uint32_t size = getStructPtr32()->Size;
     switch (index) {
         case SIZE                                          : return LDCFG_RET_FIELD(Size);
         case TIMESTAMP                                     : return LDCFG_RET_FIELD(TimeDateStamp);

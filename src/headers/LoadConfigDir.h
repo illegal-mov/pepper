@@ -139,7 +139,7 @@ public:
 
     // member functions
     const void* getFieldPtr(const int index) const override;
-    const IMAGE_LOAD_CONFIG_CODE_INTEGRITY* integrity() const
+    const IMAGE_LOAD_CONFIG_CODE_INTEGRITY* getStructPtr() const
     {
         return static_cast<const IMAGE_LOAD_CONFIG_CODE_INTEGRITY*>(hdr());
     }
@@ -203,12 +203,12 @@ public:
     // member functions
     const void* getFieldPtr(const int index) const override;
 
-    const IMAGE_LOAD_CONFIG_DIRECTORY32* ldcfg32() const
+    const IMAGE_LOAD_CONFIG_DIRECTORY32* getStructPtr32() const
     {
         return static_cast<const IMAGE_LOAD_CONFIG_DIRECTORY32*>(dir());
     }
 
-    const IMAGE_LOAD_CONFIG_DIRECTORY64* ldcfg64() const
+    const IMAGE_LOAD_CONFIG_DIRECTORY64* getStructPtr64() const
     {
         return static_cast<const IMAGE_LOAD_CONFIG_DIRECTORY64*>(dir());
     }

@@ -150,8 +150,8 @@ public:
 
     // member functions
     const void* getFieldPtr(const int index) const override;
-    const IMAGE_OPTIONAL_HEADER32* optional32() const { return static_cast<const IMAGE_OPTIONAL_HEADER32*>(hdr()); }
-    const IMAGE_OPTIONAL_HEADER64* optional64() const { return static_cast<const IMAGE_OPTIONAL_HEADER64*>(hdr()); }
+    const IMAGE_OPTIONAL_HEADER32* getStructPtr32() const { return static_cast<const IMAGE_OPTIONAL_HEADER32*>(hdr()); }
+    const IMAGE_OPTIONAL_HEADER64* getStructPtr64() const { return static_cast<const IMAGE_OPTIONAL_HEADER64*>(hdr()); }
     // the `ImageBase` is important for address conversions,
     // so this gets to be its own special little function
     addr_t imageBase() const;

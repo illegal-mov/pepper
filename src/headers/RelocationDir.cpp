@@ -10,7 +10,7 @@ RelocationBlock::RelocationBlock(const FileBytes& fbytes, const offset_t raw)
 , m_relocBase(fbytes, raw)
 , m_relocTable()
 {
-    const uint32_t size = m_relocBase.base()->BlockSize;
+    const uint32_t size = m_relocBase.getStructPtr()->BlockSize;
     m_relocTable = RelocationTable(fbytes,
         raw + sizeof(IMAGE_BASE_RELOCATION),
         (size - sizeof(IMAGE_BASE_RELOCATION)) / sizeof(IMAGE_BASE_RELOCATION_ENTRY));
@@ -22,7 +22,7 @@ RelocationDir::RelocationDir(const PeFile& pe, const FileBytes& fbytes, const Da
     if (Ident::dirExists(*this)) {
         size_t bytesRead = 0;
         while (bytesRead < dde.size()) {
-            m_elements.emplace_back(fbytes, dirOffset() + bytesRead);
+            m_relocationBlocks.emplace_back(fbytes, dirOffset() + bytesRead);
             const void *base = &static_cast<const char*>(dir())[bytesRead];
             const IMAGE_BASE_RELOCATION* tmp = static_cast<const IMAGE_BASE_RELOCATION*>(base);
             /* `BlockSize` typically includes the size of the header,
@@ -79,7 +79,7 @@ const void* RelocationTable::getFieldPtr(const int index) const
 {
     size_t uindex = static_cast<size_t>(index);
     return (uindex < length())
-    ? &relocations()[uindex]
+    ? &getStructPtr()[uindex]
     : nullptr;
 }
 
@@ -95,8 +95,8 @@ const char* RelocationBase::getFieldName(const int index)
 const void* RelocationBase::getFieldPtr(const int index) const
 {
     switch (index) {
-        case PAGE_RVA  : return &base()->PageRVA;
-        case BLOCK_SIZE: return &base()->BlockSize;
+        case PAGE_RVA  : return &getStructPtr()->PageRVA;
+        case BLOCK_SIZE: return &getStructPtr()->BlockSize;
         default        : return nullptr;
     }
 }

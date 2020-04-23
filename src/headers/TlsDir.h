@@ -70,7 +70,7 @@ private:
     size_t m_length{};
     static size_t s_codeDiff; // AVAs in the Callbacks array point to .text
 
-    const ArchType* callbacks() const { return static_cast<const ArchType*>(hdr()); }
+    const ArchType* getStructPtr() const { return static_cast<const ArchType*>(hdr()); }
 };
 
 /* The TLS directory is a single 32-bit or 64-bit data structure.
@@ -93,10 +93,10 @@ public:
 
     // member functions
     const void* getFieldPtr(const int index) const override;
-    const IMAGE_TLS_DIRECTORY32*   tls32() const { return static_cast<const IMAGE_TLS_DIRECTORY32*>(dir()); }
-    const IMAGE_TLS_DIRECTORY64*   tls64() const { return static_cast<const IMAGE_TLS_DIRECTORY64*>(dir()); }
-    const CallbacksTable<ptr32_t>& cbt32() const { return m_callbacks32; }
-    const CallbacksTable<ptr64_t>& cbt64() const { return m_callbacks64; }
+    const IMAGE_TLS_DIRECTORY32*   getStructPtr32() const { return static_cast<const IMAGE_TLS_DIRECTORY32*>(dir()); }
+    const IMAGE_TLS_DIRECTORY64*   getStructPtr64() const { return static_cast<const IMAGE_TLS_DIRECTORY64*>(dir()); }
+    const CallbacksTable<ptr32_t>& getCallbacks32() const { return m_callbacks32; }
+    const CallbacksTable<ptr64_t>& getCallbacks64() const { return m_callbacks64; }
 
     // static functions
     static const char* getFieldName(const int index);

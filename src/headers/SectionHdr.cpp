@@ -6,13 +6,13 @@ using namespace Pepper;
 SectionHeaders::SectionHeaders(const FileBytes& fbytes, const FileHeader& file)
 {
     // find base of section headers
-    const uint16_t optHdrSize = file.file()->SizeOfOptionalHeader;
+    const uint16_t optHdrSize = file.getStructPtr()->SizeOfOptionalHeader;
     const size_t base = file.hdrOffset() + sizeof(IMAGE_FILE_HEADER) + optHdrSize;
 
     // construct each section header
-    const uint16_t length = file.file()->NumberOfSections;
+    const uint16_t length = file.getStructPtr()->NumberOfSections;
     for (size_t i=0; i < length; i++) {
-        m_elements.emplace_back(fbytes, base + (i * sizeof(IMAGE_SECTION_HEADER)));
+        m_sectionHeaders.emplace_back(fbytes, base + (i * sizeof(IMAGE_SECTION_HEADER)));
     }
 }
 
@@ -36,16 +36,16 @@ const char* SectionHeaderEntry::getFieldName(const int index)
 const void* SectionHeaderEntry::getFieldPtr(const int index) const
 {
     switch (index) {
-        case NAME                   : return &entry()->Name;
-        case VIRTUAL_SIZE           : return &entry()->VirtualSize;
-        case VIRTUAL_ADDRESS        : return &entry()->VirtualAddress;
-        case SIZE_OF_RAW_DATA       : return &entry()->SizeOfRawData;
-        case POINTER_TO_RAW_DATA    : return &entry()->PointerToRawData;
-        case POINTER_TO_RELOCATIONS : return &entry()->PointerToRelocations;
-        case POINTER_TO_LINE_NUMBERS: return &entry()->PointerToLineNumbers;
-        case NUMBER_OF_RELOCATIONS  : return &entry()->NumberOfRelocations;
-        case NUMBER_OF_LINE_NUMBERS : return &entry()->NumberOfLineNumbers;
-        case CHARACTERISTICS        : return &entry()->Characteristics;
+        case NAME                   : return &getStructPtr()->Name;
+        case VIRTUAL_SIZE           : return &getStructPtr()->VirtualSize;
+        case VIRTUAL_ADDRESS        : return &getStructPtr()->VirtualAddress;
+        case SIZE_OF_RAW_DATA       : return &getStructPtr()->SizeOfRawData;
+        case POINTER_TO_RAW_DATA    : return &getStructPtr()->PointerToRawData;
+        case POINTER_TO_RELOCATIONS : return &getStructPtr()->PointerToRelocations;
+        case POINTER_TO_LINE_NUMBERS: return &getStructPtr()->PointerToLineNumbers;
+        case NUMBER_OF_RELOCATIONS  : return &getStructPtr()->NumberOfRelocations;
+        case NUMBER_OF_LINE_NUMBERS : return &getStructPtr()->NumberOfLineNumbers;
+        case CHARACTERISTICS        : return &getStructPtr()->Characteristics;
         default                     : return nullptr;
     }
 }

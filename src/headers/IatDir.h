@@ -49,7 +49,7 @@ public:
 
 private:
     size_t m_length{};
-    const ArchType* addresses() const { return static_cast<const ArchType*>(hdr()); }
+    const ArchType* getStructPtr() const { return static_cast<const ArchType*>(hdr()); }
 };
 
 /* Base of table of RVAs to function addresses
@@ -75,8 +75,8 @@ public:
 
     // member functions
     const void* getFieldPtr(const int index) const override;
-    const std::vector<AddressList32>& list32() const { return m_list32; }
-    const std::vector<AddressList64>& list64() const { return m_list64; }
+    const std::vector<AddressList32>& getAddresses32() const { return m_list32; }
+    const std::vector<AddressList64>& getAddresses64() const { return m_list64; }
     size_t length() const { return m_list32.size(); }
 
     // static functions

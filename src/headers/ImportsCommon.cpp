@@ -106,8 +106,8 @@ const char* ImportName::getFieldName(const int index)
 const void* ImportName::getFieldPtr(const int index) const
 {
     switch (index) {
-        case HINT: return &hintname()->Hint;
-        case NAME: return &hintname()->Name;
+        case HINT: return &getStructPtr()->Hint;
+        case NAME: return &getStructPtr()->Name;
         default  : return nullptr;
     }
 }
@@ -125,7 +125,7 @@ template <typename ArchType> // requires variant declaration in header to link
 const void* ImportThunk<ArchType>::getFieldPtr(const int index) const
 {
     switch (index) {
-        case HINTNAMERVA: return &thunk()->HintNameTableRVA;
+        case HINTNAMERVA: return &getStructPtr()->HintNameTableRVA;
         default         : return nullptr;
     }
 }
@@ -147,11 +147,11 @@ template<>
 const void* GenericImportDescriptor<IMAGE_IMPORT_DESCRIPTOR>::getFieldPtr(const int index) const
 {
     switch (index) {
-        case IMPORT_LOOKUP_TABLE_RVA : return &descriptor()->ImportLookupTableRVA;
-        case TIMESTAMP               : return &descriptor()->TimeDateStamp;
-        case FORWARDER_CHAIN         : return &descriptor()->ForwarderChain;
-        case NAME_RVA                : return &descriptor()->NameRVA;
-        case IMPORT_ADDRESS_TABLE_RVA: return &descriptor()->ImportAddressTableRVA;
+        case IMPORT_LOOKUP_TABLE_RVA : return &getStructPtr()->ImportLookupTableRVA;
+        case TIMESTAMP               : return &getStructPtr()->TimeDateStamp;
+        case FORWARDER_CHAIN         : return &getStructPtr()->ForwarderChain;
+        case NAME_RVA                : return &getStructPtr()->NameRVA;
+        case IMPORT_ADDRESS_TABLE_RVA: return &getStructPtr()->ImportAddressTableRVA;
         default                      : return nullptr;
     }
 }
@@ -159,7 +159,7 @@ const void* GenericImportDescriptor<IMAGE_IMPORT_DESCRIPTOR>::getFieldPtr(const 
 template<>
 const char* GenericImportDescriptor<IMAGE_IMPORT_DESCRIPTOR>::dllName() const
 {
-    ptr32_t nameRva = descriptor()->NameRVA;
+    ptr32_t nameRva = getStructPtr()->NameRVA;
     return &mem()[nameRva - *s_pDiskToMemDiff];
 }
 
@@ -183,14 +183,14 @@ template<>
 const void* GenericImportDescriptor<IMAGE_DELAY_IMPORT_DESCRIPTOR>::getFieldPtr(const int index) const
 {
     switch (index) {
-        case ATTRIBUTES                    : return &descriptor()->Attributes;
-        case NAME_RVA                      : return &descriptor()->NameRVA;
-        case MODULE_HANDLE_RVA             : return &descriptor()->ModuleHandleRVA;
-        case DELAY_IMPORT_ADDRESS_TABLE_RVA: return &descriptor()->DelayImportAddressTableRVA;
-        case DELAY_IMPORT_NAME_TABLE_RVA   : return &descriptor()->DelayImportNameTableRVA;
-        case BOUND_DELAY_IMPORT_TABLE_RVA  : return &descriptor()->BoundDelayImportTableRVA;
-        case UNLOAD_DELAY_IMPORT_TABLE_RVA : return &descriptor()->UnloadDelayImportTableRVA;
-        case TIMESTAMP                     : return &descriptor()->Timestamp;
+        case ATTRIBUTES                    : return &getStructPtr()->Attributes;
+        case NAME_RVA                      : return &getStructPtr()->NameRVA;
+        case MODULE_HANDLE_RVA             : return &getStructPtr()->ModuleHandleRVA;
+        case DELAY_IMPORT_ADDRESS_TABLE_RVA: return &getStructPtr()->DelayImportAddressTableRVA;
+        case DELAY_IMPORT_NAME_TABLE_RVA   : return &getStructPtr()->DelayImportNameTableRVA;
+        case BOUND_DELAY_IMPORT_TABLE_RVA  : return &getStructPtr()->BoundDelayImportTableRVA;
+        case UNLOAD_DELAY_IMPORT_TABLE_RVA : return &getStructPtr()->UnloadDelayImportTableRVA;
+        case TIMESTAMP                     : return &getStructPtr()->Timestamp;
         default                            : return nullptr;
     }
 }
@@ -198,7 +198,7 @@ const void* GenericImportDescriptor<IMAGE_DELAY_IMPORT_DESCRIPTOR>::getFieldPtr(
 template<>
 const char* GenericImportDescriptor<IMAGE_DELAY_IMPORT_DESCRIPTOR>::dllName() const
 {
-    ptr32_t nameRva = descriptor()->NameRVA;
+    ptr32_t nameRva = getStructPtr()->NameRVA;
     return &mem()[nameRva - *s_pDiskToMemDiff];
 }
 

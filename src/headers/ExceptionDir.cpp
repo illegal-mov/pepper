@@ -6,23 +6,23 @@
 using namespace Pepper;
 
 size_t ExceptionDir::s_codeDiff = 0; // RVAs in .pdata point to .text
-template<> size_t *FunctionTableEntry32::s_pCodeDiff  = &ExceptionDir::s_codeDiff;
-template<> size_t *FunctionTableEntry64::s_pCodeDiff  = &ExceptionDir::s_codeDiff;
-template<> size_t *FunctionTableEntryArm::s_pCodeDiff = &ExceptionDir::s_codeDiff;
+template<> size_t *ExceptionTableEntry32::s_pCodeDiff  = &ExceptionDir::s_codeDiff;
+template<> size_t *ExceptionTableEntry64::s_pCodeDiff  = &ExceptionDir::s_codeDiff;
+template<> size_t *ExceptionTableEntryArm::s_pCodeDiff = &ExceptionDir::s_codeDiff;
 
-// Append elements to the vector. Works for any type of FunctionTable because
+// Append elements to the vector. Works for any type of ExceptionTable because
 // entrySize is chosen by the caller when it knows the architecture.
 template <typename EntryType>
 void ExceptionDir::appendEntries(const FileBytes& fbytes, const uint32_t totalSize)
 {
     size_t numEntries = totalSize / sizeof(EntryType);
-    m_entries32.reserve(numEntries);
+    m_exceptionTableEntries32.reserve(numEntries);
     for (size_t i=0; i < numEntries; i++) {
-        m_entries32.emplace_back(fbytes, dirOffset() + (i * sizeof(EntryType)));
+        m_exceptionTableEntries32.emplace_back(fbytes, dirOffset() + (i * sizeof(EntryType)));
     }
 
     // Use the `BeginAddress` field of an exception structure to find the offset to code
-    s_codeDiff = Convert::getRvaToRawDiff(*m_pe, *static_cast<const size_t*>(m_entries32[0].getFieldPtr(0)));
+    s_codeDiff = Convert::getRvaToRawDiff(*m_peFile, *static_cast<const size_t*>(m_exceptionTableEntries32[0].getFieldPtr(0)));
 }
 
 ExceptionDir::ExceptionDir(const PeFile& pe, const FileBytes& fbytes, const DataDirectoryEntry& dde)
@@ -30,9 +30,9 @@ ExceptionDir::ExceptionDir(const PeFile& pe, const FileBytes& fbytes, const Data
 {
     if (Ident::dirExists(*this)) {
         // Fill elements vector according to architecture's exception table entry size
-        if (Ident::is32bit(*m_pe)) {
+        if (Ident::is32bit(*m_peFile)) {
             appendEntries<IMAGE_EXCEPTION_ENTRY32>(fbytes, dde.size());
-        } else if (Ident::is64bit(*m_pe)) {
+        } else if (Ident::is64bit(*m_peFile)) {
             appendEntries<IMAGE_EXCEPTION_ENTRY64>(fbytes, dde.size());
         } else {
             appendEntries<IMAGE_EXCEPTION_ENTRY_ARM>(fbytes, dde.size());
@@ -41,20 +41,20 @@ ExceptionDir::ExceptionDir(const PeFile& pe, const FileBytes& fbytes, const Data
 }
 
 template<>
-const void* FunctionTableEntry32::getFieldPtr(const int index) const
+const void* ExceptionTableEntry32::getFieldPtr(const int index) const
 {
     switch (index) {
-        case BEGIN_ADDRESS     : return &entry()->BeginAddress;
-        case END_ADDRESS       : return &entry()->EndAddress;
-        case EXCEPTION_HANDLER : return &entry()->ExceptionHandler;
-        case HANDLER_DATA      : return &entry()->HandlerData;
-        case PROLOG_END_ADDRESS: return &entry()->PrologEndAddress;
+        case BEGIN_ADDRESS     : return &getStructPtr()->BeginAddress;
+        case END_ADDRESS       : return &getStructPtr()->EndAddress;
+        case EXCEPTION_HANDLER : return &getStructPtr()->ExceptionHandler;
+        case HANDLER_DATA      : return &getStructPtr()->HandlerData;
+        case PROLOG_END_ADDRESS: return &getStructPtr()->PrologEndAddress;
         default                : return nullptr;
     }
 }
 
 template<>
-const char* FunctionTableEntry32::getFieldName(const int index)
+const char* ExceptionTableEntry32::getFieldName(const int index)
 {
     switch (index) {
         case BEGIN_ADDRESS     : return "Pointer to Function Start";
@@ -67,18 +67,18 @@ const char* FunctionTableEntry32::getFieldName(const int index)
 }
 
 template<>
-const void* FunctionTableEntry64::getFieldPtr(const int index) const
+const void* ExceptionTableEntry64::getFieldPtr(const int index) const
 {
     switch (index) {
-        case BEGIN_ADDRESS     : return &entry()->BeginAddress;
-        case END_ADDRESS       : return &entry()->EndAddress;
-        case UNWIND_INFORMATION: return &entry()->UnwindInformation;
+        case BEGIN_ADDRESS     : return &getStructPtr()->BeginAddress;
+        case END_ADDRESS       : return &getStructPtr()->EndAddress;
+        case UNWIND_INFORMATION: return &getStructPtr()->UnwindInformation;
         default                : return nullptr;
     }
 }
 
 template<>
-const char* FunctionTableEntry64::getFieldName(const int index)
+const char* ExceptionTableEntry64::getFieldName(const int index)
 {
     switch (index) {
         case BEGIN_ADDRESS     : return "Pointer to Function Start";
@@ -89,17 +89,17 @@ const char* FunctionTableEntry64::getFieldName(const int index)
 }
 
 template<>
-const void* FunctionTableEntryArm::getFieldPtr(const int index) const
+const void* ExceptionTableEntryArm::getFieldPtr(const int index) const
 {
     switch (index) {
-        case BEGIN_ADDRESS: return   &entry()->BeginAddress;
-        case INFO         : return &(&entry()->BeginAddress)[1]; // can't return address of bit fields
+        case BEGIN_ADDRESS: return   &getStructPtr()->BeginAddress;
+        case INFO         : return &(&getStructPtr()->BeginAddress)[1]; // can't return address of bit fields
         default           : return nullptr;
     }
 }
 
 template<>
-const char* FunctionTableEntryArm::getFieldName(const int index)
+const char* ExceptionTableEntryArm::getFieldName(const int index)
 {
     switch (index) {
         case BEGIN_ADDRESS: return "Pointer to Function Start";
@@ -123,14 +123,14 @@ const char* ExceptionDir::getFieldName(const int index)
 }
 
 template<>
-uint32_t FunctionTableEntryArm::endRaw() const
+uint32_t ExceptionTableEntryArm::endRaw() const
 {
-    return entry()->BeginAddress + entry()->FunctionLength - *s_pCodeDiff;
+    return getStructPtr()->BeginAddress + getStructPtr()->FunctionLength - *s_pCodeDiff;
 }
 
 template<>
-uint32_t FunctionTableEntryArm::codeLen() const
+uint32_t ExceptionTableEntryArm::codeLen() const
 {
-    return entry()->FunctionLength;
+    return getStructPtr()->FunctionLength;
 }
 

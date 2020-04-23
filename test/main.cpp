@@ -36,7 +36,7 @@ void printOptHdrStruct(const Pepper::OptionalHeader& oh)
     for (; i < OptionalHeader::BASE_OF_DATA; i++)
         printf("%-40s0x%08x\n", oh.getFieldName(i), *static_cast<const int32_t*>(oh.getFieldPtr(i)));
 
-    if (oh.optional32()->Magic != OptionalHeader::BIT32)
+    if (oh.getStructPtr32()->Magic != OptionalHeader::BIT32)
         i++; // skip BaseOfData for non-32bit binaries
 
     for (; i < OptionalHeader::IMAGE_BASE; i++)
@@ -83,7 +83,7 @@ void printSectionHeaders(const Pepper::PeFile& pe)
     using namespace Pepper;
     const SectionHeaders& sections = pe.sectionHdrs();
 
-    for (const auto& section : sections.sections()) {
+    for (const auto& section : sections.getSections()) {
         int j=0;
         printf("%-40s%.8s\n", section.getFieldName(j), static_cast<const char*>(section.getFieldPtr(j)));
         for (j=1; j < SectionHeaderEntry::NUMBER_OF_RELOCATIONS; j++)
@@ -149,14 +149,14 @@ void printImportDescriptors(const Pepper::PeFile& pe)
 
             if (Ident::is32bit(pe))
                 printImportThunks<
-                    decltype(descriptor.thunks32()),
+                    decltype(descriptor.getThunks32()),
                     DescriptorType,
-                    &DescriptorType::thunks32>(descriptor);
+                    &DescriptorType::getThunks32>(descriptor);
             else
                 printImportThunks<
-                    decltype(descriptor.thunks64()),
+                    decltype(descriptor.getThunks64()),
                     DescriptorType,
-                    &DescriptorType::thunks64>(descriptor);
+                    &DescriptorType::getThunks64>(descriptor);
 
             printf("\n");
         }
@@ -248,17 +248,17 @@ void printException(const Pepper::PeFile& pe)
     const ExceptionDirPtr& exception = pe.exceptionDir();
     if (Ident::dirExists(exception)) {
         if (Ident::is32bit(pe))
-            printExceptionTable<decltype(exception->table32()),
-                FunctionTableEntry32::_NUM_FIELDS,
-                &ExceptionDir::table32>(*exception);
+            printExceptionTable<decltype(exception->getFunctions32()),
+                ExceptionTableEntry32::_NUM_FIELDS,
+                &ExceptionDir::getFunctions32>(*exception);
         else if (Ident::is64bit(pe))
-            printExceptionTable<decltype(exception->table64()),
-                FunctionTableEntry64::_NUM_FIELDS,
-                &ExceptionDir::table64>(*exception);
+            printExceptionTable<decltype(exception->getFunctions64()),
+                ExceptionTableEntry64::_NUM_FIELDS,
+                &ExceptionDir::getFunctions64>(*exception);
         else
-            printExceptionTable<decltype(exception->tableArm()),
-                FunctionTableEntryArm::_NUM_FIELDS,
-                &ExceptionDir::tableArm>(*exception);
+            printExceptionTable<decltype(exception->getFunctionsArm()),
+                ExceptionTableEntryArm::_NUM_FIELDS,
+                &ExceptionDir::getFunctionsArm>(*exception);
     }
 }
 
@@ -376,9 +376,9 @@ void printTls(const Pepper::PeFile& pe)
     const TlsDirPtr& tls = pe.tlsDir();
     if (Ident::dirExists(tls)) {
         if (Ident::is32bit(pe))
-            printTlsStruct<ptr32_t, fmt32, &TlsDir::cbt32>(*tls);
+            printTlsStruct<ptr32_t, fmt32, &TlsDir::getCallbacks32>(*tls);
         else
-            printTlsStruct<ptr64_t, fmt64, &TlsDir::cbt64>(*tls);
+            printTlsStruct<ptr64_t, fmt64, &TlsDir::getCallbacks64>(*tls);
     }
 }
 
@@ -470,12 +470,12 @@ void printIat(const Pepper::PeFile& pe)
     if (Ident::dirExists(iat)) {
         if (Ident::is32bit(pe))
             printAddressesList<
-                decltype(iat->list32()),
-                &IatDir::list32>(*iat);
+                decltype(iat->getAddresses32()),
+                &IatDir::getAddresses32>(*iat);
         else
             printAddressesList<
-                decltype(iat->list64()),
-                &IatDir::list64>(*iat);
+                decltype(iat->getAddresses64()),
+                &IatDir::getAddresses64>(*iat);
     }
 }
 
@@ -533,7 +533,7 @@ void printClrSignature(const Pepper::ClrDir& clr)
     if (Ident::dirExists(signature)) {
         std::cout << "CLR Signature\n";
         for (size_t i=0; i < signature->size(); i++) {
-            printf("%02x ", signature->sig()[i] & 0xFF);
+            printf("%02x ", signature->getStructPtr()[i] & 0xFF);
         }
         printf("\n");
     }
