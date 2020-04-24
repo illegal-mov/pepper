@@ -9,17 +9,73 @@
 
 using namespace Pepper;
 
+namespace
+{
+uint16_t getOptionalHeaderMagic(const PeFile& pe)
+{
+    const OptionalHeader& poh = pe.optionalHdr();
+    return poh.getStructPtr32()->Magic;
+}
+
+uint16_t getFileHeaderMachine(const PeFile& pe)
+{
+    const FileHeader& pfh = pe.fileHdr();
+    return pfh.getStructPtr()->Machine;
+}
+
+bool isDosSigValid(const PeFile& pe)
+{
+    const DosHeader& dos = pe.dosHdr();
+    const uint16_t dosMagic = *static_cast<const uint16_t*>(dos.getFieldPtr(DosHeader::E_MAGIC));
+    if ((dosMagic != 0x4D5A) && (dosMagic != 0x5A4D)) {
+        return false;
+    }
+    return true;
+}
+
+bool isNtSigValid(const PeFile& pe)
+{
+    const FileHeader& file = pe.fileHdr();
+    const int32_t ntSig = *reinterpret_cast<const int32_t*>(file.ntSig());
+    if ((ntSig != 0x00004550) && (ntSig != 0x50450000)) {
+        return false;
+    }
+    return true;
+}
+
+bool isDebugRsdsSigValid(const PeFile& pe)
+{
+    const std::shared_ptr<DebugDir> dbg = pe.debugDir();
+    if (Ident::dirExists(dbg)) {
+        for (const auto& entry : dbg->entries()) {
+            const int32_t rsdsSig = *static_cast<const int32_t*>(entry.rsds().getFieldPtr(DebugRsds::SIGNATURE));
+            if ((rsdsSig != 0x52534453) && (rsdsSig != 0x53445352)) { // "RSDS" "SDSR"
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+bool isClrMetadataSigValid(const PeFile& pe)
+{
+    const std::shared_ptr<ClrDir> clr = pe.clrDir();
+    if (Ident::dirExists(clr)) {
+        const std::shared_ptr<ClrMetadata> meta = clr->metadataHdr();
+        const int32_t bsjbSig = *static_cast<const int32_t*>(meta->getFieldPtr(ClrMetadata::SIGNATURE));
+        if ((bsjbSig != 0x42534A42) && (bsjbSig != 0x424A5342)) { // "BSJB" "BJSB"
+            return false;
+        }
+    }
+    return true;
+}
+} // namespace
+
 bool Ident::isDll(const PeFile& pe)
 {
     const FileHeader& pfh = pe.fileHdr();
     const uint16_t charact = pfh.getStructPtr()->Characteristics;
     return charact & FileHeader::Characteristics::DLL;
-}
-
-static uint16_t getOptionalHeaderMagic(const PeFile& pe)
-{
-    const OptionalHeader& poh = pe.optionalHdr();
-    return poh.getStructPtr32()->Magic;
 }
 
 bool Ident::is32bit(const PeFile& pe)
@@ -49,48 +105,10 @@ bool Ident::dirExists(const IDirectory& id)
 
 bool Ident::isAllSigsValid(const PeFile& pe)
 {
-    // check DOS signature
-    const DosHeader& dos = pe.dosHdr();
-    const uint16_t dosMagic = *static_cast<const uint16_t*>(dos.getFieldPtr(DosHeader::E_MAGIC));
-    if ((dosMagic != 0x4D5A) && (dosMagic != 0x5A4D)) {
-        return false;
-    }
-
-    // check NT signature
-    const FileHeader& file = pe.fileHdr();
-    const int32_t ntSig = *reinterpret_cast<const int32_t*>(file.ntSig());
-    if ((ntSig != 0x00004550) && (ntSig != 0x50450000)) {
-        return false;
-    }
-
-    // check debug directory RSDS signature
-    const std::shared_ptr<DebugDir> dbg = pe.debugDir();
-    if (dirExists(dbg)) {
-        for (const auto& entry : dbg->entries()) {
-            const int32_t rsdsSig = *static_cast<const int32_t*>(entry.rsds().getFieldPtr(DebugRsds::SIGNATURE));
-            if ((rsdsSig != 0x52534453) && (rsdsSig != 0x53445352)) { // "RSDS" "SDSR"
-                return false;
-            }
-        }
-    }
-
-    // check CLR metadata header BSJB signature
-    const std::shared_ptr<ClrDir> clr = pe.clrDir();
-    if (dirExists(clr)) {
-        const std::shared_ptr<ClrMetadata> meta = clr->metadataHdr();
-        const int32_t bsjbSig = *static_cast<const int32_t*>(meta->getFieldPtr(ClrMetadata::SIGNATURE));
-        if ((bsjbSig != 0x42534A42) && (bsjbSig != 0x424A5342)) { // "BSJB" "BJSB"
-            return false;
-        }
-    }
-
-    return true;
-}
-
-static uint16_t getFileHeaderMachine(const PeFile& pe)
-{
-    const FileHeader& pfh = pe.fileHdr();
-    return pfh.getStructPtr()->Machine;
+    return isDosSigValid(pe)
+        && isNtSigValid(pe)
+        && isDebugRsdsSigValid(pe)
+        && isClrMetadataSigValid(pe);
 }
 
 bool Ident::isX86(const PeFile& pe)

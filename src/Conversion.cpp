@@ -9,17 +9,19 @@
 
 using namespace Pepper;
 
+namespace
+{
 /* Compare addresses in the section headers to find the difference between
  * RVAs and file offsets.
  */
-static uint32_t calculateDiff(const PeFile& pe, const addr_t addr, Convert::AddrType type)
+uint32_t calculateDiff(const PeFile& pe, const addr_t sourceAddr, Convert::AddrType sourceType)
 {
     int base, size, oppo;
-    if (type == Convert::AddrType::RVA) {
+    if (sourceType == Convert::AddrType::RVA) {
         base = SectionHeaderEntry::VIRTUAL_ADDRESS;
         size = SectionHeaderEntry::VIRTUAL_SIZE;
         oppo = SectionHeaderEntry::POINTER_TO_RAW_DATA;
-    } else if (type == Convert::AddrType::RAW) {
+    } else if (sourceType == Convert::AddrType::RAW) {
         base = SectionHeaderEntry::POINTER_TO_RAW_DATA;
         size = SectionHeaderEntry::SIZE_OF_RAW_DATA;
         oppo = SectionHeaderEntry::VIRTUAL_ADDRESS;
@@ -32,7 +34,7 @@ static uint32_t calculateDiff(const PeFile& pe, const addr_t addr, Convert::Addr
     for (const auto& section : sctns.getSections()) {
         const uint32_t sctnBase = *static_cast<const uint32_t*>(section.getFieldPtr(base));
         const uint32_t sctnSize = *static_cast<const uint32_t*>(section.getFieldPtr(size));
-        if (sctnBase <= addr && addr < sctnBase + sctnSize) {
+        if (sctnBase <= sourceAddr && sourceAddr < sctnBase + sctnSize) {
             const uint32_t sctnOppo = *static_cast<const uint32_t*>(section.getFieldPtr(oppo));
             return (sctnBase > sctnOppo) ? sctnBase - sctnOppo : sctnOppo - sctnBase;
         }
@@ -40,6 +42,7 @@ static uint32_t calculateDiff(const PeFile& pe, const addr_t addr, Convert::Addr
 
     return 0;
 }
+} // namespace
 
 /* Use an RVA address to get the difference between RVAs and RAWs */
 uint32_t Convert::getRvaToRawDiff(const PeFile& pe, const addr_t rva)

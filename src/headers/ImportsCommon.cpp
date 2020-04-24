@@ -4,6 +4,20 @@
 
 using namespace Pepper;
 
+namespace
+{
+    template <typename ArchType>
+    std::string makeOrdinalString(ArchType ordinal)
+    {
+        std::stringstream ss;
+        ss << std::hex << "[Ordinal: 0x";
+        ss.fill('0');
+        ss.width(sizeof(ArchType)<<1); // 2 hex digits per byte
+        ss << ordinal << ']';
+        return ss.str();
+    }
+} // namespace
+
 /* Load up the vector with data from the ImportAddressTable
  */
 template <typename DescriptorType> // for the class
@@ -29,14 +43,8 @@ void GenericImportDescriptor<DescriptorType>::readThunks(const FileBytes& fbytes
     size_t i = 0;
     while (thunk[i].HintNameTableRVA != 0) {
         if (thunk[i].OrdinalFlag) {
-            // make ordinal string
-            std::stringstream ss;
-            ss << std::hex << "[Ordinal: 0x";
-            ss.fill('0');
-            ss.width(sizeof(ArchType)<<1); // 2 hex digits per byte
-            ss << thunk[i].OrdinalNumber << ']';
-
-            m_thunks32.emplace_back(fbytes, raw + (i * sizeof(ArchType)), ss.str());
+            std::string ordinal = makeOrdinalString(thunk[i].OrdinalNumber);
+            m_thunks32.emplace_back(fbytes, raw + (i * sizeof(ArchType)), ordinal);
         } else {
             m_thunks32.emplace_back(fbytes, raw + (i * sizeof(ArchType)));
         }

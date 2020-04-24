@@ -30,8 +30,10 @@ struct is_dumpable<CertificateEntry> {
     static constexpr bool value = true;
 };
 
+namespace
+{
 template <typename DirectoryType>
-static bool genericDump(const std::string& path, const DirectoryType& directory, Extract::ExceptionFlag throwFlag)
+bool genericDump(const std::string& path, const DirectoryType& directory, Extract::ExceptionFlag throwFlag)
 {
     static_assert(is_dumpable<DirectoryType>::value, "Cannot dump this type to disk");
     std::ofstream out(path, std::ios_base::out | std::ios_base::binary);
@@ -48,6 +50,7 @@ static bool genericDump(const std::string& path, const DirectoryType& directory,
 
     return true;
 }
+} // namespace
 
 bool Extract::dumpResource(const std::string& path, const ResourceData& resource, ExceptionFlag throwFlag)
 {

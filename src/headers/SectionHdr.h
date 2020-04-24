@@ -9,16 +9,16 @@
 
 /*
 typedef struct _IMAGE_SECTION_HEADER {
-    char    Name[8];              // section name as ASCII string
-    int32_t VirtualSize;          // section size in memory
-    int32_t VirtualAddress;       // address of section in memory
-    int32_t SizeOfRawData;        // section size on disk
-    int32_t PointerToRawData;     // offset of section on disk
-    int32_t PointerToRelocations; // offset to relocations on disk
-    int32_t PointerToLineNumbers; // offset to line numbers on disk
-    int16_t NumberOfRelocations;  // number of relocation entries
-    int16_t NumberOfLineNumbers;  // number of line number entries
-    int32_t Characteristics;      // bit fields for various properties
+    char     Name[8];              // section name as ASCII string
+    uint32_t VirtualSize;          // section size in memory
+    uint32_t VirtualAddress;       // address of section in memory
+    uint32_t SizeOfRawData;        // section size on disk
+    uint32_t PointerToRawData;     // offset of section on disk
+    uint32_t PointerToRelocations; // offset to relocations on disk
+    uint32_t PointerToLineNumbers; // offset to line numbers on disk
+    uint16_t NumberOfRelocations;  // number of relocation entries
+    uint16_t NumberOfLineNumbers;  // number of line number entries
+    uint32_t Characteristics;      // bit fields for various properties
 } IMAGE_SECTION_HEADER, *PIMAGE_SECTION_HEADER;
 */
 
