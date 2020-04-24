@@ -1,14 +1,16 @@
 #ifndef CLR_H
 #define CLR_H
 
+#include <memory>
+
 #include "../generics/iDir.h"
-#include "./clr/CodeManager.h"
-#include "./clr/ExportJump.h"
-#include "./clr/ManagedNative.h"
-#include "./clr/Metadata.h"
-#include "./clr/Resource.h"
-#include "./clr/Signature.h"
-#include "./clr/VTableFixup.h"
+#include "clr/CodeManager.h"
+#include "clr/ExportJump.h"
+#include "clr/ManagedNative.h"
+#include "clr/Metadata.h"
+#include "clr/Resource.h"
+#include "clr/Signature.h"
+#include "clr/VTableFixup.h"
 #include "DataDirectoryEntry.h"
 
 /*

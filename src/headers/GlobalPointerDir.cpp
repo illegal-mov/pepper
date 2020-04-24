@@ -1,6 +1,7 @@
+#include "GlobalPointerDir.h"
+
 #include "../Identification.h"
 #include "DataDirectoryEntry.h"
-#include "GlobalPointerDir.h"
 
 using namespace Pepper;
 

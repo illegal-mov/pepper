@@ -1,6 +1,8 @@
 #ifndef FILEBYTES_H
 #define FILEBYTES_H
 
+#include <fstream>
+#include <string>
 #include <vector>
 
 #include "Types.h"

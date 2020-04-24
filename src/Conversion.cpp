@@ -2,7 +2,6 @@
 
 #include "Types.h"
 #include "PeFile.h"
-#include "generics/iDir.h"
 #include "headers/OptionalHdr.h"
 
 /* Non-member non-friend functions to convert addresses between types */

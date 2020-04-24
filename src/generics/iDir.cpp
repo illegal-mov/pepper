@@ -1,8 +1,9 @@
+#include "iDir.h"
+
 #include "../Identification.h"
 #include "../PeFile.h"
 #include "../headers/DataDirectoryEntry.h"
 #include "../headers/SectionHdr.h"
-#include "iDir.h"
 
 using namespace Pepper;
 

@@ -1,7 +1,8 @@
+#include "LoadConfigDir.h"
+
 #include "../Types.h"
 #include "../Identification.h"
 #include "DataDirectoryEntry.h"
-#include "LoadConfigDir.h"
 
 using namespace Pepper;
 

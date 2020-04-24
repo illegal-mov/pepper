@@ -1,7 +1,6 @@
 #ifndef IHEADER_H
 #define IHEADER_H
 
-#include <memory>
 #include "../FileBytes.h"
 #include "../headers/struct.h"
 

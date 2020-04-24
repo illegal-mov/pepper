@@ -1,5 +1,6 @@
-#include "../Identification.h"
 #include "ArchitectureDir.h"
+
+#include "../Identification.h"
 #include "DataDirectoryEntry.h"
 
 using namespace Pepper;

@@ -1,7 +1,8 @@
+#include "PeFile.h"
+
 #include <memory>
 #include <string>
 
-#include "PeFile.h"
 #include "Types.h"
 
 using namespace Pepper;

@@ -1,7 +1,8 @@
+#include "ResourceDir.h"
+
 #include "../Types.h"
 #include "../Identification.h"
 #include "DataDirectoryEntry.h"
-#include "ResourceDir.h"
 
 using namespace Pepper;
 

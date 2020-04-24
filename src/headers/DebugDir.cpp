@@ -1,9 +1,10 @@
+#include "DebugDir.h"
+
 #include <cstring>
 
 #include "../Types.h"
 #include "../Identification.h"
 #include "DataDirectoryEntry.h"
-#include "DebugDir.h"
 
 using namespace Pepper;
 
