@@ -5,7 +5,6 @@
 
 #include "../Types.h"
 #include "../generics/iDir.h"
-#include "struct.h"
 
 /*
 typedef struct _IMAGE_EXCEPTION_ENTRY32 {

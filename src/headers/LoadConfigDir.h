@@ -3,7 +3,6 @@
 
 #include "../Types.h"
 #include "../generics/iDir.h"
-#include "struct.h"
 
 /* Online documentation on the LOAD_CONFIG structure is inconsistent.
  *

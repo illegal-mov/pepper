@@ -1,9 +1,8 @@
 #ifndef EXPORT_H
 #define EXPORT_H
 
-#include "../Identification.h"
+#include "../Types.h"
 #include "../generics/iDir.h"
-#include "struct.h"
 
 /*
 typedef struct _IMAGE_EXPORT_DIRECTORY {

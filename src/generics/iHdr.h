@@ -3,6 +3,7 @@
 
 #include <memory>
 #include "../FileBytes.h"
+#include "../headers/struct.h"
 
 namespace Pepper {
 

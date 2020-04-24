@@ -5,7 +5,6 @@
 
 #include "../generics/iDir.h"
 #include "ImportsCommon.h"
-#include "struct.h"
 
 /*
 typedef struct _IMAGE_DELAY_IMPORT_DESCRIPTOR {

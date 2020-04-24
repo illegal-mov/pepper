@@ -1,7 +1,6 @@
+#include "../Conversion.h"
 #include "../Identification.h"
 #include "../PeFile.h"
-#include "../Types.h"
-#include "DataDirectoryEntry.h"
 #include "OptionalHdr.h"
 #include "TlsDir.h"
 

@@ -1,7 +1,6 @@
 #include <cstring>
 #include <fstream>
 #include <iterator>
-#include <memory>
 
 #include "Exceptions.h"
 #include "FileBytes.h"
@@ -18,17 +17,17 @@ FileBytes::FileBytes(const std::string& path)
     }
 
     // get file size
-    m_fsize = getFileSize(in);
-    if (m_fsize > MAX_FSIZE) {
+    m_fileSize = getFileSize(in);
+    if (m_fileSize > MAX_FILE_SIZE) {
         in.close();
         throw OversizedFile("This file exceeds the maximum file size of 512 MB");
     }
 
     // allocate memory, copy file bytes into memory
-    m_bytes.reserve(m_fsize);
+    m_fileContent.reserve(m_fileSize);
     in >> std::noskipws;
     std::istream_iterator<char> insit(in);
-    std::copy(insit, std::istream_iterator<char>(), m_bytes.begin());
+    std::copy(insit, std::istream_iterator<char>(), m_fileContent.begin());
     in.close();
 
     if (in.fail() && (!in.eof())) {
@@ -41,10 +40,10 @@ FileBytes::FileBytes(const std::string& path)
  */
 void FileBytes::readBytes(const offset_t pos, char *buf, const size_t bufLen) const
 {
-    if (pos < m_fsize) {
-        const size_t min = (pos + bufLen <= m_fsize)
+    if (pos < m_fileSize) {
+        const size_t min = (pos + bufLen <= m_fileSize)
             ? bufLen
-            : m_fsize - pos;
+            : m_fileSize - pos;
         memcpy(buf, &bytes()[pos], min);
     } else {
         memset(buf, 0, bufLen);

@@ -1,13 +1,11 @@
 #ifndef IAT_H
 #define IAT_H
 
-#include <sstream>
 #include <vector>
 
 #include "../Types.h"
 #include "../generics/iDir.h"
 #include "ImportsCommon.h"
-#include "struct.h"
 
 namespace Pepper {
 

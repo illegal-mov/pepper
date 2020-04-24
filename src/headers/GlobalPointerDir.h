@@ -2,7 +2,6 @@
 #define GLOBALPOINTER_H
 
 #include "../generics/iDir.h"
-#include "struct.h"
 
 namespace Pepper {
 

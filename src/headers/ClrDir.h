@@ -10,7 +10,6 @@
 #include "./clr/Signature.h"
 #include "./clr/VTableFixup.h"
 #include "DataDirectoryEntry.h"
-#include "struct.h"
 
 /*
 typedef struct _IMAGE_COR20_HEADER {

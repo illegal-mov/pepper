@@ -7,7 +7,6 @@
 #include "../generics/iHdr.h"
 #include "DataDirectoryEntry.h"
 #include "FileHdr.h"
-#include "struct.h"
 
 /*
 typedef struct _IMAGE_OPTIONAL_HEADER32 {

@@ -4,7 +4,6 @@
 #include "../Exceptions.h"
 #include "../generics/iHdr.h"
 #include "DosHdr.h"
-#include "struct.h"
 
 /*
 typedef struct _IMAGE_FILE_HEADER {

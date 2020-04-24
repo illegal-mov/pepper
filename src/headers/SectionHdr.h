@@ -5,7 +5,6 @@
 
 #include "../Types.h"
 #include "../generics/iHdr.h"
-#include "struct.h"
 
 /*
 typedef struct _IMAGE_SECTION_HEADER {

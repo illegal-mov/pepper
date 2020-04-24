@@ -3,7 +3,6 @@
 
 #include "../Exceptions.h"
 #include "../generics/iHdr.h"
-#include "struct.h"
 
 /*
 typedef struct _IMAGE_DOS_HEADER {

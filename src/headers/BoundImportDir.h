@@ -1,10 +1,7 @@
 #ifndef BOUNDIMPORT_H
 #define BOUNDIMPORT_H
 
-#include <vector>
-
 #include "../generics/iDir.h"
-#include "struct.h"
 
 /*
 // one for each imported module
