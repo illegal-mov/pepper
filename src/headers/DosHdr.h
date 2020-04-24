@@ -66,11 +66,9 @@ public:
         }
     }
 
-    // member functions
     const IMAGE_DOS_HEADER* getStructPtr() const { return static_cast<const IMAGE_DOS_HEADER*>(hdr()); }
     const void* getFieldPtr(const int index) const override;
 
-    // static functions
     static const char* getFieldName(const int index);
 };
 } // namespace Pepper

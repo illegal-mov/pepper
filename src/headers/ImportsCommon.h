@@ -65,14 +65,12 @@ public:
     : IHeader(fbytes, raw)
     {}
 
-    // member functions
     const void* getFieldPtr(const int index) const override;
     const IMAGE_IMPORT_BY_NAME* getStructPtr() const
     {
         return static_cast<const IMAGE_IMPORT_BY_NAME*>(hdr());
     }
 
-    // static functions
     static const char* getFieldName(const int index);
 };
 
@@ -100,7 +98,6 @@ public:
     , m_hintname(fbytes, getStructPtr()->HintNameTableRVA - *s_pDiskToMemDiff)
     {}
 
-    // member functions
     const void* getFieldPtr(const int index) const override;
     const ArchType* getStructPtr() const { return static_cast<const ArchType*>(hdr()); }
 
@@ -114,7 +111,6 @@ public:
         return (getStructPtr()->OrdinalFlag) ? &m_ordstr : nullptr;
     }
 
-    // static functions
     static const char* getFieldName(const int index);
 
 private:
@@ -153,7 +149,6 @@ public:
         return *this;
     }
 
-    // member functions
     const void* getFieldPtr(const int index) const override;
     const DescriptorType* getStructPtr() const { return static_cast<const DescriptorType*>(hdr()); }
 
@@ -167,7 +162,6 @@ public:
     const std::vector<ptr64_t>& getAddresses64() const { return m_addresses64; }
     size_t addressesLength() const { return m_addresses32.size(); }
 
-    // static functions
     static const char* getFieldName(const int index);
 
 private:
@@ -189,7 +183,6 @@ private:
 
     static size_t *s_pDiskToMemDiff;
 
-    // a helper function to construct a {regular,delay} descriptor
     template <int ILT, int IAT, int TIMESTAMP>
     void makeDescriptor(const PeFile& pe, const FileBytes& fbytes);
 

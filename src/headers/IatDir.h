@@ -31,7 +31,6 @@ class AddressList final : public IHeader {
 public:
     AddressList(const FileBytes& fbytes, const offset_t raw, const size_t len);
 
-    // member functions
     const void* getFieldPtr(const int index) const override;
 
     ArchType address(const int index) const
@@ -42,7 +41,6 @@ public:
 
     size_t length() const { return m_length; }
 
-    // static functions
     static const char* getFieldName(const int index);
 
 private:
@@ -71,13 +69,11 @@ public:
         return *this;
     }
 
-    // member functions
     const void* getFieldPtr(const int index) const override;
     const std::vector<AddressList32>& getAddresses32() const { return m_list32; }
     const std::vector<AddressList64>& getAddresses64() const { return m_list64; }
     size_t length() const { return m_list32.size(); }
 
-    // static functions
     static const char* getFieldName(const int index);
 
 private:

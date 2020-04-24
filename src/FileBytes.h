@@ -16,11 +16,9 @@ public:
 
     FileBytes(const std::string& path);
 
-    // member functions
     const char* bytes() const { return m_fileContent.data(); }
     void readBytes(const offset_t pos, char *buf, const size_t bufLen) const;
 
-    // static functions
     static size_t getFileSize(std::ifstream& in);
 
 private:

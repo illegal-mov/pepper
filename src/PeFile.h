@@ -77,7 +77,6 @@ public:
 
     PeFile(const std::string& path);
 
-    // member functions
     const DosHeader&           dosHdr()           const { return m_Dos;   }
     const FileHeader&          fileHdr()          const { return m_File;  }
     const OptionalHeader&      optionalHdr()      const { return m_Opt;   }
@@ -101,7 +100,6 @@ public:
     void readBytes(const offset_t pos, char *buf, const size_t bufLen) const;
     const std::string& path() const { return m_fname; }
 
-    // static functions
     static const char* getHeaderName(const int index);
 
 private:

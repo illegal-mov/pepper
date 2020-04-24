@@ -620,7 +620,7 @@ int main(int argc, char *argv[])
 //      printSectionHeaders(pe);
 
 //      printExport(pe);
-        printImport(pe);
+//      printImport(pe);
 //      printResource(pe);
 //      printException(pe);
 //      printCertificate(pe);

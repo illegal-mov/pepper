@@ -28,7 +28,6 @@ typedef struct _RSDSI {
 
 namespace Pepper {
 
-// forward declarations
 class PeFile;
 class FileBytes;
 class DataDirectoryEntry;
@@ -52,11 +51,9 @@ public:
     : IHeader(fbytes, raw)
     {}
 
-    // member functions
     const void* getFieldPtr(const int index) const override;
     const RSDSI* getStructPtr() const { return static_cast<const RSDSI*>(hdr()); }
 
-    // static functions
     static const char* getFieldName(const int index);
 };
 
@@ -96,12 +93,10 @@ public:
 
     DebugEntry(const FileBytes& fbytes, const offset_t raw);
 
-    // member functions
     const void* getFieldPtr(const int index) const override;
     const IMAGE_DEBUG_DIRECTORY* getStructPtr() const { return static_cast<const IMAGE_DEBUG_DIRECTORY*>(hdr()); }
     const DebugRsds& rsds() const { return m_dbgRsds; }
 
-    // static functions
     static const char* getFieldName(const int index);
     static const char* getDebugTypeName(const int index);
 
@@ -120,11 +115,9 @@ public:
 
     DebugDir(const PeFile& pe, const FileBytes& fbytes, const DataDirectoryEntry& dde);
 
-    // member functions
     const std::vector<DebugEntry>& entries() const { return m_debugEntries; }
     const void* getFieldPtr(const int index) const override;
 
-    // static functions
     static const char* getFieldName(const int index);
 
 private:

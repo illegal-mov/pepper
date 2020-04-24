@@ -54,11 +54,9 @@ class BoundImportDir final : public IDirectory {
 public:
     BoundImportDir(const PeFile& pe, const FileBytes& fbytes, const DataDirectoryEntry& dde);
 
-    // member functions
 //  const IMAGE_BOUND_IMPORT_DIRECTORY* getStructPtr() const { return static_cast<const IMAGE_*>(dir()); }
     const void* getFieldPtr(const int index) const override;
 
-    // static functions
     static const char* getFieldName(const int index);
 };
 } // namespace Pepper

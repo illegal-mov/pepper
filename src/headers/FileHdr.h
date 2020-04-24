@@ -94,12 +94,10 @@ public:
         }
     }
 
-    // member functions
     const IMAGE_FILE_HEADER* getStructPtr() const { return static_cast<const IMAGE_FILE_HEADER*>(hdr()); }
     const void* getFieldPtr(const int index) const override;
     const char* ntSig() const { return &static_cast<const char*>(hdr())[-4]; }
 
-    // static functions
     static const char* getFieldName(const int index);
     static const char* getMachineName(const int id);
     static const char* getCharacteristicName(const int index);

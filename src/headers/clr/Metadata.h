@@ -49,7 +49,6 @@ public:
     : IHeader(fbytes, raw)
     {}
 
-    // member functions
     const void* getFieldPtr(const int index) const override;
     const IMAGE_COR20_METADATA_STREAM_HEADER* getStructPtr() const
     {
@@ -61,7 +60,6 @@ public:
         return &mem()[*s_pMetadataBase + getStructPtr()->Offset];
     }
 
-    // static functions
     static const char* getFieldName(const int index);
 
 private:
@@ -88,12 +86,10 @@ public:
 
     ClrMetadata(const PeFile& pe, const FileBytes& fbytes, const DataDirectoryEntry& dde);
 
-    // member functions
     const IMAGE_COR20_METADATA_HEADER* getStructPtr() const { return static_cast<const IMAGE_COR20_METADATA_HEADER*>(dir()); }
     const std::vector<ClrStream>& streams() const { return m_streams; }
     const void* getFieldPtr(const int index) const override;
 
-    // static functions
     static const char* getFieldName(const int index);
 
     // classes that need special access to s_metadataBase

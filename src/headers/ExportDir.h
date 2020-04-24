@@ -39,7 +39,6 @@ public:
 
     ExportAddressTable(const PeFile& pe, const FileBytes& fbytes, const offset_t raw, const size_t len);
 
-    // member functions
     const void* getFieldPtr(const int index) const override;
 
     uint32_t codeRva(size_t index) const
@@ -56,7 +55,6 @@ public:
 
     size_t length() const { return m_length; }
 
-    // static functions
     static const char* getFieldName(const int index);
 
 private:
@@ -77,7 +75,6 @@ public:
 
     ExportNameTable(const PeFile& pe, const FileBytes& fbytes, const offset_t raw, const size_t len);
 
-    // member functions
     const void* getFieldPtr(const int index) const override;
 
     // get array element or 0 if out of range
@@ -97,7 +94,6 @@ public:
 
     size_t length() const { return m_length; }
 
-    // static functions
     static const char* getFieldName(const int index);
 
 private:
@@ -118,7 +114,6 @@ public:
 
     ExportOrdinalTable(const FileBytes& fbytes, const offset_t raw, const size_t len);
 
-    // member functions
     const void* getFieldPtr(const int index) const override;
 
     // get array element or -1 if out of range
@@ -130,7 +125,6 @@ public:
 
     size_t length() const { return m_length; }
 
-    // static functions
     static const char* getFieldName(const int index);
 
 private:
@@ -160,7 +154,6 @@ public:
 
     ExportDir(const PeFile& pe, const FileBytes& fbytes, const DataDirectoryEntry& dde);
 
-    // member functions
     const void* getFieldPtr(const int index) const override;
     const IMAGE_EXPORT_DIRECTORY* getStructPtr() const { return static_cast<const IMAGE_EXPORT_DIRECTORY*>(dir()); }
 
@@ -169,7 +162,6 @@ public:
     const ExportOrdinalTable& eot() const { return m_ordTable; }
     const char* dllName() const { return &mem()[getStructPtr()->NameRVA - m_diskToMemoryDifference]; }
 
-    // static functions
     static const char* getFieldName(const int index);
 
 private:

@@ -87,13 +87,11 @@ public:
 
     GenericResourceString(const FileBytes& fbytes, const offset_t raw);
 
-    // member functions
     const void* getFieldPtr(const int index) const override;
     const StringStruct* getStructPtr() const { return static_cast<const StringStruct*>(hdr()); }
     uint16_t length() const { return getStructPtr()->Length; }
     const std::string& name() const { return m_name; }
 
-    // static functions
     static const char* getFieldName(const int index);
 
 private:
@@ -127,13 +125,11 @@ public:
         return *this;
     }
 
-    // member functions
     const void* getFieldPtr(const int index) const override;
     const IMAGE_RESOURCE_DATA* getStructPtr() const { return static_cast<const IMAGE_RESOURCE_DATA*>(hdr()); }
     const char* bytes() const { return &mem()[getStructPtr()->OffsetToData - *s_pDiskToMemDiff]; }
     uint32_t size() const { return getStructPtr()->Size; }
 
-    // static functions
     static const char* getFieldName(const int index);
 
 private:
@@ -166,7 +162,6 @@ public:
     ResourceEntry(const ResourceEntry& re) = delete;
     ResourceEntry& operator=(const ResourceEntry& re) = delete;
 
-    // member functions
     const void* getFieldPtr(const int index) const override;
     const IMAGE_RESOURCE_ENTRY* getStructPtr() const { return static_cast<const IMAGE_RESOURCE_ENTRY*>(hdr()); }
     bool isDirectory() const { return getStructPtr()->DataIsDirectory; }
@@ -175,7 +170,6 @@ public:
     const ResourceNode* node() const { return isDirectory() ? m_node.get() : nullptr; }
     const ResourceData* data() const { return isDirectory() ? nullptr : m_data.get(); }
 
-    // static functions
     static const char* getFieldName(const int index);
 
 private:
@@ -206,12 +200,10 @@ public:
     ResourceNode(const ResourceNode& rn) = delete;
     ResourceNode& operator=(const ResourceNode& rn) = delete;
 
-    // member functions
     const void* getFieldPtr(const int index) const override;
     const IMAGE_RESOURCE_DIRECTORY* getStructPtr() const { return static_cast<const IMAGE_RESOURCE_DIRECTORY*>(hdr()); }
     const std::vector<ResourceEntry>& entries() const { return m_resourceEntries; }
 
-    // static functions
     static const char* getFieldName(const int index);
 
 private:
@@ -234,12 +226,10 @@ public:
     ResourceDir(const ResourceDir& rd) = delete;
     ResourceDir& operator=(const ResourceDir& rd) = delete;
 
-    // member functions
     const void* getFieldPtr(const int index) const override;
     const ResourceNode* resources() const { return m_root.get(); }
     const std::map<uint32_t, ResourceData*> map() const { return m_dataMap; }
 
-    // static functions
     static const char* getFieldName(const int index);
 
     // classes that need special access to s_rsrcBase

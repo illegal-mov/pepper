@@ -55,7 +55,6 @@ public:
     : IHeader(fbytes, raw)
     {}
 
-    // member functions
     const EntryType* getStructPtr() const { return static_cast<const EntryType*>(hdr()); }
     const void* getFieldPtr(const int index) const override;
 
@@ -64,7 +63,6 @@ public:
     uint32_t     codeLen()  const { return getStructPtr()->EndAddress   -  getStructPtr()->BeginAddress; }
     const void*  codePtr()  const { return &mem()[beginRaw()]; }
 
-    // static functions
     static const char* getFieldName(const int index);
 
 private:
@@ -88,7 +86,6 @@ public:
         return *this;
     }
 
-    // member functions
     const std::vector<ExceptionTableEntry32>& getFunctions32() const
     {
         return m_exceptionTableEntries32;
@@ -107,7 +104,6 @@ public:
     const void* getFieldPtr(const int index) const override;
     size_t length() const { return m_exceptionTableEntries32.size(); }
 
-    // static functions
     static const char* getFieldName(const int index);
 
     // classes that need special access to s_codeDiff

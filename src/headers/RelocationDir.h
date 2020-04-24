@@ -59,7 +59,6 @@ public:
     , m_length(len)
     {}
 
-    // member functions
     const void* getFieldPtr(const int index) const override;
 
     const IMAGE_BASE_RELOCATION_ENTRY* getStructPtr(const int index) const
@@ -71,7 +70,6 @@ public:
     int16_t offset(const int index) const { return getStructPtr()[index].Offset & 0x0FFF; }
     size_t length() const { return m_length; }
 
-    // static functions
     static const char* getFieldName(const int index);
     static const char* getRelocationTypeName(const PeFile& pe, const int index);
 
@@ -94,11 +92,9 @@ public:
     : IHeader(fbytes, raw)
     {}
 
-    // member functions
     const void* getFieldPtr(const int index) const override;
     const IMAGE_BASE_RELOCATION* getStructPtr() const { return static_cast<const IMAGE_BASE_RELOCATION*>(hdr()); }
 
-    // static functions
     static const char* getFieldName(const int index);
 };
 
@@ -117,12 +113,10 @@ public:
 
     RelocationBlock(const FileBytes& fbytes, const offset_t raw);
 
-    // member functions
     const void* getFieldPtr(const int index) const override;
     const RelocationBase*  relocBase()  const { return &m_relocBase; }
     const RelocationTable* relocTable() const { return &m_relocTable; }
 
-    // static functions
     static const char* getFieldName(const int index);
 
 private:
@@ -136,12 +130,10 @@ class RelocationDir final : public IDirectory {
 public:
     RelocationDir(const PeFile& pe, const FileBytes& fbytes, const DataDirectoryEntry& dde);
 
-    // member functions
     const void* getFieldPtr(const int index) const override;
     const std::vector<RelocationBlock>& blocks() const { return m_relocationBlocks; }
     size_t length() const { return m_relocationBlocks.size(); }
 
-    // static functions
     static const char* getFieldName(const int index);
 
 private:

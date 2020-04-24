@@ -41,7 +41,6 @@ public:
 
     CallbacksTable(const PeFile& pe, const FileBytes& fbytes, const offset_t raw);
 
-    // member functions
     const void* getFieldPtr(const int index) const override;
 
     // get array element or 0 if out of range
@@ -60,7 +59,6 @@ public:
 
     size_t length() const { return m_length; }
 
-    // static functions
     static const char* getFieldName(const int index);
 
 private:
@@ -88,14 +86,12 @@ public:
 
     ~TlsDir() {}
 
-    // member functions
     const void* getFieldPtr(const int index) const override;
     const IMAGE_TLS_DIRECTORY32*   getStructPtr32() const { return static_cast<const IMAGE_TLS_DIRECTORY32*>(dir()); }
     const IMAGE_TLS_DIRECTORY64*   getStructPtr64() const { return static_cast<const IMAGE_TLS_DIRECTORY64*>(dir()); }
     const CallbacksTable<ptr32_t>& getCallbacks32() const { return m_callbacks32; }
     const CallbacksTable<ptr64_t>& getCallbacks64() const { return m_callbacks64; }
 
-    // static functions
     static const char* getFieldName(const int index);
 
 private:

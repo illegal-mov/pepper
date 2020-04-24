@@ -36,13 +36,11 @@ public:
     : IHeader(fbytes, raw)
     {}
 
-    // member functions
     const IMAGE_ATTRIBUTE_CERTIFICATE* getStructPtr() const { return static_cast<const IMAGE_ATTRIBUTE_CERTIFICATE*>(hdr()); }
     const void* getFieldPtr(const int index) const override;
     const char* bytes() const { return getStructPtr()->CertificateBytes; }
     uint32_t size() const { return getStructPtr()->Length; }
 
-    // static functions
     static const char* getFieldName(const int index);
 };
 
@@ -54,12 +52,10 @@ public:
 
     CertificateDir(const PeFile& pe, const FileBytes& fbytes, const DataDirectoryEntry& dde);
 
-    // member functions
     const void* getFieldPtr(const int index) const override;
     const std::vector<CertificateEntry>& certs() const { return m_certificates; }
     size_t length() const { return m_certificates.size(); }
 
-    // static functions
     static const char* getFieldName(const int index);
 
 private:

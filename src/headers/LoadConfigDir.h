@@ -115,7 +115,6 @@ typedef struct _IMAGE_LOAD_CONFIG_DIRECTORY64 {
 
 namespace Pepper {
 
-// forward declarations
 class PeFile;
 class FileBytes;
 class DataDirectoryEntry;
@@ -136,14 +135,12 @@ public:
 
     CodeIntegrity(const FileBytes& fbytes, const offset_t raw);
 
-    // member functions
     const void* getFieldPtr(const int index) const override;
     const IMAGE_LOAD_CONFIG_CODE_INTEGRITY* getStructPtr() const
     {
         return static_cast<const IMAGE_LOAD_CONFIG_CODE_INTEGRITY*>(hdr());
     }
 
-    // static functions
     static const char* getFieldName(const int index);
 };
 
@@ -199,7 +196,6 @@ public:
 
     LoadConfigDir(const PeFile& pe, const FileBytes& fbytes, const DataDirectoryEntry& dde);
 
-    // member functions
     const void* getFieldPtr(const int index) const override;
 
     const IMAGE_LOAD_CONFIG_DIRECTORY32* getStructPtr32() const
@@ -212,7 +208,6 @@ public:
         return static_cast<const IMAGE_LOAD_CONFIG_DIRECTORY64*>(dir());
     }
 
-    // static functions
     static const char* getFieldName(const int index);
 
 private:

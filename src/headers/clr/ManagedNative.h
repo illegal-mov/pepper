@@ -27,11 +27,9 @@ public:
 
     ClrNativeHeader(const PeFile& pe, const FileBytes& fbytes, const DataDirectoryEntry& dde);
 
-    // member functions
     const void* getStructPtr() const { return static_cast<const void*>(dir()); }
     const void* getFieldPtr(const int index) const override;
 
-    // static functions
     static const char* getFieldName(const int index);
 };
 }

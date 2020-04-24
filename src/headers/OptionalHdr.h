@@ -147,7 +147,6 @@ public:
 
     OptionalHeader(const FileBytes& fbytes, const FileHeader& file);
 
-    // member functions
     const void* getFieldPtr(const int index) const override;
     const IMAGE_OPTIONAL_HEADER32* getStructPtr32() const { return static_cast<const IMAGE_OPTIONAL_HEADER32*>(hdr()); }
     const IMAGE_OPTIONAL_HEADER64* getStructPtr64() const { return static_cast<const IMAGE_OPTIONAL_HEADER64*>(hdr()); }
@@ -155,7 +154,6 @@ public:
     // so this gets to be its own special little function
     addr_t imageBase() const;
 
-    // static functions
     static const char* getFieldName(const int index);
     static const char* getCharacteristicName(const int index);
 };
@@ -186,7 +184,6 @@ public:
 
     DataDirectory(const FileBytes& fbytes, const OptionalHeader& opt);
 
-    // member functions
     const std::array<DataDirectoryEntry, _NUM_ENTRIES>& directories() const
     {
         return m_directoryEntries;
@@ -195,7 +192,6 @@ public:
     const void* getFieldPtr(const int index) const;
     size_t length() const { return _NUM_ENTRIES; };
 
-    // static functions
     static const char* getFieldName(const int index);
     static const char* getDirectoryEntryName(const int index) { return getFieldName(index); }
 

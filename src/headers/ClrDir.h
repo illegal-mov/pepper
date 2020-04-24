@@ -79,7 +79,6 @@ public:
 
     ClrDir(const PeFile& pe, const FileBytes& fbytes, const DataDirectoryEntry& dde);
 
-    // member functions
     const std::array<DataDirectoryEntry, _NUM_HEADERS>& directories() const
     {
         return m_directoryEntries;
@@ -97,7 +96,6 @@ public:
 
     const void* getFieldPtr(const int index) const override;
 
-    // static functions
     static const char* getHeaderName(const int index);
     static const char* getFieldName(const int index);
 
