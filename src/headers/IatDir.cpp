@@ -7,29 +7,28 @@
 using namespace Pepper;
 
 template <typename ArchType>
-AddressList<ArchType>::AddressList(const FileBytes& fbytes, const offset_t raw, const size_t len)
+AddressList<ArchType>::AddressList(const FileBytes& fbytes, const offset_t raw, const size_t addressListLength)
 : IHeader(fbytes, raw)
-, m_length(len)
+, m_length(addressListLength)
 {}
 
 template <typename ArchType>
 void IatDir::readAddrList(const FileBytes& fbytes, const DataDirectoryEntry& dde)
 {
     const ArchType *addrs = static_cast<const ArchType*>(dir());
-    size_t i = 0;
+    size_t tableIndex = 0;
     size_t bytesRead = 0;
     while (bytesRead < dde.size()) {
-        // get current addrs list len
-        size_t len = 0;
-        while (addrs[i] != 0) {
-            len++; // length of current row
-            i++;   // index for whole table
+        size_t addressListLength = 0;
+        while (addrs[tableIndex] != 0) {
+            addressListLength++;
+            tableIndex++;
         }
 
-        m_list32.emplace_back(fbytes, dirOffset() + bytesRead, len);
+        m_list32.emplace_back(fbytes, dirOffset() + bytesRead, addressListLength);
 
-        bytesRead += (len+1) * sizeof(ArchType); // +1 because of null terminator
-        i++; // `i` was left sitting on a null-terminator, so step over
+        bytesRead += (addressListLength+1) * sizeof(ArchType); // +1 because of null terminator
+        tableIndex++; // `tableIndex` was left sitting on a null-terminator, so step over
     }
 }
 
@@ -45,7 +44,7 @@ IatDir::IatDir(const PeFile& pe, const FileBytes& fbytes, const DataDirectoryEnt
     }
 }
 
-template <typename ArchType> // requires variant declaration in header to link
+template <typename ArchType>
 const char* AddressList<ArchType>::getFieldName(const int index)
 {
     switch (index) {
@@ -53,7 +52,7 @@ const char* AddressList<ArchType>::getFieldName(const int index)
     }
 }
 
-template <typename ArchType> // requires variant declaration in header to link
+template <typename ArchType>
 const void* AddressList<ArchType>::getFieldPtr(const int index) const
 {
     size_t uindex = static_cast<size_t>(index);

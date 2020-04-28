@@ -20,7 +20,6 @@ typedef struct _IMAGE_BASE_RELOCATION_ENTRY {
 
 namespace Pepper {
 
-// forward declarations
 class PeFile;
 class FileBytes;
 class DataDirectoryEntry;

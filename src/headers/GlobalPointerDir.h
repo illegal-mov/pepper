@@ -5,7 +5,6 @@
 
 namespace Pepper {
 
-// forward declarations
 class PeFile;
 class FileBytes;
 class DataDirectoryEntry;

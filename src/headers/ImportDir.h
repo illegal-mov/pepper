@@ -18,7 +18,6 @@ typedef struct _IMAGE_IMPORT_DESCRIPTOR {
 
 namespace Pepper {
 
-// forward declarations
 class DataDirectoryEntry;
 
 using ImportDescriptor = GenericImportDescriptor<IMAGE_IMPORT_DESCRIPTOR>;

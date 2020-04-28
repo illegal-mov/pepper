@@ -15,7 +15,6 @@ DelayImportDir::DelayImportDir(const PeFile& pe, const FileBytes& fbytes, const 
 {
     if (Ident::dirExists(*this)) {
         s_diskToMemDiff = m_diskToMemoryDifference;
-        // append non-null IMPORT_DESCRIPTOR to m_descriptors vector
         constexpr char null[sizeof(IMAGE_DELAY_IMPORT_DESCRIPTOR)] = {0};
         const IMAGE_DELAY_IMPORT_DESCRIPTOR *pid = (PIMAGE_DELAY_IMPORT_DESCRIPTOR)dir();
         size_t i = 0;

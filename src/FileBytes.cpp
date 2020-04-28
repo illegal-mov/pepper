@@ -11,20 +11,17 @@ using namespace Pepper;
 
 FileBytes::FileBytes(const std::string& path)
 {
-    // open the file
     std::ifstream in(path, std::ios_base::in | std::ios_base::binary);
     if (!in.is_open()) {
         throw FailedOpen("Unable to open the file");
     }
 
-    // get file size
     m_fileSize = getFileSize(in);
     if (m_fileSize > MAX_FILE_SIZE) {
         in.close();
         throw OversizedFile("This file exceeds the maximum file size of 512 MB");
     }
 
-    // allocate memory, copy file bytes into memory
     m_fileContent.reserve(m_fileSize);
     in >> std::noskipws;
     std::istream_iterator<char> insit(in);
@@ -36,9 +33,6 @@ FileBytes::FileBytes(const std::string& path)
     }
 }
 
-/* Copy `bufLen` file bytes starting from `pos`
- * into the memory space pointed to by `buf`
- */
 void FileBytes::readBytes(const offset_t pos, char *buf, const size_t bufLen) const
 {
     if (pos < m_fileSize) {

@@ -32,7 +32,6 @@ typedef struct _IMAGE_EXCEPTION_ENTRY_ARM {
 
 namespace Pepper {
 
-// forward declarations
 class PeFile;
 class FileBytes;
 class DataDirectoryEntry;
@@ -48,7 +47,6 @@ using ExceptionTableEntryArm = ExceptionTableEntry<IMAGE_EXCEPTION_ENTRY_ARM>;
 template <typename EntryType>
 class ExceptionTableEntry final : public IHeader {
 public:
-    // defined in template specializations
     enum Fields : int {};
 
     ExceptionTableEntry(const FileBytes& fbytes, const offset_t raw)
@@ -78,7 +76,6 @@ public:
 
     ~ExceptionDir() {}
 
-    // overloaded operators
     ExceptionDir& operator=(const ExceptionDir& ed)
     {
         IDirectory::operator=(ed);
@@ -119,8 +116,6 @@ private:
         std::vector<ExceptionTableEntryArm> m_exceptionTableEntriesArm;
     };
 
-    // Append entries to the vector. Works for any type of ExceptionTable because
-    // entrySize is chosen by the caller when it knows the architecture.
     template <typename EntryType>
     void appendEntries(const FileBytes& fbytes, uint32_t totalSize);
 };

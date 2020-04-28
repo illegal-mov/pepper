@@ -69,12 +69,10 @@ ResourceNode::ResourceNode(const FileBytes& fbytes, const offset_t raw, const Re
 : IHeader(fbytes, raw)
 , m_parent(parent)
 {
-    // pre-allocate for total number of entries
     size_t numEntries = static_cast<size_t>(getStructPtr()->NumberOfNamedEntries)
                       + getStructPtr()->NumberOfIdEntries;
     m_resourceEntries.reserve(numEntries);
 
-    // construct each entry
     size_t entriesBase = hdrOffset() + sizeof(IMAGE_RESOURCE_DIRECTORY);
     for (size_t i=0; i < numEntries; i++) {
         m_resourceEntries.emplace_back(fbytes,
@@ -93,7 +91,7 @@ ResourceDir::ResourceDir(const PeFile& pe, const FileBytes& fbytes, const DataDi
     }
 }
 
-template <typename StringStruct> // requires variant declaration in header to link
+template <typename StringStruct>
 const char* GenericResourceString<StringStruct>::getFieldName(const int index)
 {
     switch (index) {
@@ -103,7 +101,7 @@ const char* GenericResourceString<StringStruct>::getFieldName(const int index)
     }
 }
 
-template <typename StringStruct> // requires variant declaration in header to link
+template <typename StringStruct>
 const void* GenericResourceString<StringStruct>::getFieldPtr(const int index) const
 {
     switch (index) {

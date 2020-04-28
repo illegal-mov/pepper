@@ -5,7 +5,6 @@
 
 namespace Pepper {
 
-// foward declarations
 class PeFile;
 class DataDirectoryEntry;
 class SectionHeaderEntry;

@@ -1,7 +1,6 @@
 #ifndef IMPORTSCOMMON_H
 #define IMPORTSCOMMON_H
 
-#include <sstream>
 #include <vector>
 
 #include "../Identification.h"
@@ -40,12 +39,10 @@ typedef struct _IMAGE_IMPORT_BY_NAME {
 
 namespace Pepper {
 
-// forward declarations
 class FileBytes;
 template <typename ArchType>
 class ImportThunk;
 
-// typedefs that depend on the forward declaration
 using ImportThunk32 = ImportThunk<IMAGE_THUNK_DATA32>;
 using ImportThunk64 = ImportThunk<IMAGE_THUNK_DATA64>;
 
@@ -85,14 +82,12 @@ public:
         _NUM_FIELDS,
     };
 
-    // constructor for import by ordinal (when OrdinalFlag is set)
-    ImportThunk(const FileBytes& fbytes, const offset_t raw, std::string ordstr)
+    ImportThunk(const FileBytes& fbytes, const offset_t raw, std::string ordinal)
     : IHeader(fbytes, raw)
     , m_hintname()
-    , m_ordstr(ordstr)
+    , m_ordinal(ordinal)
     {}
 
-    // constructor for regular import
     ImportThunk(const FileBytes& fbytes, const offset_t raw)
     : IHeader(fbytes, raw)
     , m_hintname(fbytes, getStructPtr()->HintNameTableRVA - *s_pDiskToMemDiff)
@@ -108,14 +103,14 @@ public:
 
     const std::string* ordstr() const
     {
-        return (getStructPtr()->OrdinalFlag) ? &m_ordstr : nullptr;
+        return (getStructPtr()->OrdinalFlag) ? &m_ordinal : nullptr;
     }
 
     static const char* getFieldName(const int index);
 
 private:
     ImportName m_hintname;
-    std::string m_ordstr{};
+    std::string m_ordinal{};
 
     static size_t *s_pDiskToMemDiff;
 };
@@ -127,7 +122,6 @@ private:
 template <typename DescriptorType>
 class GenericImportDescriptor final : public IHeader {
 public:
-    // this enum is defined in template specializations
     enum Fields : int {};
 
     GenericImportDescriptor(const PeFile& pe, const FileBytes& fbytes, const offset_t raw);
@@ -140,7 +134,6 @@ public:
 
     ~GenericImportDescriptor() {}
 
-    // overloaded operators
     GenericImportDescriptor& operator=(const GenericImportDescriptor& id)
     {
         IHeader::operator=(id);
@@ -165,17 +158,11 @@ public:
     static const char* getFieldName(const int index);
 
 private:
-    // for data at ImportLookupTableRVA
-    /* The variant declaractions at the end of the file are still
-     * needed even though ImportThunk objects are declared with
-     * concrete types right here.
-     */
     union {
         std::vector<ImportThunk32> m_thunks32{};
         std::vector<ImportThunk64> m_thunks64;
     };
 
-    // for data at ImportAddressTableRVA
     union {
         std::vector<ptr32_t> m_addresses32{};
         std::vector<ptr64_t> m_addresses64;
@@ -216,7 +203,6 @@ enum GenericImportDescriptor<IMAGE_DELAY_IMPORT_DESCRIPTOR>::Fields : int {
     _NUM_FIELDS,
 };
 
-// variant declarations
 template class ImportThunk<IMAGE_THUNK_DATA32>;
 template class ImportThunk<IMAGE_THUNK_DATA64>;
 

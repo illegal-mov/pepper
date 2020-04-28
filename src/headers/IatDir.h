@@ -9,7 +9,6 @@
 
 namespace Pepper {
 
-// forward declarations
 class PeFile;
 class FileBytes;
 class DataDirectoryEntry;
@@ -86,7 +85,6 @@ private:
     void readAddrList(const FileBytes& fbytes, const DataDirectoryEntry& dde);
 };
 
-// variant declarations
 template class AddressList<int32_t>;
 template class AddressList<int64_t>;
 

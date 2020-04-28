@@ -11,8 +11,6 @@ template<> size_t *ExceptionTableEntry32::s_pCodeDiff  = &ExceptionDir::s_codeDi
 template<> size_t *ExceptionTableEntry64::s_pCodeDiff  = &ExceptionDir::s_codeDiff;
 template<> size_t *ExceptionTableEntryArm::s_pCodeDiff = &ExceptionDir::s_codeDiff;
 
-// Append elements to the vector. Works for any type of ExceptionTable because
-// entrySize is chosen by the caller when it knows the architecture.
 template <typename EntryType>
 void ExceptionDir::appendEntries(const FileBytes& fbytes, const uint32_t totalSize)
 {
@@ -30,7 +28,6 @@ ExceptionDir::ExceptionDir(const PeFile& pe, const FileBytes& fbytes, const Data
 : IDirectory(pe, fbytes, dde)
 {
     if (Ident::dirExists(*this)) {
-        // Fill elements vector according to architecture's exception table entry size
         if (Ident::is32bit(*m_peFile)) {
             appendEntries<IMAGE_EXCEPTION_ENTRY32>(fbytes, dde.size());
         } else if (Ident::is64bit(*m_peFile)) {

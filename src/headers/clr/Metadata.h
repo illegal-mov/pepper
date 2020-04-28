@@ -14,7 +14,7 @@ typedef struct _IMAGE_COR20_METADATA_HEADER {
     int16_t MinorVersion;    // metadata minor version number
     int32_t Reserved;        // reserved, must be zero
     int32_t Length;          // Version length (multiple of 4)
-    char    Version[];       // length-prefixed string
+    char    Version[1];      // length-prefixed string
     // FLEX SPACE
 //  int16_t Flags;           // reserved, must be zero
 //  int16_t NumberOfStreams;
@@ -29,7 +29,6 @@ typedef struct _IMAGE_COR20_METADATA_STREAM_HEADER {
 
 namespace Pepper {
 
-// forward declarations
 class PeFile;
 class FileBytes;
 class DataDirectoryEntry;

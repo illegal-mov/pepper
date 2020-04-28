@@ -5,13 +5,13 @@ using namespace Pepper;
 const char* FileHeader::getFieldName(const int index)
 {
     switch (index) {
-        case MACHINE                : return "Machine";              // type of cpu the binary was compiled for
-        case NUMBER_OF_SECTIONS     : return "Number of Sections";   // number of section headers
-        case TIMESTAMP              : return "Timestamp";            // file creation time as UNIX epoch
-        case POINTER_TO_SYMBOL_TABLE: return "Pointer to Symbols";   // file offset to symbol table (deprecated)
-        case NUMBER_OF_SYMBOLS      : return "Number of Symbols";    // number of symbol table entries (deprecated)
-        case SIZE_OF_OPTIONAL_HEADER: return "Optional Header Size"; // size of optional header in bytes
-        case CHARACTERISTICS        : return "Characteristics";      // bitfields for various things
+        case MACHINE                : return "Machine";
+        case NUMBER_OF_SECTIONS     : return "Number of Sections";
+        case TIMESTAMP              : return "Timestamp";
+        case POINTER_TO_SYMBOL_TABLE: return "Pointer to Symbols";
+        case NUMBER_OF_SYMBOLS      : return "Number of Symbols";
+        case SIZE_OF_OPTIONAL_HEADER: return "Optional Header Size";
+        case CHARACTERISTICS        : return "Characteristics";
         default                     : return "<UNKNOWN>";
     }
 }
@@ -19,13 +19,13 @@ const char* FileHeader::getFieldName(const int index)
 const void* FileHeader::getFieldPtr(const int index) const
 {
     switch (index) {
-        case MACHINE                : return &getStructPtr()->Machine;              // type of cpu the binary was compiled for
-        case NUMBER_OF_SECTIONS     : return &getStructPtr()->NumberOfSections;     // number of section headers
-        case TIMESTAMP              : return &getStructPtr()->TimeDateStamp;        // file creation time as UNIX epoch
-        case POINTER_TO_SYMBOL_TABLE: return &getStructPtr()->PointerToSymbolTable; // file offset to symbol table (deprecated)
-        case NUMBER_OF_SYMBOLS      : return &getStructPtr()->NumberOfSymbols;      // number of symbol table entries (deprecated)
-        case SIZE_OF_OPTIONAL_HEADER: return &getStructPtr()->SizeOfOptionalHeader; // size of optional header in bytes
-        case CHARACTERISTICS        : return &getStructPtr()->Characteristics;      // bitfields for various things
+        case MACHINE                : return &getStructPtr()->Machine;
+        case NUMBER_OF_SECTIONS     : return &getStructPtr()->NumberOfSections;
+        case TIMESTAMP              : return &getStructPtr()->TimeDateStamp;
+        case POINTER_TO_SYMBOL_TABLE: return &getStructPtr()->PointerToSymbolTable;
+        case NUMBER_OF_SYMBOLS      : return &getStructPtr()->NumberOfSymbols;
+        case SIZE_OF_OPTIONAL_HEADER: return &getStructPtr()->SizeOfOptionalHeader;
+        case CHARACTERISTICS        : return &getStructPtr()->Characteristics;
         default                     : return nullptr;
     }
 }

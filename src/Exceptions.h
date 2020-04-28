@@ -5,47 +5,47 @@
 
 namespace Pepper {
 
-/* Base class for exceptions */
 class PeException : public std::exception
 {
 public:
     PeException(const std::string& error)
     : m_error(error) {}
+    virtual ~PeException() = default;
     const char* getError() const { return m_error.c_str(); }
 
 protected:
     std::string m_error;
 };
 
-class BadSignature : public PeException
+class BadSignature final : public PeException
 {
 public:
     BadSignature(const std::string& error)
     : PeException(error) {}
 };
 
-class FailedOpen : public PeException
+class FailedOpen final : public PeException
 {
 public:
     FailedOpen(const std::string& error)
     : PeException(error) {}
 };
 
-class FailedRead : public PeException
+class FailedRead final : public PeException
 {
 public:
     FailedRead(const std::string& error)
     : PeException(error) {}
 };
 
-class GenericError : public PeException
+class GenericError final : public PeException
 {
 public:
     GenericError(const std::string& error)
     : PeException(error) {}
 };
 
-class OversizedFile : public PeException
+class OversizedFile final : public PeException
 {
 public:
     OversizedFile(const std::string& error)

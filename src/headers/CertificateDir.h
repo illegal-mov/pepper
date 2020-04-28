@@ -17,7 +17,6 @@ typedef struct _IMAGE_ATTRIBUTE_CERTIFICATE {
 
 namespace Pepper {
 
-// forward declarations
 class PeFile;
 class FileBytes;
 class DataDirectoryEntry;

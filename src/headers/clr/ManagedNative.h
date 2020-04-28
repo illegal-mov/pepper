@@ -10,7 +10,6 @@ typedef struct _IMAGE_ {
 
 namespace Pepper {
 
-// forward declarations
 class PeFile;
 class FileBytes;
 class DataDirectoryEntry;

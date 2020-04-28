@@ -39,7 +39,6 @@ ExportDir::ExportDir(const PeFile& pe, const FileBytes& fbytes, const DataDirect
     if (Ident::dirExists(*this)) {
         const IMAGE_EXPORT_DIRECTORY *pExpDir = getStructPtr();
 
-        // construct each of the three export tables by copy assignment
         if (getStructPtr()->AddressTableEntries > 0) {
             ExportAddressTable eat(pe, fbytes, pExpDir->ExportAddressTableRVA - m_diskToMemoryDifference,
                 pExpDir->AddressTableEntries);

@@ -43,7 +43,6 @@ using ClrVTableFixupPtr  = std::shared_ptr<ClrVTableFixup>;
 using ClrExportJumpPtr   = std::shared_ptr<ClrExportJump>;
 using ClrNativeHeaderPtr = std::shared_ptr<ClrNativeHeader>;
 
-// forward declarations
 class PeFile;
 class FileBytes;
 
@@ -60,8 +59,7 @@ public:
         _NUM_HEADERS,
     };
 
-    // commented out elements exist in the structure, but
-    // should be accessed by iterating over `directories()`
+    // commented elements should be accessed with specific `Hdr()` functions
     enum Fields {
         SIZE,
         MAJOR_RUNTIME_VERSION,

@@ -5,13 +5,11 @@
 
 #include "FileBytes.h"
 
-// headers
 #include "headers/DosHdr.h"
 #include "headers/FileHdr.h"
 #include "headers/OptionalHdr.h"
 #include "headers/SectionHdr.h"
 
-// directory entries
 #include "headers/ExportDir.h"
 #include "headers/ImportDir.h"
 #include "headers/ResourceDir.h"
@@ -106,14 +104,12 @@ private:
     std::string      m_fname;
     FileBytes        m_Bytes;
 
-    // headers
     DosHeader        m_Dos;
     FileHeader       m_File;
     OptionalHeader   m_Opt;
     DataDirectory    m_DDir;
     SectionHeaders   m_Sctns;
 
-    // data directories
     ExportDirPtr        m_Xprt{};
     ImportDirPtr        m_Mprt{};
     ResourceDirPtr      m_Rsrc{};

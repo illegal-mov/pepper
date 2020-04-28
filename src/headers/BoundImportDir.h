@@ -45,7 +45,6 @@ typedef struct _IMAGE_IMPORT_BY_NAME {
 
 namespace Pepper {
 
-// forward declarations
 class PeFile;
 class FileBytes;
 class DataDirectoryEntry;

@@ -1,5 +1,7 @@
 #include "ImportsCommon.h"
 
+#include <sstream>
+
 #include "../Conversion.h"
 #include "../Types.h"
 
@@ -40,7 +42,6 @@ template <typename ArchType> // for the function
 void GenericImportDescriptor<DescriptorType>::readThunks(const FileBytes& fbytes, const offset_t raw)
 {
     ArchType *thunk = (ArchType*)&mem()[raw];
-    // count number of IMAGE_IMPORT_DESCRIPTORS up until the null descriptor
     size_t i = 0;
     while (thunk[i].HintNameTableRVA != 0) {
         if (thunk[i].OrdinalFlag) {
@@ -121,7 +122,7 @@ const void* ImportName::getFieldPtr(const int index) const
     }
 }
 
-template <typename ArchType> // requires variant declaration in header to link
+template <typename ArchType>
 const char* ImportThunk<ArchType>::getFieldName(const int index)
 {
     switch (index) {
@@ -130,7 +131,7 @@ const char* ImportThunk<ArchType>::getFieldName(const int index)
     }
 }
 
-template <typename ArchType> // requires variant declaration in header to link
+template <typename ArchType>
 const void* ImportThunk<ArchType>::getFieldPtr(const int index) const
 {
     switch (index) {

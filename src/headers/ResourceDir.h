@@ -56,15 +56,12 @@ typedef struct _IMAGE_RESOURCE_DATA {
 
 namespace Pepper {
 
-// forward declarations
 class PeFile;
 class FileBytes;
 class DataDirectoryEntry;
 class ResourceNode;
 template <typename StringStruct>
 class GenericResourceString;
-
-// typedefs that depend on the forward declaration
 
 /* A 2-byte string length prefixing a non-null-terminated std::string
  */
@@ -244,10 +241,9 @@ private:
     std::map<uint32_t, ResourceData*> m_dataMap{};
 };
 
-// variant declarations
 template class GenericResourceString<IMAGE_RESOURCE_DIRECTORY_STRING>;
 template class GenericResourceString<IMAGE_RESOURCE_DIRECTORY_STRING_U>;
 
 } // namespace Pepper
 
-#endif // RESOURCE_H
+#endif

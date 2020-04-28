@@ -12,17 +12,16 @@ OptionalHeader::OptionalHeader(const FileBytes& fbytes, const FileHeader& file)
 
 DataDirectory::DataDirectory(const FileBytes& fbytes, const OptionalHeader& opt)
 {
-    // get offset to data directory
     const bool is32bit = opt.getStructPtr32()->Magic == OptionalHeader::BIT32;
-    const size_t base = opt.hdrOffset() + ((is32bit) ?
+    const size_t dataDirectoryOffset = opt.hdrOffset() + ((is32bit) ?
         offsetof(IMAGE_OPTIONAL_HEADER32, DataDirectory):
         offsetof(IMAGE_OPTIONAL_HEADER64, DataDirectory));
 
-    // construct each data directory entry by copy assignment
-    size_t index = 0;
+    size_t i = 0;
     for (auto& entry : m_directoryEntries) {
-        entry = DataDirectoryEntry(fbytes, base + (index * sizeof(IMAGE_DATA_DIRECTORY)));
-        index++;
+        entry = DataDirectoryEntry(fbytes,
+            dataDirectoryOffset + (i * sizeof(IMAGE_DATA_DIRECTORY)));
+        ++i;
     }
 }
 

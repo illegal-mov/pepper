@@ -34,22 +34,21 @@ TlsDir::TlsDir(const PeFile& pe, const FileBytes& fbytes, const DataDirectoryEnt
 , m_callbacks32()
 {
     if (Ident::dirExists(*this)) {
-        // get AVA to array of callback function pointers
         const bool is32bit = Ident::is32bit(pe);
-        addr_t callbacksPtr = (is32bit)
-                              ? getStructPtr32()->AddressOfCallbacks
-                              : getStructPtr64()->AddressOfCallbacks;
-        // convert AVA to RAW, use RAW to construct table
-        callbacksPtr = Convert::convertAddr(pe, callbacksPtr, Convert::AddrType::AVA, Convert::AddrType::RAW);
+        addr_t callbacksAddress = (is32bit)
+                                ? getStructPtr32()->AddressOfCallbacks
+                                : getStructPtr64()->AddressOfCallbacks;
+
+        callbacksAddress = Convert::convertAddr(pe, callbacksAddress, Convert::AddrType::AVA, Convert::AddrType::RAW);
         if (is32bit) {
-            m_callbacks32 = CallbacksTable<ptr32_t>(pe, fbytes, callbacksPtr);
+            m_callbacks32 = CallbacksTable<ptr32_t>(pe, fbytes, callbacksAddress);
         } else {
-            m_callbacks64 = CallbacksTable<ptr64_t>(pe, fbytes, callbacksPtr);
+            m_callbacks64 = CallbacksTable<ptr64_t>(pe, fbytes, callbacksAddress);
         }
     }
 }
 
-template <typename ArchType> // requires variant declaration in header to link
+template <typename ArchType>
 const char* CallbacksTable<ArchType>::getFieldName(const int index)
 {
     switch (index) {
@@ -57,7 +56,7 @@ const char* CallbacksTable<ArchType>::getFieldName(const int index)
     }
 }
 
-template <typename ArchType> // requires variant declaration in header to link
+template <typename ArchType>
 const void* CallbacksTable<ArchType>::getFieldPtr(const int index) const
 {
     size_t uindex = static_cast<size_t>(index);

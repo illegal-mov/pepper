@@ -26,7 +26,6 @@ typedef struct _IMAGE_TLS_DIRECTORY64 {
 
 namespace Pepper {
 
-// forward declarations
 class PeFile;
 class FileBytes;
 class DataDirectoryEntry;
@@ -43,14 +42,12 @@ public:
 
     const void* getFieldPtr(const int index) const override;
 
-    // get array element or 0 if out of range
     ArchType callbackAva(const int index) const
     {
         const ArchType *ret = static_cast<const ArchType*>(getFieldPtr(index));
         return (ret == nullptr) ? 0 : *ret;
     }
 
-    // get array element or 0 if out of range
     ArchType callbackRaw(const int index) const
     {
         const ArchType *ret = static_cast<const ArchType*>(getFieldPtr(index));
@@ -101,7 +98,6 @@ private:
     };
 };
 
-// variant declarations
 template class CallbacksTable<ptr32_t>;
 template class CallbacksTable<ptr64_t>;
 

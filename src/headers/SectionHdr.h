@@ -23,7 +23,6 @@ typedef struct _IMAGE_SECTION_HEADER {
 
 namespace Pepper {
 
-// forward declarations
 class FileHeader;
 
 /* SectionHeaderEntry is class wrapping an entry in the SectionHeaders array.

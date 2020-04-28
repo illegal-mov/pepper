@@ -6,11 +6,9 @@ using namespace Pepper;
 
 SectionHeaders::SectionHeaders(const FileBytes& fbytes, const FileHeader& file)
 {
-    // find base of section headers
     const uint16_t optHdrSize = file.getStructPtr()->SizeOfOptionalHeader;
     const size_t base = file.hdrOffset() + sizeof(IMAGE_FILE_HEADER) + optHdrSize;
 
-    // construct each section header
     const uint16_t length = file.getStructPtr()->NumberOfSections;
     for (size_t i=0; i < length; i++) {
         m_sectionHeaders.emplace_back(fbytes, base + (i * sizeof(IMAGE_SECTION_HEADER)));

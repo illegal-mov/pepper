@@ -21,7 +21,6 @@ typedef struct _IMAGE_DELAY_IMPORT_DESCRIPTOR {
 
 namespace Pepper {
 
-// forward declarations
 class DataDirectoryEntry;
 
 using DelayImportDescriptor = GenericImportDescriptor<IMAGE_DELAY_IMPORT_DESCRIPTOR>;

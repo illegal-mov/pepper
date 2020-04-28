@@ -103,7 +103,7 @@ bool Ident::dirExists(const IDirectory& id)
     return id.getOwningSection() != nullptr;
 }
 
-bool Ident::isAllSigsValid(const PeFile& pe)
+bool Ident::isAllSignaturesValid(const PeFile& pe)
 {
     return isDosSigValid(pe)
         && isNtSigValid(pe)
@@ -111,14 +111,14 @@ bool Ident::isAllSigsValid(const PeFile& pe)
         && isClrMetadataSigValid(pe);
 }
 
-bool Ident::isX86(const PeFile& pe)
+bool Ident::isMachineTypeX86(const PeFile& pe)
 {
     const uint16_t type = getFileHeaderMachine(pe);
     return type == FileHeader::Machine::I386
         || type == FileHeader::Machine::AMD64;
 }
 
-bool Ident::isArmThumb(const PeFile& pe)
+bool Ident::isMachineTypeArmThumb(const PeFile& pe)
 {
     const uint16_t type = getFileHeaderMachine(pe);
     return type == FileHeader::Machine::ARM
@@ -127,7 +127,7 @@ bool Ident::isArmThumb(const PeFile& pe)
         || type == FileHeader::Machine::THUMB;
 }
 
-bool Ident::isMips(const PeFile& pe)
+bool Ident::isMachineTypeMips(const PeFile& pe)
 {
     const uint16_t type = getFileHeaderMachine(pe);
     return type == FileHeader::Machine::MIPS16
@@ -137,7 +137,7 @@ bool Ident::isMips(const PeFile& pe)
         || type == FileHeader::Machine::WCEMIPSV2;
 }
 
-bool Ident::isRiscv(const PeFile& pe)
+bool Ident::isMachineTypeRiscv(const PeFile& pe)
 {
     const uint16_t type = getFileHeaderMachine(pe);
     return type == FileHeader::Machine::RISCV32
@@ -145,7 +145,7 @@ bool Ident::isRiscv(const PeFile& pe)
         || type == FileHeader::Machine::RISCV128;
 }
 
-bool Ident::isThumb(const PeFile& pe)
+bool Ident::isMachineTypeThumb(const PeFile& pe)
 {
     const uint16_t type = getFileHeaderMachine(pe);
     return type == FileHeader::Machine::THUMB;

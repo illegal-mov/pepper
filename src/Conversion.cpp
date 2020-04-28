@@ -11,7 +11,7 @@ using namespace Pepper;
 namespace
 {
 /* Compare addresses in the section headers to find the difference between
- * RVAs and file offsets.
+ * Relative Virtual Addresses (RVAs) and file offsets.
  */
 uint32_t calculateDiff(const PeFile& pe, const addr_t sourceAddr, Convert::AddrType sourceType)
 {
@@ -43,13 +43,11 @@ uint32_t calculateDiff(const PeFile& pe, const addr_t sourceAddr, Convert::AddrT
 }
 } // namespace
 
-/* Use an RVA address to get the difference between RVAs and RAWs */
 uint32_t Convert::getRvaToRawDiff(const PeFile& pe, const addr_t rva)
 {
     return calculateDiff(pe, rva, AddrType::RVA);
 }
 
-/* Use a RAW address to get the difference between RVAs and RAWs */
 uint32_t Convert::getRawToRvaDiff(const PeFile& pe, const addr_t raw)
 {
     return calculateDiff(pe, raw, AddrType::RAW);

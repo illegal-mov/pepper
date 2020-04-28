@@ -24,7 +24,6 @@ typedef struct _IMAGE_COR20_RESOURCES_WSTRING {
 
 namespace Pepper {
 
-// forward declarations
 class PeFile;
 class FileBytes;
 class DataDirectoryEntry;

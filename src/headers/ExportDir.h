@@ -22,7 +22,6 @@ typedef struct _IMAGE_EXPORT_DIRECTORY {
 
 namespace Pepper {
 
-// forward declarations
 class PeFile;
 class FileBytes;
 class DataDirectoryEntry;
@@ -77,14 +76,12 @@ public:
 
     const void* getFieldPtr(const int index) const override;
 
-    // get array element or 0 if out of range
     uint32_t nameRva(size_t index) const
     {
         return (index < length())
         ? getStructPtr()[index] : 0;
     }
 
-    // get ASCII name or nullptr if out of range
     const char* funcName(size_t index) const
     {
         return (index < length())
