@@ -16,8 +16,8 @@ typedef struct _IMAGE_COR20_METADATA_HEADER {
     int32_t Length;          // Version length (multiple of 4)
     char    Version[1];      // length-prefixed string
     // FLEX SPACE
-//  int16_t Flags;           // reserved, must be zero
-//  int16_t NumberOfStreams;
+    int16_t Flags;           // reserved, must be zero
+    int16_t NumberOfStreams;
 } IMAGE_COR20_METADATA_HEADER, *PIMAGE_COR20_METADATA_HEADER;
 
 typedef struct _IMAGE_COR20_METADATA_STREAM_HEADER {

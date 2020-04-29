@@ -1,7 +1,9 @@
 #ifndef CLR_RESOURCE_H
 #define CLR_RESOURCE_H
 
+#include "../../Types.h"
 #include "../../generics/iDir.h"
+#include "../struct.h"
 
 /*
 typedef struct _IMAGE_COR20_RESOURCES_HEADER {
@@ -13,12 +15,12 @@ typedef struct _IMAGE_COR20_RESOURCES_HEADER {
 
 typedef struct _IMAGE_COR20_RESOURCES_STRING {
     uint8_t Length;
-    char    String[]; // flexible member because it is length-prefixed
+    char    String[1]; // flexible member because it is length-prefixed
 } IMAGE_COR20_RESOURCES_STRING, *PIMAGE_COR20_RESOURCES_STRING;
 
 typedef struct _IMAGE_COR20_RESOURCES_WSTRING {
     uint8_t  Length;
-    uint16_t String[]; // flexible member because it is length-prefixed
+    uint16_t String[1]; // flexible member because it is length-prefixed
 } IMAGE_COR20_RESOURCES_WSTRING, *PIMAGE_COR20_RESOURCES_WSTRING;
 */
 

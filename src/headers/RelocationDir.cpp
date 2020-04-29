@@ -59,15 +59,15 @@ const char* RelocationTable::getRelocationTypeName(const PeFile& pe, const int i
         case MIPS_JMPADDR  :
 //      case ARM_MOV32     : // no duplicate enum values allowed
 //      case RISCV_HIGH20  : // no duplicate enum values allowed
-            if      (Ident::isMips(pe))     return "MIPS Jump";
-            else if (Ident::isArmThumb(pe)) return "ARM MOV";
-            else if (Ident::isRiscv(pe))    return "RISC-V High";
+            if      (Ident::isMachineTypeMips(pe))     return "MIPS Jump";
+            else if (Ident::isMachineTypeArmThumb(pe)) return "ARM MOV";
+            else if (Ident::isMachineTypeRiscv(pe))    return "RISC-V High";
             else                            break;
         case RESERVED_6    : return "<Reserved>";
         case THUMB_MOV32   :
 //      case RISCV_LOW12I  : // no duplicate enum values allowed
-            if      (Ident::isThumb(pe)) return "Thumb MOV";
-            else if (Ident::isRiscv(pe)) return "RISC-V High";
+            if      (Ident::isMachineTypeThumb(pe)) return "Thumb MOV";
+            else if (Ident::isMachineTypeRiscv(pe)) return "RISC-V High";
             else                         break;
         case RISCV_LOW12S  : return "RISC-V Low (S-Type)";
         case MIPS_JMPADDR16: return "MIPS16 Jump";

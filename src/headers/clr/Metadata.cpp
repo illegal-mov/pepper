@@ -8,6 +8,16 @@ using namespace Pepper;
 size_t  ClrMetadata::s_metadataBase = 0;
 size_t *ClrStream::s_pMetadataBase  = &ClrMetadata::s_metadataBase;
 
+namespace
+{
+constexpr int kByteAlignment = 4;
+
+size_t alignToPowerOfTwo(const size_t value, const size_t alignment)
+{
+    return value + ((alignment - 1) & (alignment - (value & (alignment - 1))));
+}
+} // namespace
+
 ClrMetadata::ClrMetadata(const PeFile& pe, const FileBytes& fbytes, const DataDirectoryEntry& dde)
 : IDirectory(pe, fbytes, dde)
 {
@@ -20,17 +30,17 @@ ClrMetadata::ClrMetadata(const PeFile& pe, const FileBytes& fbytes, const DataDi
      * structure, this is a really ridiculous way of doing `sizeof`
      */
     size_t pos = offsetof(IMAGE_COR20_METADATA_HEADER, Version)
-               + getStructPtr()->Length + 4;
-    // construct each ClrStream object
+               + getStructPtr()->Length
+               + sizeof(getStructPtr()->Flags)
+               + sizeof(getStructPtr()->NumberOfStreams);
+
     for (size_t i=0; i < numStreams; i++) {
         ClrStream tmp(fbytes, dirOffset() + pos);
         m_streams.push_back(tmp);
 
         const char *name = tmp.getStructPtr()->Name;
-        // it is important that the member `Name[]` counts as zero bytes
         pos += sizeof(IMAGE_COR20_METADATA_STREAM_HEADER) + strlen(name) + 1;
-        // align to next 4-byte boundary
-        pos += 3 & (4 - (pos & 3));
+        pos = alignToPowerOfTwo(pos, kByteAlignment);
     }
 }
 
@@ -80,7 +90,7 @@ const void* ClrMetadata::getFieldPtr(const int index) const
         case VERSION          : return &getStructPtr()->Version;
         // the length-prefixed string makes this part weird
         case FLAGS            : return &static_cast<const char*>(dir())[offsetof(IMAGE_COR20_METADATA_HEADER, Version) + getStructPtr()->Length];
-        case NUMBER_OF_STREAMS: return &static_cast<const char*>(dir())[offsetof(IMAGE_COR20_METADATA_HEADER, Version) + getStructPtr()->Length + 2];
+        case NUMBER_OF_STREAMS: return &static_cast<const char*>(dir())[offsetof(IMAGE_COR20_METADATA_HEADER, Version) + getStructPtr()->Length + sizeof(getStructPtr()->Flags)];
         default               : return nullptr;
     }
 }

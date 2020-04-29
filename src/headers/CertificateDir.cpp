@@ -5,6 +5,16 @@
 
 using namespace Pepper;
 
+namespace
+{
+constexpr int kByteAlignment = 8;
+
+size_t alignToPowerOfTwo(const size_t value, const size_t alignment)
+{
+    return value + ((alignment - 1) & (alignment - (value & (alignment - 1))));
+}
+} // namespace
+
 CertificateDir::CertificateDir(const PeFile& pe, const FileBytes& fbytes, const DataDirectoryEntry& dde)
 : IDirectory(pe, fbytes, dde)
 {
@@ -16,8 +26,7 @@ CertificateDir::CertificateDir(const PeFile& pe, const FileBytes& fbytes, const 
         while (currentSize < dde.size()) {
             m_certificates.emplace_back(fbytes, dirOffset() + currentSize);
             currentSize += m_certificates.back().getStructPtr()->Length;
-            // round up to 8 byte alignment
-            currentSize += (8 - (currentSize & 7)) & 7;
+            currentSize = alignToPowerOfTwo(currentSize, kByteAlignment);
         }
     }
 }

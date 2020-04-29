@@ -863,21 +863,21 @@ typedef struct _IMAGE_COR20_HEADER {
 } IMAGE_COR20_HEADER, *PIMAGE_COR20_HEADER;
 
 typedef struct _IMAGE_COR20_METADATA_HEADER {
-    int32_t  Signature;    // always set to "BSJB"
-    int16_t  MajorVersion; // metadata major version number
-    int16_t  MinorVersion; // metadata minor version number
-    int32_t  Reserved;     // reserved, must be zero
-    uint32_t Length;       // Version length (multiple of 4)
+    int32_t  Signature;       // always set to "BSJB"
+    int16_t  MajorVersion;    // metadata major version number
+    int16_t  MinorVersion;    // metadata minor version number
+    int32_t  Reserved;        // reserved, must be zero
+    uint32_t Length;          // Version length (multiple of 4)
     char     Version[1];      // length-prefixed string
     // FLEX SPACE
-//  int16_t  Flags;           // reserved, must be zero
-//  uint16_t NumberOfStreams;
+    int16_t  Flags;           // reserved, must be zero
+    uint16_t NumberOfStreams;
 } IMAGE_COR20_METADATA_HEADER, *PIMAGE_COR20_METADATA_HEADER;
 
 typedef struct _IMAGE_COR20_METADATA_STREAM_HEADER {
     uint32_t Offset; // relative to METADATA_header
     uint32_t Size;
-    char     Name[1];
+    char     Name[];
 } IMAGE_COR20_METADATA_STREAM_HEADER, *PIMAGE_COR20_METADATA_STREAM_HEADER;
 
 typedef struct _IMAGE_COR20_RESOURCES_HEADER {
