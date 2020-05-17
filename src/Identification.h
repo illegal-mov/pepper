@@ -14,6 +14,8 @@ namespace Pepper
 {
 namespace Ident
 {
+    bool canAppendNewSection(const PeFile& pe);
+
     bool isDll(const PeFile& pe);
 
     bool is32bit(const PeFile& pe);

@@ -1,5 +1,7 @@
 #include "Identification.h"
 
+#include <cstring>
+
 #include "PeFile.h"
 #include "generics/iDir.h"
 #include "headers/FileHdr.h"
@@ -70,6 +72,16 @@ bool isClrMetadataSigValid(const PeFile& pe)
     return true;
 }
 } // namespace
+
+bool Ident::canAppendNewSection(const PeFile& pe)
+{
+    offset_t sectionHeadersEnd = pe.sectionHdrs().getSections().back().hdrOffset()
+        + sizeof(IMAGE_SECTION_HEADER);
+    constexpr char null[sizeof(IMAGE_SECTION_HEADER)] = {0};
+    char section[sizeof(IMAGE_SECTION_HEADER)];
+    pe.readBytes(sectionHeadersEnd, section, sizeof(section));
+    return memcmp(section, null, sizeof(null)) == 0;
+}
 
 bool Ident::isDll(const PeFile& pe)
 {
