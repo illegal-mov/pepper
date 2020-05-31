@@ -29,7 +29,6 @@ IDirectory::IDirectory(const PeFile& pe, const FileBytes& fileBytes, const DataD
     }
 }
 
-/* pointer to base of directory only if the directory exists */
 const void* IDirectory::dir() const
 {
     return (Ident::dirExists(*this))
@@ -37,7 +36,6 @@ const void* IDirectory::dir() const
         : nullptr;
 }
 
-/* get size of directory */
 uint32_t IDirectory::size() const
 {
     return m_dataDirectoryEntry->size();

@@ -16,16 +16,12 @@ class SectionHeaderEntry;
  */
 class IDirectory : public IHeader {
 public:
-    /* get true offset into PE file content where directory is located */
     size_t dirOffset() const { return hdrOffset() - m_diskToMemoryDifference; }
 
-    /* pointer to base of directory only if the directory exists */
     const void* dir() const;
 
-    /* get size of directory */
     uint32_t size() const;
 
-    /* get a pointer to the section containing this directory's data */
     const SectionHeaderEntry* getOwningSection() const { return m_sectionHeaderEntry; }
 
 protected:

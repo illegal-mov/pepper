@@ -12,16 +12,12 @@ namespace Pepper {
  */
 class IHeader {
 public:
-    /* get char pointer to start of PE file content */
     const char* mem() const { return m_headerPtr; }
 
-    /* get offset into PE file content where header is located */
     size_t hdrOffset() const { return m_headerOffset; };
 
-    /* pointer to base of header */
     const void* hdr() const { return &m_headerPtr[hdrOffset()]; }
 
-    /* only derived classes know how to return pointers to given header fields */
     virtual const void* getFieldPtr(const int fieldIndex) const = 0;
 
 protected:
