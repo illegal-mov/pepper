@@ -1,5 +1,6 @@
 # Based on a Makefile from Job Vranish (2016)
-TARGET_EXEC := a.out
+TARGET_EXEC := pepper.bin
+TARGET_LIB := libpepper.so
 
 TEST_DIR := ./test
 BUILD_DIR := ./build~
@@ -8,7 +9,7 @@ SRC_DIR := ./src
 MKDIR_P := mkdir -p
 
 CFLAGS := -D _DEFAULT_SOURCE -std=c11 -Wall -Wextra -Werror -O0
-CPPFLAGS := -MMD -MP -std=c++17 -Wall -Weffc++ -Wextra -Wsign-conversion -Werror
+CPPFLAGS := -MMD -MP -fpic -std=c++17 -Wall -Weffc++ -Wextra -Wsign-conversion -Werror
 
 MAIN := $(shell find $(SRC_DIR) -name '*.cpp' -or -name '*.c' -or -name '*.s')
 TEST := $(shell find $(TEST_DIR) -name '*.cpp' -or -name '*.c' -or -name '*.s')
@@ -31,14 +32,14 @@ $(BUILD_DIR)/%.cpp.o: %.cpp
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
 .PHONY: release
-release: $(OBJS_MAIN) $(OBJS_TEST)
-	$(MKDIR_P) $(dir $@)
-	$(CXX) -O2 $? -o $(BUILD_DIR)/$@/$(TARGET_EXEC)
+release: $(OBJS_MAIN)
+	$(MKDIR_P) $(BUILD_DIR)/$@
+	$(CXX) -shared -fpic -s -O2 $? -o $(BUILD_DIR)/$@/$(TARGET_LIB)
 
 .PHONY: debug
-debug: $(OBJS_MAIN) $(OBJS_TEST)
+debug: $(OBJS_MAIN)
 	$(MKDIR_P) $(dir $@)
-	$(CXX) -g $? -o $(BUILD_DIR)/$@/$(TARGET_EXEC)
+	$(CXX) -shared -fpic -g $? -o $(BUILD_DIR)/$@/$(TARGET_LIB)
 
 .PHONY: test
 test: $(OBJS_MAIN) $(OBJS_TEST)
