@@ -38,12 +38,12 @@ release: $(OBJS_MAIN)
 
 .PHONY: debug
 debug: $(OBJS_MAIN)
-	$(MKDIR_P) $(dir $@)
+	$(MKDIR_P) $(BUILD_DIR)/$@
 	$(CXX) -shared -fpic -g $? -o $(BUILD_DIR)/$@/$(TARGET_LIB)
 
 .PHONY: test
 test: $(OBJS_MAIN) $(OBJS_TEST)
-	$(MKDIR_P) $(dir $@)
+	$(MKDIR_P) $(BUILD_DIR)/$@
 	$(CXX) $? -o $(BUILD_DIR)/$@/$(TARGET_EXEC)
 
 .PHONY: clean
