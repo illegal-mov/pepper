@@ -1,9 +1,9 @@
-#include "PeFile.h"
+#include "../include/headers/PeFile.h"
 
 #include <memory>
 #include <string>
 
-#include "Types.h"
+#include "../include/headers/Types.h"
 
 using namespace Pepper;
 

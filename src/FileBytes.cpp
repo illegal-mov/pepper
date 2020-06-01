@@ -1,11 +1,11 @@
-#include "FileBytes.h"
+#include "../include/headers/FileBytes.h"
 
 #include <cstring>
 #include <fstream>
 #include <iterator>
 
-#include "Exceptions.h"
-#include "Types.h"
+#include "../include/headers/Exceptions.h"
+#include "../include/headers/Types.h"
 
 using namespace Pepper;
 

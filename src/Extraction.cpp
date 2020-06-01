@@ -1,10 +1,10 @@
-#include "Extraction.h"
+#include "../include/headers/Extraction.h"
 
 #include <fstream>
 
-#include "Exceptions.h"
-#include "headers/CertificateDir.h"
-#include "headers/ResourceDir.h"
+#include "../include/headers/Exceptions.h"
+#include "../include/headers/pe_structures/CertificateDir.h"
+#include "../include/headers/pe_structures/ResourceDir.h"
 
 /* Non-member non-friend functions to dump specific bytes from a PE file */
 
