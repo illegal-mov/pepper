@@ -15,7 +15,7 @@ AddressList<ArchType>::AddressList(const FileBytes& fbytes, const offset_t raw, 
 template <typename ArchType>
 void IatDir::readAddrList(const FileBytes& fbytes, const DataDirectoryEntry& dde)
 {
-    const ArchType *addrs = static_cast<const ArchType*>(dir());
+    const ArchType* addrs = static_cast<const ArchType*>(dir());
     size_t tableIndex = 0;
     size_t bytesRead = 0;
     while (bytesRead < dde.size()) {

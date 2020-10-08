@@ -27,7 +27,7 @@ template <typename DescriptorType> // for the class
 template <typename ArchType> // for the function
 void GenericImportDescriptor<DescriptorType>::readAddresses(size_t raw)
 {
-    const ArchType *addr = reinterpret_cast<const ArchType*>(&mem()[raw]);
+    const ArchType* addr = reinterpret_cast<const ArchType*>(&mem()[raw]);
     size_t i = 0;
     while (addr[i] != 0) {
         m_addresses32.push_back(addr[i]);
@@ -41,7 +41,7 @@ template <typename DescriptorType> // for the class
 template <typename ArchType> // for the function
 void GenericImportDescriptor<DescriptorType>::readThunks(const FileBytes& fbytes, const offset_t raw)
 {
-    const ArchType *thunk = reinterpret_cast<const ArchType*>(&mem()[raw]);
+    const ArchType* thunk = reinterpret_cast<const ArchType*>(&mem()[raw]);
     size_t i = 0;
     while (thunk[i].HintNameTableRVA != 0) {
         if (thunk[i].OrdinalFlag) {

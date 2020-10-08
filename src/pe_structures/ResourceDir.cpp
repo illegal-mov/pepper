@@ -24,7 +24,7 @@ template<>
 ResourceStringU::GenericResourceString(const FileBytes& fbytes, const offset_t raw)
 : IHeader(fbytes, raw)
 {
-    const uint16_t *strBytes = getStructPtr()->NameString;
+    const uint16_t* strBytes = getStructPtr()->NameString;
     m_name.resize(length());
     // I hate string encodings so much, so just hacky-copy each
     //  char16_t into a regular std::string and force ASCII range
@@ -33,12 +33,12 @@ ResourceStringU::GenericResourceString(const FileBytes& fbytes, const offset_t r
     }
 }
 
-ResourceData::ResourceData(const FileBytes& fbytes, const offset_t raw, const ResourceNode *parent)
+ResourceData::ResourceData(const FileBytes& fbytes, const offset_t raw, const ResourceNode* parent)
 : IHeader(fbytes, raw)
 , m_parent(parent)
 {}
 
-ResourceEntry::ResourceEntry(const FileBytes& fbytes, const offset_t raw, const ResourceNode *parent, std::map<uint32_t, ResourceData*>& dataMap)
+ResourceEntry::ResourceEntry(const FileBytes& fbytes, const offset_t raw, const ResourceNode* parent, std::map<uint32_t, ResourceData*>& dataMap)
 : IHeader(fbytes, raw)
 {
     if (hasName()) {
@@ -65,7 +65,7 @@ ResourceEntry::~ResourceEntry()
     }
 }
 
-ResourceNode::ResourceNode(const FileBytes& fbytes, const offset_t raw, const ResourceNode *parent, std::map<uint32_t, ResourceData*>& dataMap)
+ResourceNode::ResourceNode(const FileBytes& fbytes, const offset_t raw, const ResourceNode* parent, std::map<uint32_t, ResourceData*>& dataMap)
 : IHeader(fbytes, raw)
 , m_parent(parent)
 {

@@ -19,7 +19,7 @@ public:
     FileBytes(const std::string& path);
 
     const char* bytes() const { return m_fileContent.data(); }
-    void readBytes(const offset_t pos, char *buf, const size_t bufLen) const;
+    void readBytes(const offset_t pos, char* buf, const size_t bufLen) const;
 
     static size_t getFileSize(std::ifstream& in);
 

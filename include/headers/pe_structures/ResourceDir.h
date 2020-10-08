@@ -108,7 +108,7 @@ public:
         _NUM_FIELDS,
     };
 
-    ResourceData(const FileBytes& fbytes, const offset_t raw, const ResourceNode *parent);
+    ResourceData(const FileBytes& fbytes, const offset_t raw, const ResourceNode* parent);
 
     ResourceData(const ResourceData& rd)
     : IHeader(rd)
@@ -132,7 +132,7 @@ public:
 private:
     static size_t& s_pDiskToMemDiff; // RVAs in .edata point to .text
     static size_t& s_pRsrcBase;
-    const ResourceNode *m_parent{};
+    const ResourceNode* m_parent{};
 };
 
 /* A pair of DWORDs describing an entry's type and offset;
@@ -147,7 +147,7 @@ public:
         _NUM_FIELDS,
     };
 
-    ResourceEntry(const FileBytes& fbytes, const offset_t raw, const ResourceNode *parent, std::map<uint32_t, ResourceData*>& dataMap);
+    ResourceEntry(const FileBytes& fbytes, const offset_t raw, const ResourceNode* parent, std::map<uint32_t, ResourceData*>& dataMap);
 
     ResourceEntry(ResourceEntry &&re)
     : m_name(std::move(re.m_name))
@@ -192,7 +192,7 @@ public:
         _NUM_FIELDS,
     };
 
-    ResourceNode(const FileBytes& fbytes, const offset_t raw, const ResourceNode *parent, std::map<uint32_t, ResourceData*>& dataMap);
+    ResourceNode(const FileBytes& fbytes, const offset_t raw, const ResourceNode* parent, std::map<uint32_t, ResourceData*>& dataMap);
 
     ResourceNode(const ResourceNode& rn) = delete;
     ResourceNode& operator=(const ResourceNode& rn) = delete;
@@ -205,7 +205,7 @@ public:
 
 private:
     static size_t& s_pRsrcBase;
-    const ResourceNode *m_parent{};
+    const ResourceNode* m_parent{};
     std::vector<ResourceEntry> m_resourceEntries{};
 };
 

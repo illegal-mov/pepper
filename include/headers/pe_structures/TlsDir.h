@@ -44,13 +44,13 @@ public:
 
     ArchType callbackAva(const int index) const
     {
-        const ArchType *ret = static_cast<const ArchType*>(getFieldPtr(index));
+        const ArchType* ret = static_cast<const ArchType*>(getFieldPtr(index));
         return (ret == nullptr) ? 0 : *ret;
     }
 
     ArchType callbackRaw(const int index) const
     {
-        const ArchType *ret = static_cast<const ArchType*>(getFieldPtr(index));
+        const ArchType* ret = static_cast<const ArchType*>(getFieldPtr(index));
         return (ret == nullptr) ? 0 : *ret - s_codeDiff;
     }
 

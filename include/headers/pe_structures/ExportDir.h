@@ -116,7 +116,7 @@ public:
     // get array element or -1 if out of range
     int16_t ordinal(size_t index) const
     {
-        const int16_t *ret = static_cast<const int16_t*>(getFieldPtr(index));
+        const int16_t* ret = static_cast<const int16_t*>(getFieldPtr(index));
         return (ret == nullptr) ? -1 : *ret;
     }
 

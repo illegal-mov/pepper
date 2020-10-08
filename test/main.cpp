@@ -24,7 +24,7 @@ void printFileHeader(const Pepper::PeFile& pe)
         printf("%-40s0x%04x\n", file.getFieldName(i), *static_cast<const int16_t*>(file.getFieldPtr(i)));
 }
 
-template <typename ArchType, const char *fmt>
+template <typename ArchType, const char* fmt>
 void printOptHdrStruct(const Pepper::OptionalHeader& oh)
 {
     using namespace Pepper;
@@ -323,7 +323,7 @@ void printDebug(const Pepper::PeFile& pe)
             printf("\t%-40s%.4s\n", rsds.getFieldName(i),  static_cast<const char*>(rsds.getFieldPtr(i)));
 
             printf("\t%-40s", rsds.getFieldName(++i));
-            const char *guid = static_cast<const char*>(rsds.getFieldPtr(i));
+            const char* guid = static_cast<const char*>(rsds.getFieldPtr(i));
             for (size_t j=0; j < sizeof((static_cast<PRSDSI>(nullptr))->Guid); j++)
                 printf("%02x ", guid[j] & 0xFF);
 
@@ -353,7 +353,7 @@ void printGlobalPointer(const Pepper::PeFile& pe)
     }
 }
 
-template <typename ArchType, const char *fmt, const Pepper::CallbacksTable<ArchType>& (Pepper::TlsDir::*HeaderGetter)() const>
+template <typename ArchType, const char* fmt, const Pepper::CallbacksTable<ArchType>& (Pepper::TlsDir::*HeaderGetter)() const>
 void printTlsStruct(const Pepper::TlsDir& tls)
 {
     using namespace Pepper;
@@ -382,7 +382,7 @@ void printTls(const Pepper::PeFile& pe)
     }
 }
 
-template <typename ArchType, const char *fmt>
+template <typename ArchType, const char* fmt>
 void printLdCfgStruct(const Pepper::LoadConfigDir& ldcfg)
 {
     using namespace Pepper;
@@ -605,7 +605,7 @@ void printClr(const Pepper::PeFile& pe)
     }
 }
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
 //  std::cout << "MAIN\n\n";
 

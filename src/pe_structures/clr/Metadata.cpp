@@ -38,7 +38,7 @@ ClrMetadata::ClrMetadata(const PeFile& pe, const FileBytes& fbytes, const DataDi
         ClrStream tmp(fbytes, dirOffset() + pos);
         m_streams.push_back(tmp);
 
-        const char *name = tmp.getStructPtr()->Name;
+        const char* name = tmp.getStructPtr()->Name;
         pos += sizeof(IMAGE_COR20_METADATA_STREAM_HEADER) + strlen(name) + 1;
         pos = alignToPowerOfTwo(pos, kByteAlignment);
     }

@@ -95,7 +95,7 @@ public:
     const IatDirPtr&           iatDir()           const { return m_Iat;   }
     const DelayImportDirPtr&   delayImportDir()   const { return m_Dmprt; }
     const ClrDirPtr&           clrDir()           const { return m_Clr;   }
-    void readBytes(const offset_t pos, char *buf, const size_t bufLen) const;
+    void readBytes(const offset_t pos, char* buf, const size_t bufLen) const;
     const std::string& path() const { return m_fname; }
 
     static const char* getHeaderName(const int index);

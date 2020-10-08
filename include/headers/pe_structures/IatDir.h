@@ -34,7 +34,7 @@ public:
 
     ArchType address(const int index) const
     {
-        const ArchType *ret = static_cast<const ArchType*>(getFieldPtr(index));
+        const ArchType* ret = static_cast<const ArchType*>(getFieldPtr(index));
         return (ret == nullptr) ? -1 : *ret;
     }
 

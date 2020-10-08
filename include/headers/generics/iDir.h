@@ -55,9 +55,9 @@ protected:
         m_diskToMemoryDifference = 0;
     }
 
-    const PeFile *m_peFile{};
-    const DataDirectoryEntry *m_dataDirectoryEntry{};
-    const SectionHeaderEntry *m_sectionHeaderEntry{};
+    const PeFile* m_peFile{};
+    const DataDirectoryEntry* m_dataDirectoryEntry{};
+    const SectionHeaderEntry* m_sectionHeaderEntry{};
     size_t m_diskToMemoryDifference{};
 };
 } // namespace Pepper

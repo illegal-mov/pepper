@@ -14,7 +14,7 @@ template <typename ArchType>
 CallbacksTable<ArchType>::CallbacksTable(const PeFile& pe, const FileBytes& fbytes, const offset_t raw)
 : IHeader(fbytes, raw)
 {
-    const ArchType *cbArray = getStructPtr();
+    const ArchType* cbArray = getStructPtr();
     while (cbArray[m_length] != 0) {
         m_length++;
     }

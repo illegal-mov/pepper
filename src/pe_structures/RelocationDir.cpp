@@ -24,7 +24,7 @@ RelocationDir::RelocationDir(const PeFile& pe, const FileBytes& fbytes, const Da
         size_t bytesRead = 0;
         while (bytesRead < dde.size()) {
             m_relocationBlocks.emplace_back(fbytes, dirOffset() + bytesRead);
-            const void *base = &static_cast<const char*>(dir())[bytesRead];
+            const void* base = &static_cast<const char*>(dir())[bytesRead];
             const IMAGE_BASE_RELOCATION* tmp = static_cast<const IMAGE_BASE_RELOCATION*>(base);
             /* `BlockSize` typically includes the size of the header,
              * but some silly files might have a null .reloc section
