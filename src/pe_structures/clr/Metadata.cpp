@@ -6,7 +6,7 @@
 using namespace Pepper;
 
 size_t  ClrMetadata::s_metadataBase = 0;
-size_t *ClrStream::s_pMetadataBase  = &ClrMetadata::s_metadataBase;
+size_t& ClrStream::s_pMetadataBase  = ClrMetadata::s_metadataBase;
 
 namespace
 {

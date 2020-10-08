@@ -56,13 +56,13 @@ public:
 
     const char* data() const
     {
-        return &mem()[*s_pMetadataBase + getStructPtr()->Offset];
+        return &mem()[s_pMetadataBase + getStructPtr()->Offset];
     }
 
     static const char* getFieldName(const int index);
 
 private:
-    static size_t *s_pMetadataBase;
+    static size_t& s_pMetadataBase;
 };
 
 /* Exactly one COR20_METADATA_HEADER followed by a variable-number of STREAM_HEADERS

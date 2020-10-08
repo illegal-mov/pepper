@@ -90,7 +90,7 @@ public:
 
     ImportThunk(const FileBytes& fbytes, const offset_t raw)
     : IHeader(fbytes, raw)
-    , m_hintname(fbytes, getStructPtr()->HintNameTableRVA - *s_pDiskToMemDiff)
+    , m_hintname(fbytes, getStructPtr()->HintNameTableRVA - s_pDiskToMemDiff)
     {}
 
     const void* getFieldPtr(const int index) const override;
@@ -112,7 +112,7 @@ private:
     ImportName m_hintname;
     std::string m_ordinal{};
 
-    static size_t *s_pDiskToMemDiff;
+    static size_t& s_pDiskToMemDiff;
 };
 
 /* Has members that point to a variable-length array of ImportThunks
@@ -168,7 +168,7 @@ private:
         std::vector<ptr64_t> m_addresses64;
     };
 
-    static size_t *s_pDiskToMemDiff;
+    static size_t& s_pDiskToMemDiff;
 
     template <int ILT, int IAT, int TIMESTAMP>
     void makeDescriptor(const PeFile& pe, const FileBytes& fbytes);

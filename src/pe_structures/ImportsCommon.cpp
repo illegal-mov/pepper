@@ -170,7 +170,7 @@ template<>
 const char* GenericImportDescriptor<IMAGE_IMPORT_DESCRIPTOR>::dllName() const
 {
     ptr32_t nameRva = getStructPtr()->NameRVA;
-    return &mem()[nameRva - *s_pDiskToMemDiff];
+    return &mem()[nameRva - s_pDiskToMemDiff];
 }
 
 template<>
@@ -209,6 +209,6 @@ template<>
 const char* GenericImportDescriptor<IMAGE_DELAY_IMPORT_DESCRIPTOR>::dllName() const
 {
     ptr32_t nameRva = getStructPtr()->NameRVA;
-    return &mem()[nameRva - *s_pDiskToMemDiff];
+    return &mem()[nameRva - s_pDiskToMemDiff];
 }
 

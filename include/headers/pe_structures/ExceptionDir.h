@@ -56,15 +56,15 @@ public:
     const EntryType* getStructPtr() const { return static_cast<const EntryType*>(hdr()); }
     const void* getFieldPtr(const int index) const override;
 
-    uint32_t     beginRaw() const { return getStructPtr()->BeginAddress - *s_pCodeDiff; }
-    uint32_t     endRaw()   const { return getStructPtr()->EndAddress   - *s_pCodeDiff; }
-    uint32_t     codeLen()  const { return getStructPtr()->EndAddress   -  getStructPtr()->BeginAddress; }
+    uint32_t     beginRaw() const { return getStructPtr()->BeginAddress - s_pCodeDiff; }
+    uint32_t     endRaw()   const { return getStructPtr()->EndAddress   - s_pCodeDiff; }
+    uint32_t     codeLen()  const { return getStructPtr()->EndAddress   - getStructPtr()->BeginAddress; }
     const void*  codePtr()  const { return &mem()[beginRaw()]; }
 
     static const char* getFieldName(const int index);
 
 private:
-    static size_t *s_pCodeDiff;
+    static size_t& s_pCodeDiff;
 };
 
 /* Variable-length array of architecture-specific exception structures.

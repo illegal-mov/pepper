@@ -124,14 +124,14 @@ public:
 
     const void* getFieldPtr(const int index) const override;
     const IMAGE_RESOURCE_DATA* getStructPtr() const { return static_cast<const IMAGE_RESOURCE_DATA*>(hdr()); }
-    const char* bytes() const { return &mem()[getStructPtr()->OffsetToData - *s_pDiskToMemDiff]; }
+    const char* bytes() const { return &mem()[getStructPtr()->OffsetToData - s_pDiskToMemDiff]; }
     uint32_t size() const { return getStructPtr()->Size; }
 
     static const char* getFieldName(const int index);
 
 private:
-    static size_t *s_pDiskToMemDiff; // RVAs in .edata point to .text
-    static size_t *s_pRsrcBase;
+    static size_t& s_pDiskToMemDiff; // RVAs in .edata point to .text
+    static size_t& s_pRsrcBase;
     const ResourceNode *m_parent{};
 };
 
@@ -170,7 +170,7 @@ public:
     static const char* getFieldName(const int index);
 
 private:
-    static size_t *s_pRsrcBase;
+    static size_t& s_pRsrcBase;
     std::unique_ptr<ResourceStringU> m_name{};
     union {
         std::unique_ptr<ResourceNode> m_node{};
@@ -204,7 +204,7 @@ public:
     static const char* getFieldName(const int index);
 
 private:
-    static size_t *s_pRsrcBase;
+    static size_t& s_pRsrcBase;
     const ResourceNode *m_parent{};
     std::vector<ResourceEntry> m_resourceEntries{};
 };

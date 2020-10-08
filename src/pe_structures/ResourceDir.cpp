@@ -7,12 +7,12 @@
 using namespace Pepper;
 
 size_t  ResourceDir::s_diskToMemDiff   = 0;
-size_t *ResourceData::s_pDiskToMemDiff = &ResourceDir::s_diskToMemDiff;
+size_t& ResourceData::s_pDiskToMemDiff = ResourceDir::s_diskToMemDiff;
 
 size_t  ResourceDir::s_rsrcBase    = 0;
-size_t *ResourceNode::s_pRsrcBase  = &ResourceDir::s_rsrcBase;
-size_t *ResourceEntry::s_pRsrcBase = &ResourceDir::s_rsrcBase;
-size_t *ResourceData::s_pRsrcBase  = &ResourceDir::s_rsrcBase;
+size_t& ResourceNode::s_pRsrcBase  = ResourceDir::s_rsrcBase;
+size_t& ResourceEntry::s_pRsrcBase = ResourceDir::s_rsrcBase;
+size_t& ResourceData::s_pRsrcBase  = ResourceDir::s_rsrcBase;
 
 template<>
 ResourceString::GenericResourceString(const FileBytes& fbytes, const offset_t raw)
@@ -43,15 +43,15 @@ ResourceEntry::ResourceEntry(const FileBytes& fbytes, const offset_t raw, const 
 {
     if (hasName()) {
         m_name = std::make_unique<ResourceStringU>(fbytes,
-            *s_pRsrcBase + getStructPtr()->NameOffset);
+            s_pRsrcBase + getStructPtr()->NameOffset);
     }
 
     if (isDirectory()) {
         m_node = std::make_unique<ResourceNode>(fbytes,
-            *s_pRsrcBase + getStructPtr()->OffsetToDirectory, parent, dataMap);
+            s_pRsrcBase + getStructPtr()->OffsetToDirectory, parent, dataMap);
     } else {
         m_data = std::make_unique<ResourceData>(fbytes,
-            *s_pRsrcBase + getStructPtr()->OffsetToData, parent);
+            s_pRsrcBase + getStructPtr()->OffsetToData, parent);
         dataMap[getStructPtr()->OffsetToData] = m_data.get();
     }
 }

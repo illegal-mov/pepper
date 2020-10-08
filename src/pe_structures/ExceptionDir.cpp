@@ -7,9 +7,9 @@
 using namespace Pepper;
 
 size_t ExceptionDir::s_codeDiff = 0; // RVAs in .pdata point to .text
-template<> size_t *ExceptionTableEntry32::s_pCodeDiff  = &ExceptionDir::s_codeDiff;
-template<> size_t *ExceptionTableEntry64::s_pCodeDiff  = &ExceptionDir::s_codeDiff;
-template<> size_t *ExceptionTableEntryArm::s_pCodeDiff = &ExceptionDir::s_codeDiff;
+template<> size_t& ExceptionTableEntry32::s_pCodeDiff  = ExceptionDir::s_codeDiff;
+template<> size_t& ExceptionTableEntry64::s_pCodeDiff  = ExceptionDir::s_codeDiff;
+template<> size_t& ExceptionTableEntryArm::s_pCodeDiff = ExceptionDir::s_codeDiff;
 
 template <typename EntryType>
 void ExceptionDir::appendEntries(const FileBytes& fbytes, const uint32_t totalSize)
@@ -123,7 +123,7 @@ const char* ExceptionDir::getFieldName(const int index)
 template<>
 uint32_t ExceptionTableEntryArm::endRaw() const
 {
-    return getStructPtr()->BeginAddress + getStructPtr()->FunctionLength - *s_pCodeDiff;
+    return getStructPtr()->BeginAddress + getStructPtr()->FunctionLength - s_pCodeDiff;
 }
 
 template<>
