@@ -124,7 +124,7 @@ public:
 
     const void* getFieldPtr(const int index) const override;
     const IMAGE_RESOURCE_DATA* getStructPtr() const { return static_cast<const IMAGE_RESOURCE_DATA*>(hdr()); }
-    const char* bytes() const { return &mem()[getStructPtr()->OffsetToData - s_pDiskToMemDiff]; }
+    const uint8_t* bytes() const { return &mem()[getStructPtr()->OffsetToData - s_pDiskToMemDiff]; }
     uint32_t size() const { return getStructPtr()->Size; }
 
     static const char* getFieldName(const int index);

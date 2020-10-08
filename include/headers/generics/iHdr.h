@@ -12,7 +12,7 @@ namespace Pepper {
  */
 class IHeader {
 public:
-    const char* mem() const { return m_headerPtr; }
+    const uint8_t* mem() const { return m_headerPtr; }
 
     size_t hdrOffset() const { return m_headerOffset; };
 
@@ -46,7 +46,7 @@ protected:
         m_headerOffset = 0;
     }
 
-    const char* m_headerPtr{};
+    const uint8_t* m_headerPtr{};
     size_t m_headerOffset{};
 };
 } // namespace Pepper

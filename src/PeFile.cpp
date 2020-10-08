@@ -105,7 +105,7 @@ const char* PeFile::getHeaderName(const int index)
     }
 }
 
-void PeFile::readBytes(const offset_t pos, char* buf, const size_t bufLen) const
+void PeFile::readBytes(const offset_t pos, uint8_t* buf, const size_t bufLen) const
 {
     m_Bytes.readBytes(pos, buf, bufLen);
 }

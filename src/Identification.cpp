@@ -78,7 +78,7 @@ bool Ident::canAppendNewSection(const PeFile& pe)
     offset_t sectionHeadersEnd = pe.sectionHdrs().getSections().back().hdrOffset()
         + sizeof(IMAGE_SECTION_HEADER);
     constexpr char null[sizeof(IMAGE_SECTION_HEADER)] = {0};
-    char section[sizeof(IMAGE_SECTION_HEADER)];
+    uint8_t section[sizeof(IMAGE_SECTION_HEADER)];
     pe.readBytes(sectionHeadersEnd, section, sizeof(section));
     return memcmp(section, null, sizeof(null)) == 0;
 }

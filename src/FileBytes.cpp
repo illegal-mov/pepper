@@ -33,7 +33,7 @@ FileBytes::FileBytes(const std::string& path)
     }
 }
 
-void FileBytes::readBytes(const offset_t pos, char* buf, const size_t bufLen) const
+void FileBytes::readBytes(const offset_t pos, uint8_t* buf, const size_t bufLen) const
 {
     if (pos < m_fileSize) {
         const size_t min = (pos + bufLen <= m_fileSize)

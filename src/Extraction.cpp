@@ -38,7 +38,7 @@ bool genericDump(const std::string& path, const DirectoryType& directory, Extrac
     static_assert(is_dumpable<DirectoryType>::value, "Cannot dump this type to disk");
     std::ofstream out(path, std::ios_base::out | std::ios_base::binary);
     if (out.is_open()) {
-        out.write(directory.bytes(), directory.size());
+        out.write(reinterpret_cast<const char*>(directory.bytes()), directory.size());
     } else {
         if (throwFlag == Extract::ExceptionFlag::MAY_THROW) {
             throw FailedOpen("Unable to open the file for writing");

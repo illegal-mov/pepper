@@ -54,7 +54,7 @@ public:
         return static_cast<const IMAGE_COR20_METADATA_STREAM_HEADER*>(hdr());
     }
 
-    const char* data() const
+    const uint8_t* data() const
     {
         return &mem()[s_pMetadataBase + getStructPtr()->Offset];
     }

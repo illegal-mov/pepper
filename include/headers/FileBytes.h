@@ -18,14 +18,14 @@ public:
 
     FileBytes(const std::string& path);
 
-    const char* bytes() const { return m_fileContent.data(); }
-    void readBytes(const offset_t pos, char* buf, const size_t bufLen) const;
+    const uint8_t* bytes() const { return m_fileContent.data(); }
+    void readBytes(const offset_t pos, uint8_t* buf, const size_t bufLen) const;
 
     static size_t getFileSize(std::ifstream& in);
 
 private:
     size_t m_fileSize{};
-    std::vector<char> m_fileContent{};
+    std::vector<uint8_t> m_fileContent{};
 };
 } // namespace Pepper
 

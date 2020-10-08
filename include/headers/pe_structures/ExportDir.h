@@ -85,7 +85,7 @@ public:
     const char* funcName(size_t index) const
     {
         return (index < length())
-        ? &mem()[nameRva(index) - s_diskToMemDiff]
+        ? reinterpret_cast<const char*>(&mem()[nameRva(index) - s_diskToMemDiff])
         : nullptr;
     }
 
@@ -157,7 +157,7 @@ public:
     const ExportAddressTable& eat() const { return m_addrTable; }
     const ExportNameTable&    ent() const { return m_nameTable; }
     const ExportOrdinalTable& eot() const { return m_ordTable; }
-    const char* dllName() const { return &mem()[getStructPtr()->NameRVA - m_diskToMemoryDifference]; }
+    const char* dllName() const { return reinterpret_cast<const char*>(&mem()[getStructPtr()->NameRVA - m_diskToMemoryDifference]); }
 
     static const char* getFieldName(const int index);
 
