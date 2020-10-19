@@ -31,7 +31,7 @@ void GenericImportDescriptor<DescriptorType>::readAddresses(size_t raw)
     size_t i = 0;
     while (addr[i] != 0) {
         m_addresses32.push_back(addr[i]);
-        i++;
+        ++i;
     }
 }
 
@@ -51,7 +51,7 @@ void GenericImportDescriptor<DescriptorType>::readThunks(const FileBytes& fbytes
             m_thunks32.emplace_back(fbytes, raw + (i * sizeof(ArchType)));
         }
 
-        i++;
+        ++i;
     }
 }
 

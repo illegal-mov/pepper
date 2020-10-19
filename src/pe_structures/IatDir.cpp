@@ -21,14 +21,14 @@ void IatDir::readAddrList(const FileBytes& fbytes, const DataDirectoryEntry& dde
     while (bytesRead < dde.size()) {
         size_t addressListLength = 0;
         while (addrs[tableIndex] != 0) {
-            addressListLength++;
-            tableIndex++;
+            ++addressListLength;
+            ++tableIndex;
         }
 
         m_list32.emplace_back(fbytes, dirOffset() + bytesRead, addressListLength);
 
         bytesRead += (addressListLength+1) * sizeof(ArchType); // +1 because of null terminator
-        tableIndex++; // `tableIndex` was left sitting on a null-terminator, so step over
+        ++tableIndex; // `tableIndex` was left sitting on a null-terminator, so step over
     }
 }
 
@@ -55,7 +55,7 @@ const char* AddressList<ArchType>::getFieldName(const int index)
 template <typename ArchType>
 const void* AddressList<ArchType>::getFieldPtr(const int index) const
 {
-    size_t uindex = static_cast<size_t>(index);
+    const size_t uindex = static_cast<size_t>(index);
     return (uindex < length())
         ? &getStructPtr()[uindex]
         : nullptr;

@@ -877,7 +877,7 @@ typedef struct _IMAGE_COR20_METADATA_HEADER {
 typedef struct _IMAGE_COR20_METADATA_STREAM_HEADER {
     uint32_t Offset; // relative to METADATA_header
     uint32_t Size;
-    char     Name[];
+    char     Name[1];
 } IMAGE_COR20_METADATA_STREAM_HEADER, *PIMAGE_COR20_METADATA_STREAM_HEADER;
 
 typedef struct _IMAGE_COR20_RESOURCES_HEADER {

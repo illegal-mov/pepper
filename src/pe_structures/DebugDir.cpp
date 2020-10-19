@@ -20,7 +20,7 @@ DebugDir::DebugDir(const PeFile& pe, const FileBytes& fbytes, const DataDirector
 {
     if (Ident::dirExists(*this)) {
         const size_t len = dde.size() / sizeof(IMAGE_DEBUG_DIRECTORY);
-        for (size_t i=0; i < len; i++) {
+        for (size_t i=0; i < len; ++i) {
             m_debugEntries.emplace_back(fbytes, dirOffset() + i*sizeof(IMAGE_DEBUG_DIRECTORY));
         }
     }

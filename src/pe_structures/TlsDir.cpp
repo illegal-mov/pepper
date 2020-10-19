@@ -16,7 +16,7 @@ CallbacksTable<ArchType>::CallbacksTable(const PeFile& pe, const FileBytes& fbyt
 {
     const ArchType* cbArray = getStructPtr();
     while (cbArray[m_length] != 0) {
-        m_length++;
+        ++m_length;
     }
 
     ArchType codeRva = cbArray[0]; // AVAs in the table point to .text
@@ -59,7 +59,7 @@ const char* CallbacksTable<ArchType>::getFieldName(const int index)
 template <typename ArchType>
 const void* CallbacksTable<ArchType>::getFieldPtr(const int index) const
 {
-    size_t uindex = static_cast<size_t>(index);
+    const size_t uindex = static_cast<size_t>(index);
     return (uindex < length())
         ? &getStructPtr()[uindex]
         : nullptr;

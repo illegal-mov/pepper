@@ -66,7 +66,7 @@ const char* ExportAddressTable::getFieldName(const int index)
 
 const void* ExportAddressTable::getFieldPtr(const int index) const
 {
-    size_t uindex = static_cast<size_t>(index);
+    const size_t uindex = static_cast<size_t>(index);
     return (uindex < length())
         ? &getStructPtr()[uindex]
         : nullptr;
@@ -81,7 +81,7 @@ const char* ExportNameTable::getFieldName(const int index)
 
 const void* ExportNameTable::getFieldPtr(const int index) const
 {
-    size_t uindex = static_cast<size_t>(index);
+    const size_t uindex = static_cast<size_t>(index);
     return (uindex < length())
         ? &getStructPtr()[uindex]
         : nullptr;
@@ -96,7 +96,7 @@ const char* ExportOrdinalTable::getFieldName(const int index)
 
 const void* ExportOrdinalTable::getFieldPtr(const int index) const
 {
-    size_t uindex = static_cast<size_t>(index);
+    const size_t uindex = static_cast<size_t>(index);
     return (uindex < length())
         ? &getStructPtr()[uindex]
         : nullptr;

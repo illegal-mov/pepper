@@ -28,7 +28,7 @@ ResourceStringU::GenericResourceString(const FileBytes& fbytes, const offset_t r
     m_name.resize(length());
     // I hate string encodings so much, so just hacky-copy each
     //  char16_t into a regular std::string and force ASCII range
-    for (size_t i=0; i < length(); i++) {
+    for (size_t i=0; i < length(); ++i) {
         m_name[i] = strBytes[i] & 0x7F;
     }
 }
@@ -69,12 +69,12 @@ ResourceNode::ResourceNode(const FileBytes& fbytes, const offset_t raw, const Re
 : IHeader(fbytes, raw)
 , m_parent(parent)
 {
-    size_t numEntries = static_cast<size_t>(getStructPtr()->NumberOfNamedEntries)
+    const size_t numEntries = static_cast<size_t>(getStructPtr()->NumberOfNamedEntries)
                       + getStructPtr()->NumberOfIdEntries;
     m_resourceEntries.reserve(numEntries);
 
-    size_t entriesBase = hdrOffset() + sizeof(IMAGE_RESOURCE_DIRECTORY);
-    for (size_t i=0; i < numEntries; i++) {
+    const size_t entriesBase = hdrOffset() + sizeof(IMAGE_RESOURCE_DIRECTORY);
+    for (size_t i=0; i < numEntries; ++i) {
         m_resourceEntries.emplace_back(fbytes,
             entriesBase + (sizeof(IMAGE_RESOURCE_ENTRY) * i),
             this, dataMap);

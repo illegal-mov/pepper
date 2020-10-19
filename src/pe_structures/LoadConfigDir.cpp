@@ -104,9 +104,9 @@ const char* LoadConfigDir::getFieldName(const int index)
  * This macro just reduces source code verbosity by
  * including the range and architecture checks.
  */
-#define LDCFG_RET_FIELD(FIELD)                                       \
+#define LDCFG_RET_FIELD(FIELD)                                            \
     (   is32bit && offsetof(IMAGE_LOAD_CONFIG_DIRECTORY32, FIELD) < size) \
-    ? (void*)&getStructPtr32()->FIELD                                       \
+    ? (void*)&getStructPtr32()->FIELD                                     \
     : (!is32bit && offsetof(IMAGE_LOAD_CONFIG_DIRECTORY64, FIELD) < size) \
     ? (void*)&getStructPtr64()->FIELD : nullptr
 

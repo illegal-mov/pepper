@@ -34,12 +34,12 @@ ClrMetadata::ClrMetadata(const PeFile& pe, const FileBytes& fbytes, const DataDi
                + sizeof(getStructPtr()->Flags)
                + sizeof(getStructPtr()->NumberOfStreams);
 
-    for (size_t i=0; i < numStreams; i++) {
+    for (size_t i=0; i < numStreams; ++i) {
         ClrStream tmp(fbytes, dirOffset() + pos);
         m_streams.push_back(tmp);
 
         const char* name = tmp.getStructPtr()->Name;
-        pos += sizeof(IMAGE_COR20_METADATA_STREAM_HEADER) + strlen(name) + 1;
+        pos += sizeof(IMAGE_COR20_METADATA_STREAM_HEADER) + strlen(name) - kByteAlignment + 1;
         pos = alignToPowerOfTwo(pos, kByteAlignment);
     }
 }

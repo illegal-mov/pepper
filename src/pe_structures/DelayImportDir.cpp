@@ -20,7 +20,7 @@ DelayImportDir::DelayImportDir(const PeFile& pe, const FileBytes& fbytes, const 
         size_t i = 0;
         while (memcmp(&pid[i], &null, sizeof(null))) {
             m_descriptors.emplace_back(pe, fbytes, dirOffset() + (i * sizeof(null)));
-            i++;
+            ++i;
         }
     }
 }

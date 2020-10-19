@@ -14,9 +14,9 @@ template<> size_t& ExceptionTableEntryArm::s_pCodeDiff = ExceptionDir::s_codeDif
 template <typename EntryType>
 void ExceptionDir::appendEntries(const FileBytes& fbytes, const uint32_t totalSize)
 {
-    size_t numEntries = totalSize / sizeof(EntryType);
+    const size_t numEntries = totalSize / sizeof(EntryType);
     m_exceptionTableEntries32.reserve(numEntries);
-    for (size_t i=0; i < numEntries; i++) {
+    for (size_t i=0; i < numEntries; ++i) {
         m_exceptionTableEntries32.emplace_back(fbytes, dirOffset() + (i * sizeof(EntryType)));
     }
 
