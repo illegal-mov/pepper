@@ -136,9 +136,11 @@ public:
 
     GenericImportDescriptor& operator=(const GenericImportDescriptor& id)
     {
-        IHeader::operator=(id);
-        m_thunks32 = id.m_thunks32;
-        m_addresses32 = id.m_addresses32;
+        if (this != &id) {
+            IHeader::operator=(id);
+            m_thunks32 = id.m_thunks32;
+            m_addresses32 = id.m_addresses32;
+        }
         return *this;
     }
 

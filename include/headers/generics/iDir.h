@@ -39,11 +39,13 @@ protected:
 
     IDirectory& operator=(const IDirectory& id)
     {
-        IHeader::operator=(id);
-        m_peFile = id.m_peFile;
-        m_dataDirectoryEntry = id.m_dataDirectoryEntry;
-        m_sectionHeaderEntry = id.m_sectionHeaderEntry;
-        m_diskToMemoryDifference = id.m_diskToMemoryDifference;
+        if (this != &id) {
+            IHeader::operator=(id);
+            m_peFile = id.m_peFile;
+            m_dataDirectoryEntry = id.m_dataDirectoryEntry;
+            m_sectionHeaderEntry = id.m_sectionHeaderEntry;
+            m_diskToMemoryDifference = id.m_diskToMemoryDifference;
+        }
         return *this;
     }
 

@@ -78,8 +78,10 @@ public:
 
     ExceptionDir& operator=(const ExceptionDir& ed)
     {
-        IDirectory::operator=(ed);
-        m_exceptionTableEntries32 = ed.m_exceptionTableEntries32;
+        if (this != &ed) {
+            IDirectory::operator=(ed);
+            m_exceptionTableEntries32 = ed.m_exceptionTableEntries32;
+        }
         return *this;
     }
 

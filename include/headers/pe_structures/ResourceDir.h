@@ -117,8 +117,10 @@ public:
 
     ResourceData& operator=(const ResourceData& rd)
     {
-        IHeader::operator=(rd);
-        m_parent = rd.m_parent;
+        if (this != &rd) {
+            IHeader::operator=(rd);
+            m_parent = rd.m_parent;
+        }
         return *this;
     }
 

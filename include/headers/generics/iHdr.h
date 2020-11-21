@@ -35,8 +35,10 @@ protected:
 
     IHeader& operator=(const IHeader& ih)
     {
-        m_headerPtr = ih.m_headerPtr;
-        m_headerOffset = ih.m_headerOffset;
+        if (this != &ih) {
+            m_headerPtr = ih.m_headerPtr;
+            m_headerOffset = ih.m_headerOffset;
+        }
         return *this;
     }
 
