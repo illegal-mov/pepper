@@ -6,6 +6,11 @@ using namespace Pepper;
 
 SectionHeaders::SectionHeaders(const FileBytes& fbytes, const FileHeader& file)
 {
+    m_error = file.getError();
+    if (m_error != Error::None) {
+        return;
+    }
+
     const uint16_t optHdrSize = file.getStructPtr()->SizeOfOptionalHeader;
     const size_t base = file.hdrOffset() + sizeof(IMAGE_FILE_HEADER) + optHdrSize;
 

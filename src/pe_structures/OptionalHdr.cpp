@@ -7,11 +7,17 @@ using namespace Pepper;
 OptionalHeader::OptionalHeader(const FileBytes& fbytes, const FileHeader& file)
 : IHeader(fbytes, 0)
 {
+    m_error = file.getError();
     m_headerOffset = file.hdrOffset() + sizeof(IMAGE_FILE_HEADER);
 }
 
 DataDirectory::DataDirectory(const FileBytes& fbytes, const OptionalHeader& opt)
 {
+    m_error = opt.getError();
+    if (m_error != Error::None) {
+        return;
+    }
+
     const bool is32bit = opt.getStructPtr32()->Magic == OptionalHeader::BIT32;
     const size_t dataDirectoryOffset = opt.hdrOffset() + ((is32bit) ?
         offsetof(IMAGE_OPTIONAL_HEADER32, DataDirectory):

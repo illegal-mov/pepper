@@ -147,6 +147,8 @@ public:
 
     OptionalHeader(const FileBytes& fbytes, const FileHeader& file);
 
+    Error getError() const { return m_error; }
+
     const void* getFieldPtr(const int index) const override;
     const IMAGE_OPTIONAL_HEADER32* getStructPtr32() const { return static_cast<const IMAGE_OPTIONAL_HEADER32*>(hdr()); }
     const IMAGE_OPTIONAL_HEADER64* getStructPtr64() const { return static_cast<const IMAGE_OPTIONAL_HEADER64*>(hdr()); }
@@ -156,6 +158,9 @@ public:
 
     static const char* getFieldName(const int index);
     static const char* getCharacteristicName(const int index);
+
+private:
+    Error m_error = Error::None;
 };
 
 /* DataDirectory is an array of structures built in to the OptionalHeader.
@@ -184,6 +189,8 @@ public:
 
     DataDirectory(const FileBytes& fbytes, const OptionalHeader& opt);
 
+    Error getError() const { return m_error; }
+
     const std::array<DataDirectoryEntry, _NUM_ENTRIES>& directories() const
     {
         return m_directoryEntries;
@@ -197,6 +204,7 @@ public:
 
 private:
     std::array<DataDirectoryEntry, _NUM_ENTRIES> m_directoryEntries{};
+    Error m_error = Error::None;
 };
 } // namespace Pepper
 

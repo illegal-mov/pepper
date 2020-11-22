@@ -3,6 +3,7 @@
 
 #include <memory>
 
+#include "Exceptions.h"
 #include "FileBytes.h"
 
 #include "pe_structures/DosHdr.h"
@@ -73,7 +74,9 @@ public:
     PeFile(const PeFile& pe) = delete;
     PeFile& operator=(const PeFile& pe) = delete;
 
-    PeFile(const std::string& path);
+    PeFile(const std::string& path, ExceptionFlag throwFlag = ExceptionFlag::MAY_THROW);
+
+    Error getError() const { return m_error; }
 
     const DosHeader&           dosHdr()           const { return m_Dos;   }
     const FileHeader&          fileHdr()          const { return m_File;  }
@@ -101,14 +104,14 @@ public:
     static const char* getHeaderName(const int index);
 
 private:
-    std::string      m_fname;
-    FileBytes        m_Bytes;
+    std::string         m_fname;
+    FileBytes           m_Bytes;
 
-    DosHeader        m_Dos;
-    FileHeader       m_File;
-    OptionalHeader   m_Opt;
-    DataDirectory    m_DDir;
-    SectionHeaders   m_Sctns;
+    DosHeader           m_Dos;
+    FileHeader          m_File;
+    OptionalHeader      m_Opt;
+    DataDirectory       m_DDir;
+    SectionHeaders      m_Sctns;
 
     ExportDirPtr        m_Xprt{};
     ImportDirPtr        m_Mprt{};
@@ -125,6 +128,8 @@ private:
     IatDirPtr           m_Iat{};
     DelayImportDirPtr   m_Dmprt{};
     ClrDirPtr           m_Clr{};
+
+    Error               m_error = Error::None;
 };
 } // namespace Pepper
 

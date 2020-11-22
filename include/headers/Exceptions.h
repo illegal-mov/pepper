@@ -1,9 +1,34 @@
 #ifndef EXCEPTIONS_H
 #define EXCEPTIONS_H
 
+#include <map>
 #include <string>
 
 namespace Pepper {
+
+enum class ExceptionFlag {
+    NO_THROW,
+    MAY_THROW,
+};
+
+enum class Error {
+    None,
+    BadSignature,
+    FailedOpen,
+    FailedRead,
+    GenericError,
+    OversizedFile,
+};
+
+#define ENUM_TO_STR(ENUM, FIELD) ENUM::FIELD, #FIELD
+std::map<Error, const char*> const kErrorStrMap {
+    {ENUM_TO_STR(Error, None)},
+    {ENUM_TO_STR(Error, BadSignature)},
+    {ENUM_TO_STR(Error, FailedOpen)},
+    {ENUM_TO_STR(Error, FailedRead)},
+    {ENUM_TO_STR(Error, GenericError)},
+    {ENUM_TO_STR(Error, OversizedFile)},
+};
 
 class PeException : public std::exception
 {

@@ -33,14 +33,14 @@ struct is_dumpable<CertificateEntry> {
 namespace
 {
 template <typename DirectoryType>
-bool genericDump(const std::string& path, const DirectoryType& directory, Extract::ExceptionFlag throwFlag)
+bool genericDump(const std::string& path, const DirectoryType& directory, ExceptionFlag throwFlag = ExceptionFlag::MAY_THROW)
 {
     static_assert(is_dumpable<DirectoryType>::value, "Cannot dump this type to disk");
     std::ofstream out(path, std::ios_base::out | std::ios_base::binary);
     if (out.is_open()) {
         out.write(reinterpret_cast<const char*>(directory.bytes()), directory.size());
     } else {
-        if (throwFlag == Extract::ExceptionFlag::MAY_THROW) {
+        if (throwFlag == ExceptionFlag::MAY_THROW) {
             throw FailedOpen("Unable to open the file for writing");
         }
         return false;

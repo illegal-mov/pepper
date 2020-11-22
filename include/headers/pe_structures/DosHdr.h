@@ -57,19 +57,33 @@ public:
         _NUM_FIELDS,
     };
 
-    DosHeader(const FileBytes& fbytes)
+    DosHeader(const FileBytes& fbytes, ExceptionFlag throwFlag = ExceptionFlag::MAY_THROW)
     : IHeader(fbytes, 0)
     {
+        m_error = fbytes.getError();
+        if (m_error != Error::None) {
+            return;
+        }
+
         const int16_t magic = *static_cast<const int16_t*>(hdr());
         if (magic != 0x5A4D && magic != 0x4D5A) {
-            throw BadSignature("DOS Header magic is not \"MZ\"");
+            m_error = Error::BadSignature;
+            if (throwFlag == ExceptionFlag::MAY_THROW) {
+                throw BadSignature("DOS Header magic is not \"MZ\"");
+            }
+            return;
         }
     }
+
+    Error getError() const { return m_error; }
 
     const IMAGE_DOS_HEADER* getStructPtr() const { return static_cast<const IMAGE_DOS_HEADER*>(hdr()); }
     const void* getFieldPtr(const int index) const override;
 
     static const char* getFieldName(const int index);
+
+private:
+    Error m_error = Error::None;
 };
 } // namespace Pepper
 

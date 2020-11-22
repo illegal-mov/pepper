@@ -82,17 +82,28 @@ public:
         BYTES_REVERSED_HI       = 0x8000,
     };
 
-    FileHeader(const FileBytes& fbytes, const DosHeader& dos)
+    FileHeader(const FileBytes& fbytes, const DosHeader& dos, ExceptionFlag throwFlag = ExceptionFlag::MAY_THROW)
     : IHeader(fbytes, 0)
     {
+        m_error = dos.getError();
+        if (m_error != Error::None) {
+            return;
+        }
+
         const uint16_t lfanew = dos.getStructPtr()->e_lfanew;
         m_headerOffset = static_cast<size_t>(lfanew) + 4; // NT signature is "PE\0\0"
 
         const int32_t sig = *reinterpret_cast<const int32_t*>(ntSig());
         if (sig != 0x00004550 && sig != 0x50450000) {
-            throw BadSignature("NT Header magic is not \"PE\"");
+            m_error = Error::BadSignature;
+            if (throwFlag == ExceptionFlag::MAY_THROW) {
+                throw BadSignature("NT Header magic is not \"PE\"");
+            }
+            return;
         }
     }
+
+    Error getError() const { return m_error; }
 
     const IMAGE_FILE_HEADER* getStructPtr() const { return static_cast<const IMAGE_FILE_HEADER*>(hdr()); }
     const void* getFieldPtr(const int index) const override;
@@ -101,6 +112,9 @@ public:
     static const char* getFieldName(const int index);
     static const char* getMachineName(const int id);
     static const char* getCharacteristicName(const int index);
+
+private:
+    Error m_error = Error::None;
 };
 } // namespace Pepper
 

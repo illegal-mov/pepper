@@ -112,6 +112,8 @@ public:
 
     SectionHeaders(const FileBytes& fbytes, const FileHeader& file);
 
+    Error getError() const { return m_error; }
+
     const std::vector<SectionHeaderEntry>& getSections() const { return m_sectionHeaders; }
     size_t length() const { return m_sectionHeaders.size(); }
 
@@ -121,6 +123,7 @@ public:
 
 private:
     std::vector<SectionHeaderEntry> m_sectionHeaders{};
+    Error m_error = Error::None;
 };
 } // namespace Pepper
 

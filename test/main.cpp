@@ -609,35 +609,35 @@ int main(int argc, char* argv[])
 {
 //  std::cout << "MAIN\n\n";
 
-    try {
-        std::cout << argv[argc-1] << '\n';
+    std::cout << argv[argc-1] << '\n';
 
-        Pepper::PeFile pe(argv[argc-1]);
-
-//      printFileHeader(pe);
-//      printOptionalHeader(pe);
-//      printDataDirectory(pe);
-//      printSectionHeaders(pe);
-
-//      printExport(pe);
-//      printImport(pe);
-//      printResource(pe);
-//      printException(pe);
-//      printCertificate(pe);
-//      printRelocation(pe);
-//      printDebug(pe);
-//      printArchitecture(pe);
-//      printGlobalPointer(pe);
-//      printTls(pe);
-//      printLoadConfig(pe);
-//      printBoundImport(pe);
-//      printIat(pe);
-//      printDelayImport(pe);
-//      printClr(pe);
-
-    } catch (const Pepper::PeException& e) {
-        std::cerr << argv[argc-1] << " : " << e.getError() << '\n';
+    Pepper::PeFile pe(argv[argc-1], Pepper::ExceptionFlag::NO_THROW);
+    if (pe.getError() != Pepper::Error::None) {
+        std::cout << Pepper::kErrorStrMap.at(pe.getError()) << '\n';
+        return 1;
     }
+
+//  printFileHeader(pe);
+//  printOptionalHeader(pe);
+//  printDataDirectory(pe);
+//  printSectionHeaders(pe);
+
+//  printExport(pe);
+//  printImport(pe);
+//  printResource(pe);
+//  printException(pe);
+//  printCertificate(pe);
+//  printRelocation(pe);
+//  printDebug(pe);
+//  printArchitecture(pe);
+//  printGlobalPointer(pe);
+//  printTls(pe);
+//  printLoadConfig(pe);
+//  printBoundImport(pe);
+//  printIat(pe);
+//  printDelayImport(pe);
+//  printClr(pe);
+
     //*/
 
     return 0;

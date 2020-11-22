@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "Types.h"
+#include "Exceptions.h"
 
 namespace Pepper {
 
@@ -16,9 +17,11 @@ public:
     FileBytes(const FileBytes& fb) = delete;
     FileBytes& operator=(const FileBytes& fb) = delete;
 
-    FileBytes(const std::string& path);
+    FileBytes(const std::string& path, ExceptionFlag throwFlag = ExceptionFlag::MAY_THROW);
 
+    size_t size() const { return m_fileSize; }
     const uint8_t* bytes() const { return m_fileContent.data(); }
+    Error getError() const { return m_error; }
     void readBytes(const offset_t pos, uint8_t* buf, const size_t bufLen) const;
 
     static size_t getFileSize(std::ifstream& in);
@@ -26,6 +29,7 @@ public:
 private:
     size_t m_fileSize{};
     std::vector<uint8_t> m_fileContent{};
+    Error m_error = Error::None;
 };
 } // namespace Pepper
 
