@@ -24,7 +24,7 @@ namespace Ident
 
     bool isRom(const PeFile& pe);
 
-    bool dirExists(const std::shared_ptr<IDirectory>& id);
+    bool dirExists(const IDirectory* id);
     bool dirExists(const IDirectory& id);
 
     bool isAllSignaturesValid(const PeFile& pe);

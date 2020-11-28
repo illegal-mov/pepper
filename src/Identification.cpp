@@ -47,8 +47,8 @@ bool isNtSigValid(const PeFile& pe)
 
 bool isDebugRsdsSigValid(const PeFile& pe)
 {
-    const std::shared_ptr<DebugDir> dbg = pe.debugDir();
-    if (Ident::dirExists(dbg)) {
+    const auto& dbg = pe.debugDir();
+    if (Ident::dirExists(dbg.get())) {
         for (const auto& entry : dbg->entries()) {
             const int32_t rsdsSig = *static_cast<const int32_t*>(entry.rsds().getFieldPtr(DebugRsds::SIGNATURE));
             if ((rsdsSig != 0x52534453) && (rsdsSig != 0x53445352)) { // "RSDS" "SDSR"
@@ -61,9 +61,9 @@ bool isDebugRsdsSigValid(const PeFile& pe)
 
 bool isClrMetadataSigValid(const PeFile& pe)
 {
-    const std::shared_ptr<ClrDir> clr = pe.clrDir();
-    if (Ident::dirExists(clr)) {
-        const std::shared_ptr<ClrMetadata> meta = clr->metadataHdr();
+    const auto& clr = pe.clrDir();
+    if (Ident::dirExists(clr.get())) {
+        const auto& meta = clr->metadataHdr();
         const int32_t bsjbSig = *static_cast<const int32_t*>(meta->getFieldPtr(ClrMetadata::SIGNATURE));
         if ((bsjbSig != 0x42534A42) && (bsjbSig != 0x424A5342)) { // "BSJB" "BJSB"
             return false;
@@ -105,9 +105,9 @@ bool Ident::isRom(const PeFile& pe)
     return getOptionalHeaderMagic(pe) == OptionalHeader::Magic::ROM;
 }
 
-bool Ident::dirExists(const std::shared_ptr<IDirectory>& id)
+bool Ident::dirExists(const IDirectory* id)
 {
-    return id != nullptr;
+    return id != nullptr && id->getOwningSection() != nullptr;
 }
 
 bool Ident::dirExists(const IDirectory& id)

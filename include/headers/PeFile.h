@@ -29,21 +29,21 @@
 
 namespace Pepper {
 
-using ExportDirPtr        = std::shared_ptr<ExportDir>;
-using ImportDirPtr        = std::shared_ptr<ImportDir>;
-using ResourceDirPtr      = std::shared_ptr<ResourceDir>;
-using ExceptionDirPtr     = std::shared_ptr<ExceptionDir>;
-using CertificateDirPtr   = std::shared_ptr<CertificateDir>;
-using RelocationDirPtr    = std::shared_ptr<RelocationDir>;
-using DebugDirPtr         = std::shared_ptr<DebugDir>;
-using ArchitectureDirPtr  = std::shared_ptr<ArchitectureDir>;
-using GlobalPointerDirPtr = std::shared_ptr<GlobalPointerDir>;
-using TlsDirPtr           = std::shared_ptr<TlsDir>;
-using LoadConfigDirPtr    = std::shared_ptr<LoadConfigDir>;
-using BoundImportDirPtr   = std::shared_ptr<BoundImportDir>;
-using IatDirPtr           = std::shared_ptr<IatDir>;
-using DelayImportDirPtr   = std::shared_ptr<DelayImportDir>;
-using ClrDirPtr           = std::shared_ptr<ClrDir>;
+using ExportDirPtr        = std::unique_ptr<ExportDir>;
+using ImportDirPtr        = std::unique_ptr<ImportDir>;
+using ResourceDirPtr      = std::unique_ptr<ResourceDir>;
+using ExceptionDirPtr     = std::unique_ptr<ExceptionDir>;
+using CertificateDirPtr   = std::unique_ptr<CertificateDir>;
+using RelocationDirPtr    = std::unique_ptr<RelocationDir>;
+using DebugDirPtr         = std::unique_ptr<DebugDir>;
+using ArchitectureDirPtr  = std::unique_ptr<ArchitectureDir>;
+using GlobalPointerDirPtr = std::unique_ptr<GlobalPointerDir>;
+using TlsDirPtr           = std::unique_ptr<TlsDir>;
+using LoadConfigDirPtr    = std::unique_ptr<LoadConfigDir>;
+using BoundImportDirPtr   = std::unique_ptr<BoundImportDir>;
+using IatDirPtr           = std::unique_ptr<IatDir>;
+using DelayImportDirPtr   = std::unique_ptr<DelayImportDir>;
+using ClrDirPtr           = std::unique_ptr<ClrDir>;
 
 class PeFile final {
 public:

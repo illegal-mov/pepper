@@ -35,13 +35,13 @@ typedef struct _IMAGE_COR20_HEADER {
 
 namespace Pepper {
 
-using ClrMetadataPtr     = std::shared_ptr<ClrMetadata>;
-using ClrResourcePtr     = std::shared_ptr<ClrResource>;
-using ClrSignaturePtr    = std::shared_ptr<ClrSignature>;
-using ClrCodeManagerPtr  = std::shared_ptr<ClrCodeManager>;
-using ClrVTableFixupPtr  = std::shared_ptr<ClrVTableFixup>;
-using ClrExportJumpPtr   = std::shared_ptr<ClrExportJump>;
-using ClrNativeHeaderPtr = std::shared_ptr<ClrNativeHeader>;
+using ClrMetadataPtr     = std::unique_ptr<ClrMetadata>;
+using ClrResourcePtr     = std::unique_ptr<ClrResource>;
+using ClrSignaturePtr    = std::unique_ptr<ClrSignature>;
+using ClrCodeManagerPtr  = std::unique_ptr<ClrCodeManager>;
+using ClrVTableFixupPtr  = std::unique_ptr<ClrVTableFixup>;
+using ClrExportJumpPtr   = std::unique_ptr<ClrExportJump>;
+using ClrNativeHeaderPtr = std::unique_ptr<ClrNativeHeader>;
 
 class PeFile;
 class FileBytes;
