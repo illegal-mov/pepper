@@ -1,10 +1,10 @@
-#include "../include/headers/PeFile.h"
+#include <PeFile.h>
 
 #include <memory>
 #include <string>
 
-#include "../include/headers/Types.h"
-#include "../include/headers/Exceptions.h"
+#include <Types.h>
+#include <Exceptions.h>
 
 using namespace Pepper;
 

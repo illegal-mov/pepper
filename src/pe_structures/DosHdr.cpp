@@ -1,4 +1,4 @@
-#include "../../include/headers/pe_structures/DosHdr.h"
+#include <pe_structures/DosHdr.h>
 
 using namespace Pepper;
 

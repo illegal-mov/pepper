@@ -1,7 +1,7 @@
 #ifndef BOUNDIMPORT_H
 #define BOUNDIMPORT_H
 
-#include "../generics/iDir.h"
+#include <generics/iDir.h>
 
 /*
 // one for each imported module

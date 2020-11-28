@@ -1,8 +1,8 @@
-#include "../../include/headers/pe_structures/ExceptionDir.h"
+#include <pe_structures/ExceptionDir.h>
 
-#include "../../include/headers/Conversion.h"
-#include "../../include/headers/Identification.h"
-#include "../../include/headers/pe_structures/DataDirectoryEntry.h"
+#include <Conversion.h>
+#include <Identification.h>
+#include <pe_structures/DataDirectoryEntry.h>
 
 using namespace Pepper;
 

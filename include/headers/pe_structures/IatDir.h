@@ -3,9 +3,9 @@
 
 #include <vector>
 
-#include "../Types.h"
-#include "../generics/iDir.h"
-#include "ImportsCommon.h"
+#include <Types.h>
+#include <generics/iDir.h>
+#include <pe_structures/ImportsCommon.h>
 
 namespace Pepper {
 

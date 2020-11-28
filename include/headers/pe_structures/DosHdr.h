@@ -1,8 +1,8 @@
 #ifndef DOS_H
 #define DOS_H
 
-#include "../Exceptions.h"
-#include "../generics/iHdr.h"
+#include <Exceptions.h>
+#include <generics/iHdr.h>
 
 /*
 typedef struct _IMAGE_DOS_HEADER {

@@ -1,8 +1,9 @@
 #ifndef TLS_H
 #define TLS_H
 
-#include "../Types.h"
-#include "../generics/iDir.h"
+#include <Types.h>
+#include <generics/iDir.h>
+#include <generics/iHdr.h>
 
 /*
 typedef struct _IMAGE_TLS_DIRECTORY32 {

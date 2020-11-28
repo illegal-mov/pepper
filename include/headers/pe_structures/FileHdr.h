@@ -1,9 +1,9 @@
 #ifndef FILE_H
 #define FILE_H
 
-#include "../Exceptions.h"
-#include "../generics/iHdr.h"
-#include "DosHdr.h"
+#include <Exceptions.h>
+#include <generics/iHdr.h>
+#include <pe_structures/DosHdr.h>
 
 /*
 typedef struct _IMAGE_FILE_HEADER {

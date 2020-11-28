@@ -1,9 +1,9 @@
-#include "../../include/headers/pe_structures/TlsDir.h"
+#include <pe_structures/TlsDir.h>
 
-#include "../../include/headers/Conversion.h"
-#include "../../include/headers/Identification.h"
-#include "../../include/headers/PeFile.h"
-#include "../../include/headers/pe_structures/OptionalHdr.h"
+#include <Conversion.h>
+#include <Identification.h>
+#include <PeFile.h>
+#include <pe_structures/OptionalHdr.h>
 
 using namespace Pepper;
 

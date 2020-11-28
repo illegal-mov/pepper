@@ -1,9 +1,9 @@
-#include "../../include/headers/generics/iDir.h"
+#include <generics/iDir.h>
 
-#include "../../include/headers/Identification.h"
-#include "../../include/headers/PeFile.h"
-#include "../../include/headers/pe_structures/DataDirectoryEntry.h"
-#include "../../include/headers/pe_structures/SectionHdr.h"
+#include <Identification.h>
+#include <PeFile.h>
+#include <pe_structures/DataDirectoryEntry.h>
+#include <pe_structures/SectionHdr.h>
 
 using namespace Pepper;
 

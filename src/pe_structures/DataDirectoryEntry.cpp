@@ -1,4 +1,4 @@
-#include "../../include/headers/pe_structures/DataDirectoryEntry.h"
+#include <pe_structures/DataDirectoryEntry.h>
 
 using namespace Pepper;
 

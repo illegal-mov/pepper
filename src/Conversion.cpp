@@ -1,8 +1,8 @@
-#include "../include/headers/Conversion.h"
+#include <Conversion.h>
 
-#include "../include/headers/Types.h"
-#include "../include/headers/PeFile.h"
-#include "../include/headers/pe_structures/OptionalHdr.h"
+#include <Types.h>
+#include <PeFile.h>
+#include <pe_structures/OptionalHdr.h>
 
 /* Non-member non-friend functions to convert addresses between types */
 

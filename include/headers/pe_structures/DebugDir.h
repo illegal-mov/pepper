@@ -3,8 +3,8 @@
 
 #include <vector>
 
-#include "../Types.h"
-#include "../generics/iDir.h"
+#include <Types.h>
+#include <generics/iDir.h>
 
 /*
 typedef struct _IMAGE_DEBUG_DIRECTORY {

@@ -3,10 +3,10 @@
 
 #include <vector>
 
-#include "../Identification.h"
-#include "../Types.h"
-#include "../generics/iDir.h"
-#include "struct.h"
+#include <Identification.h>
+#include <Types.h>
+#include <generics/iDir.h>
+#include <pe_structures/struct.h>
 
 /*
 typedef struct _IMAGE_THUNK_DATA32 {

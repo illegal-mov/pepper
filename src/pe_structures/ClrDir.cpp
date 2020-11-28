@@ -1,6 +1,6 @@
-#include "../../include/headers/pe_structures/ClrDir.h"
+#include <pe_structures/ClrDir.h>
 
-#include "../../include/headers/Identification.h"
+#include <Identification.h>
 
 using namespace Pepper;
 

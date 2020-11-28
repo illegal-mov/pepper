@@ -1,7 +1,7 @@
 #ifndef CLR_CODEMANAGER_H
 #define CLR_CODEMANAGER_H
 
-#include "../../generics/iDir.h"
+#include <generics/iDir.h>
 
 /*
 typedef struct _IMAGE_ {

@@ -1,9 +1,9 @@
-#include "../../include/headers/pe_structures/ExportDir.h"
+#include <pe_structures/ExportDir.h>
 
-#include "../../include/headers/Conversion.h"
-#include "../../include/headers/Identification.h"
-#include "../../include/headers/Types.h"
-#include "../../include/headers/pe_structures/DataDirectoryEntry.h"
+#include <Conversion.h>
+#include <Identification.h>
+#include <Types.h>
+#include <pe_structures/DataDirectoryEntry.h>
 
 using namespace Pepper;
 

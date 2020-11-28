@@ -5,8 +5,9 @@
 #include <memory>
 #include <vector>
 
-#include "../Types.h"
-#include "../generics/iDir.h"
+#include <Types.h>
+#include <generics/iDir.h>
+#include <generics/iHdr.h>
 
 /*
 typedef struct _IMAGE_RESOURCE_DIRECTORY {

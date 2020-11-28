@@ -1,8 +1,8 @@
 #ifndef IHEADER_H
 #define IHEADER_H
 
-#include "../FileBytes.h"
-#include "../pe_structures/struct.h"
+#include <FileBytes.h>
+#include <pe_structures/struct.h>
 
 namespace Pepper {
 

@@ -3,15 +3,15 @@
 
 #include <memory>
 
-#include "../generics/iDir.h"
-#include "clr/CodeManager.h"
-#include "clr/ExportJump.h"
-#include "clr/ManagedNative.h"
-#include "clr/Metadata.h"
-#include "clr/Resource.h"
-#include "clr/Signature.h"
-#include "clr/VTableFixup.h"
-#include "DataDirectoryEntry.h"
+#include <generics/iDir.h>
+#include <pe_structures/DataDirectoryEntry.h>
+#include <pe_structures/clr/CodeManager.h>
+#include <pe_structures/clr/ExportJump.h>
+#include <pe_structures/clr/ManagedNative.h>
+#include <pe_structures/clr/Metadata.h>
+#include <pe_structures/clr/Resource.h>
+#include <pe_structures/clr/Signature.h>
+#include <pe_structures/clr/VTableFixup.h>
 
 /*
 typedef struct _IMAGE_COR20_HEADER {

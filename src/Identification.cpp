@@ -1,11 +1,11 @@
-#include "../include/headers/Identification.h"
+#include <Identification.h>
 
 #include <cstring>
 
-#include "../include/headers/PeFile.h"
-#include "../include/headers/generics/iDir.h"
-#include "../include/headers/pe_structures/FileHdr.h"
-#include "../include/headers/pe_structures/OptionalHdr.h"
+#include <PeFile.h>
+#include <generics/iDir.h>
+#include <pe_structures/FileHdr.h>
+#include <pe_structures/OptionalHdr.h>
 
 /* Non-member non-friend functions to check key information about a PE file */
 

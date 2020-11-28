@@ -3,8 +3,8 @@
 
 #include <vector>
 
-#include "../generics/iDir.h"
-#include "ImportsCommon.h"
+#include <generics/iDir.h>
+#include <pe_structures/ImportsCommon.h>
 
 /*
 typedef struct _IMAGE_IMPORT_DESCRIPTOR {

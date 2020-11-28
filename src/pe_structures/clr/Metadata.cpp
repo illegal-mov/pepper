@@ -1,7 +1,7 @@
 #include <cstring>
 
-#include "../../../include/headers/pe_structures/DataDirectoryEntry.h"
-#include "../../../include/headers/pe_structures/clr/Metadata.h"
+#include <pe_structures/DataDirectoryEntry.h>
+#include <pe_structures/clr/Metadata.h>
 
 using namespace Pepper;
 

@@ -1,5 +1,5 @@
-#include "../../../include/headers/pe_structures/DataDirectoryEntry.h"
-#include "../../../include/headers/pe_structures/clr/CodeManager.h"
+#include <pe_structures/DataDirectoryEntry.h>
+#include <pe_structures/clr/CodeManager.h>
 
 using namespace Pepper;
 

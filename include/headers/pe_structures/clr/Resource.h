@@ -1,9 +1,9 @@
 #ifndef CLR_RESOURCE_H
 #define CLR_RESOURCE_H
 
-#include "../../Types.h"
-#include "../../generics/iDir.h"
-#include "../struct.h"
+#include <Types.h>
+#include <generics/iDir.h>
+#include <pe_structures/struct.h>
 
 /*
 typedef struct _IMAGE_COR20_RESOURCES_HEADER {

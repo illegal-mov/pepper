@@ -1,7 +1,7 @@
 #ifndef ARCHITECTURE_H
 #define ARCHITECTURE_H
 
-#include "../generics/iDir.h"
+#include <generics/iDir.h>
 
 namespace Pepper {
 

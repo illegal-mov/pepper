@@ -3,8 +3,8 @@
 
 #include <vector>
 
-#include "../Types.h"
-#include "../generics/iHdr.h"
+#include <Types.h>
+#include <generics/iHdr.h>
 
 /*
 typedef struct _IMAGE_SECTION_HEADER {

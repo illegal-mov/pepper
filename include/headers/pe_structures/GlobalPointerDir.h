@@ -1,7 +1,7 @@
 #ifndef GLOBALPOINTER_H
 #define GLOBALPOINTER_H
 
-#include "../generics/iDir.h"
+#include <generics/iDir.h>
 
 namespace Pepper {
 

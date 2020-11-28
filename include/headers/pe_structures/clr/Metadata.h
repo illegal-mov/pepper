@@ -3,9 +3,9 @@
 
 #include <vector>
 
-#include "../../Types.h"
-#include "../../generics/iDir.h"
-#include "../struct.h"
+#include <Types.h>
+#include <generics/iDir.h>
+#include <pe_structures/struct.h>
 
 /*
 typedef struct _IMAGE_COR20_METADATA_HEADER {

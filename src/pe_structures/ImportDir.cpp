@@ -1,9 +1,9 @@
-#include "../../include/headers/pe_structures/ImportDir.h"
+#include <pe_structures/ImportDir.h>
 
 #include <cstring>
 
-#include "../../include/headers/Identification.h"
-#include "../../include/headers/pe_structures/DataDirectoryEntry.h"
+#include <Identification.h>
+#include <pe_structures/DataDirectoryEntry.h>
 
 using namespace Pepper;
 

@@ -1,8 +1,8 @@
 #ifndef LOADCONFIG_H
 #define LOADCONFIG_H
 
-#include "../Types.h"
-#include "../generics/iDir.h"
+#include <Types.h>
+#include <generics/iDir.h>
 
 /* Online documentation on the LOAD_CONFIG structure is inconsistent.
  *

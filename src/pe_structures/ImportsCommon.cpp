@@ -1,9 +1,9 @@
-#include "../../include/headers/pe_structures/ImportsCommon.h"
+#include <pe_structures/ImportsCommon.h>
 
 #include <sstream>
 
-#include "../../include/headers/Conversion.h"
-#include "../../include/headers/Types.h"
+#include <Conversion.h>
+#include <Types.h>
 
 using namespace Pepper;
 

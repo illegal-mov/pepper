@@ -1,6 +1,6 @@
-#include "../../include/headers/pe_structures/OptionalHdr.h"
+#include <pe_structures/OptionalHdr.h>
 
-#include "../../include/headers/pe_structures/../Types.h"
+#include <Types.h>
 
 using namespace Pepper;
 

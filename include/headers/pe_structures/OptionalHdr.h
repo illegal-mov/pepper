@@ -3,10 +3,10 @@
 
 #include <array>
 
-#include "../Types.h"
-#include "../generics/iHdr.h"
-#include "DataDirectoryEntry.h"
-#include "FileHdr.h"
+#include <Types.h>
+#include <generics/iHdr.h>
+#include <pe_structures/DataDirectoryEntry.h>
+#include <pe_structures/FileHdr.h>
 
 /*
 typedef struct _IMAGE_OPTIONAL_HEADER32 {

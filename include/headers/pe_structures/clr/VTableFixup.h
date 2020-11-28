@@ -1,7 +1,7 @@
 #ifndef CLR_VTABLEFIXUP_H
 #define CLR_VTABLEFIXUP_H
 
-#include "../../generics/iDir.h"
+#include <generics/iDir.h>
 
 /*
 typedef struct _IMAGE_ {

@@ -1,6 +1,6 @@
-#include "../../include/headers/pe_structures/SectionHdr.h"
+#include <pe_structures/SectionHdr.h>
 
-#include "../../include/headers/pe_structures/FileHdr.h"
+#include <pe_structures/FileHdr.h>
 
 using namespace Pepper;
 

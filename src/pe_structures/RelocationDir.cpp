@@ -1,8 +1,8 @@
-#include "../../include/headers/pe_structures/RelocationDir.h"
+#include <pe_structures/RelocationDir.h>
 
-#include "../../include/headers/Identification.h"
-#include "../../include/headers/Types.h"
-#include "../../include/headers/pe_structures/DataDirectoryEntry.h"
+#include <Identification.h>
+#include <Types.h>
+#include <pe_structures/DataDirectoryEntry.h>
 
 using namespace Pepper;
 

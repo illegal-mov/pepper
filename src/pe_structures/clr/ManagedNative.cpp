@@ -1,5 +1,5 @@
-#include "../../../include/headers/pe_structures/DataDirectoryEntry.h"
-#include "../../../include/headers/pe_structures/clr/ManagedNative.h"
+#include <pe_structures/DataDirectoryEntry.h>
+#include <pe_structures/clr/ManagedNative.h>
 
 using namespace Pepper;
 

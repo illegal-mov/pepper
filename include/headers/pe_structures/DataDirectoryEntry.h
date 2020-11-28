@@ -1,8 +1,8 @@
 #ifndef DATADIRECTORYENTRY_H
 #define DATADIRECTORYENTRY_H
 
-#include "../Types.h"
-#include "../generics/iHdr.h"
+#include <Types.h>
+#include <generics/iHdr.h>
 
 /*
 typedef struct _IMAGE_DATA_DIRECTORY {
